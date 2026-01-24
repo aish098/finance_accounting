@@ -25,7 +25,9 @@ async function seed() {
         const [cashAccount] = await db.query('SELECT id FROM accounts WHERE code = "1000"');
         const [equityAccount] = await db.query('SELECT id FROM accounts WHERE code = "3000"');
         
-        if (cashAccount[0] && equityAccount[0]) {
+        const [existingInv] = await db.query('SELECT id FROM journal_entries WHERE reference = ?', ['INV-001']);
+        
+        if (cashAccount[0] && equityAccount[0] && existingInv.length === 0) {
             await journalService.createJournalEntry(
                 {
                     entry_date: new Date().toISOString().split('T')[0],
@@ -39,11 +41,15 @@ async function seed() {
                 ]
             );
             console.log('Initial investment entry seeded.');
+        } else if (existingInv.length > 0) {
+            console.log('Initial investment entry already exists.');
         }
 
         // 3. Rent Expense (Rent Expense Dr, Cash Cr)
         const [rentAccount] = await db.query('SELECT id FROM accounts WHERE code = "5100"');
-        if (rentAccount[0] && cashAccount[0]) {
+        const [existingExp] = await db.query('SELECT id FROM journal_entries WHERE reference = ?', ['EXP-001']);
+        
+        if (rentAccount[0] && cashAccount[0] && existingExp.length === 0) {
             await journalService.createJournalEntry(
                 {
                     entry_date: new Date().toISOString().split('T')[0],
@@ -57,6 +63,8 @@ async function seed() {
                 ]
             );
             console.log('Rent expense entry seeded.');
+        } else if (existingExp.length > 0) {
+            console.log('Rent expense entry already exists.');
         }
 
         console.log('Seeding completed successfully.');

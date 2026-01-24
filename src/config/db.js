@@ -1,25 +1,13 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Debug environment variables (anonymized)
-console.log('--- Environment Check ---');
-const relevantKeys = ['MYSQLHOST', 'MYSQLUSER', 'MYSQLDATABASE', 'MYSQLPORT', 'MYSQL_URL', 'DATABASE_URL', 'MYSQL_PRIVATE_URL', 'DB_HOST', 'DB_USER', 'DB_NAME', 'RAILWAY_ENVIRONMENT'];
-relevantKeys.forEach(key => {
-    if (process.env[key]) {
-        let value = process.env[key];
-        if (key.includes('PASS') || key.includes('URL')) value = '********';
-        console.log(`${key}: ${value}`);
-    }
-});
-console.log('-------------------------');
-
 // Prioritize Railway variables then common alternatives
 const config = {
-    host: process.env.MYSQLHOST || process.env.DB_HOST || process.env.MYSQL_HOST || 'localhost',
-    user: process.env.MYSQLUSER || process.env.DB_USER || process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || process.env.MYSQL_PASSWORD || '',
-    database: process.env.MYSQLDATABASE || process.env.DB_NAME || process.env.DB_DATABASE || process.env.MYSQL_DATABASE || 'accounting_db',
-    port: process.env.MYSQLPORT || process.env.DB_PORT || process.env.MYSQL_PORT || 3306,
+    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || 'localhost',
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || '',
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || 'accounting_db',
+    port: process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -30,17 +18,16 @@ const config = {
 
 const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL || process.env.MYSQL_INTERNAL_URL;
 
-// Ensure connection settings are merged if using URL
 let pool;
 if (connectionUrl) {
     console.log('Using connection URL for MySQL');
     pool = mysql.createPool(connectionUrl + (connectionUrl.includes('?') ? '&' : '?') + 'multipleStatements=true');
 } else {
-    if (process.env.MYSQLHOST || process.env.DB_HOST || process.env.MYSQL_HOST) {
-        console.log(`Connecting to MySQL at ${config.host}`);
-    } else {
-        console.warn('WARNING: No database environment variables found, falling back to defaults');
+    // Check if we are in Railway but missing variables
+    if (process.env.RAILWAY_ENVIRONMENT && !process.env.MYSQLHOST) {
+        console.error('CRITICAL: Running in Railway but MYSQLHOST is missing. Check your Service Variables.');
     }
+    console.log(`Connecting to MySQL at ${config.host}:${config.port}`);
     pool = mysql.createPool(config);
 }
 
