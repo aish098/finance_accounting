@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entry - Accounting Record Book</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>Accounting Record Book</h1></header>
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="accounts.html">Chart of Accounts</a>
+        <a href="journal.html">Journal Entries</a>
+        <a href="reports.html">Financial Reports</a>
+        <a href="#" onclick="api.logout()">Logout</a>
+    </nav>
+    <main>
+        <div class="card">
+            <h2>New Journal Entry</h2>
+            <form id="journal-form">
+                <div class="journal-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="entry_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference</label>
+                        <input type="text" id="reference">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description"></textarea>
+                </div>
+                
+                <h3>Line Items</h3>
+                <div id="line-items">
+                    <!-- Dynamic rows will be added here -->
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addRow()">Add Row</button>
+                
+                <div class="card" style="margin-top: 1rem; background: #f8f9fa;">
+                    <div class="journal-row total-row">
+                        <div>Totals</div>
+                        <div class="text-right" id="total-debit">$0.00</div>
+                        <div class="text-right" id="total-credit">$0.00</div>
+                    </div>
+                    <div id="balance-warning" style="color: red; display: none;">Warning: Entry is not balanced!</div>
+                </div>
+                
+                <button type="submit" class="btn btn-post" style="width: 100%;">Post Journal Entry</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Recent Entries</h2>
+            <table id="recent-entries">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script>
+        let accounts = [];
+
+        async function init() {
+            accounts = await api.get('/accounts');
+            addRow();
+            addRow();
+            loadRecentEntries();
+        }
+
+        function addRow() {
+            const container = document.getElementById('line-items');
+            const row = document.createElement('div');
+            row.className = 'journal-row';
+            row.innerHTML = `
+                <div>
+                    <select class="account-select" required>
+                        <option value="">Select Account</option>
+                        ${accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div>
+                    <input type="number" step="0.01" class="debit-input" placeholder="Debit" onchange="updateTotals()">
+                </div>
+                <div>
+                    <input type="number" step="0.01" class="credit-input" placeholder="Credit" onchange="updateTotals()">
+                </div>
+                <div style="flex: 0 0 50px;">
+                    <button type="button" onclick="this.parentElement.parentElement.remove(); updateTotals();">X</button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        function updateTotals() {
+            let totalDebit = 0;
+            let totalCredit = 0;
+            
+            document.querySelectorAll('.debit-input').forEach(i => totalDebit += parseFloat(i.value || 0));
+            document.querySelectorAll('.credit-input').forEach(i => totalCredit += parseFloat(i.value || 0));
+            
+            document.getElementById('total-debit').innerText = '$' + totalDebit.toFixed(2);
+            document.getElementById('total-credit').innerText = '$' + totalCredit.toFixed(2);
+            
+            const warning = document.getElementById('balance-warning');
+            if (Math.abs(totalDebit - totalCredit) > 0.001) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+
+        document.getElementById('journal-form').onsubmit = async (e) => {
+            e.preventDefault();
+            
+            const items = [];
+            document.querySelectorAll('#line-items .journal-row').forEach(row => {
+                const accountId = row.querySelector('.account-select').value;
+                const debit = parseFloat(row.querySelector('.debit-input').value || 0);
+                const credit = parseFloat(row.querySelector('.credit-input').value || 0);
+                
+                if (accountId && (debit > 0 || credit > 0)) {
+                    items.push({ account_id: accountId, debit, credit });
+                }
+            });
+
+            const data = {
+                entry_date: document.getElementById('entry_date').value,
+                reference: document.getElementById('reference').value,
+                description: document.getElementById('description').value,
+                items: items
+            };
+
+            try {
+                await api.post('/journal', data);
+                alert('Journal Entry Posted successfully!');
+                location.reload();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        };
+
+        async function loadRecentEntries() {
+            const entries = await api.get('/journal');
+            const tbody = document.querySelector('#recent-entries tbody');
+            tbody.innerHTML = entries.map(e => `
+                <tr>
+                    <td>${e.entry_date.split('T')[0]}</td>
+                    <td>${e.reference || ''}</td>
+                    <td>${e.description || ''}</td>
+                    <td><button onclick="viewEntry(${e.id})">View</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function viewEntry(id) {
+            const entry = await api.get('/journal/' + id);
+            let detail = `Date: ${entry.entry_date}\nRef: ${entry.reference}\nDesc: ${entry.description}\n\n`;
+            entry.items.forEach(i => {
+                detail += `${i.account_code} ${i.account_name}: ${i.debit > 0 ? 'Dr ' + i.debit : 'Cr ' + i.credit}\n`;
+            });
+            alert(detail);
+        }
+
+        init();
+    </script>
+</body>
+</html>

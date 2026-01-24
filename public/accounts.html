@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart of Accounts - Accounting Record Book</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>Accounting Record Book</h1></header>
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="accounts.html">Chart of Accounts</a>
+        <a href="journal.html">Journal Entries</a>
+        <a href="reports.html">Financial Reports</a>
+        <a href="#" onclick="api.logout()">Logout</a>
+    </nav>
+    <main>
+        <div class="card">
+            <h2>Chart of Accounts</h2>
+            <table id="accounts-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Normal Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script>
+        async function loadAccounts() {
+            const accounts = await api.get('/accounts');
+            const tbody = document.querySelector('#accounts-table tbody');
+            tbody.innerHTML = accounts.map(a => `
+                <tr>
+                    <td>${a.code}</td>
+                    <td>${a.name}</td>
+                    <td>${a.type}</td>
+                    <td>${a.normal_balance}</td>
+                </tr>
+            `).join('');
+        }
+        loadAccounts();
+    </script>
+</body>
+</html>

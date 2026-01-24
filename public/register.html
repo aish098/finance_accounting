@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Accounting Record Book</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header><h1>Accounting Record Book</h1></header>
+    <main>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Join Accounting Record Book today</p>
+            </div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Register</button>
+            </form>
+            <p style="margin-top: 1.5rem; text-align: center;">Already have an account? <a href="login.html" style="color: var(--navy-blue); font-weight: bold;">Login here</a></p>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('register-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            try {
+                await api.post('/auth/register', { username, password });
+                alert('Registration successful! Please login.');
+                window.location.href = 'login.html';
+            } catch (err) {
+                alert('Registration failed: ' + err.message);
+            }
+        };
+    </script>
+</body>
+</html>

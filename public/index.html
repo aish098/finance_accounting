@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting Record Book</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Accounting Record Book</h1>
+    </header>
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="accounts.html">Chart of Accounts</a>
+        <a href="journal.html">Journal Entries</a>
+        <a href="reports.html">Financial Reports</a>
+        <a href="#" onclick="api.logout()">Logout</a>
+    </nav>
+    <main>
+        <div class="card" style="text-align: center; border-top: none; background: linear-gradient(135deg, var(--navy-blue) 0%, #003366 100%); color: white;">
+            <h2 style="color: var(--golden); border-color: var(--golden);">Welcome to Accounting Record Book</h2>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Manage your finances with professional precision and ease.</p>
+        </div>
+
+        <div class="stats-grid" id="quick-stats">
+            <div class="stat-card">
+                <h3>Net Income</h3>
+                <div class="value">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Assets</h3>
+                <div class="value">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Liabilities</h3>
+                <div class="value">Loading...</div>
+            </div>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script>
+        async function loadStats() {
+            try {
+                const pl = await api.get('/reports/profit-loss');
+                const bs = await api.get('/reports/balance-sheet');
+                
+                document.getElementById('quick-stats').innerHTML = `
+                    <div class="stat-card" style="border-bottom-color: #27ae60;">
+                        <h3>Net Income</h3>
+                        <div class="value" style="color: #27ae60;">$${pl.netIncome.toFixed(2)}</div>
+                    </div>
+                    <div class="stat-card" style="border-bottom-color: var(--navy-blue);">
+                        <h3>Total Assets</h3>
+                        <div class="value">$${bs.totalAssets.toFixed(2)}</div>
+                    </div>
+                    <div class="stat-card" style="border-bottom-color: #e74c3c;">
+                        <h3>Total Liabilities</h3>
+                        <div class="value" style="color: #e74c3c;">$${bs.totalLiabilities.toFixed(2)}</div>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('quick-stats').innerHTML = '<p>Error loading stats. Ensure the server is running.</p>';
+            }
+        }
+        loadStats();
+    </script>
+</body>
+</html>
