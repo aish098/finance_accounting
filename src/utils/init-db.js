@@ -19,7 +19,8 @@ async function initDb(retries = 5) {
         process.exit(0);
     } catch (error) {
         if (retries > 0) {
-            console.log(`Database not ready, retrying in 5 seconds... (${retries} retries left)`);
+            console.log(`Database not ready: ${error.message || error.code || error}`);
+            console.log(`Retrying in 5 seconds... (${retries} retries left)`);
             setTimeout(() => initDb(retries - 1), 5000);
         } else {
             console.error('Database initialization failed after multiple retries:', error);
