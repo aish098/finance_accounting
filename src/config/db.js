@@ -30,17 +30,19 @@ const config = {
 
 const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL || process.env.MYSQL_INTERNAL_URL;
 
+// Ensure connection settings are merged if using URL
+let pool;
 if (connectionUrl) {
     console.log('Using connection URL for MySQL');
-} else if (process.env.MYSQLHOST || process.env.DB_HOST || process.env.MYSQL_HOST) {
-    console.log(`Connecting to MySQL at ${config.host}`);
+    pool = mysql.createPool(connectionUrl + (connectionUrl.includes('?') ? '&' : '?') + 'multipleStatements=true');
 } else {
-    console.warn('WARNING: No database environment variables found, falling back to defaults');
+    if (process.env.MYSQLHOST || process.env.DB_HOST || process.env.MYSQL_HOST) {
+        console.log(`Connecting to MySQL at ${config.host}`);
+    } else {
+        console.warn('WARNING: No database environment variables found, falling back to defaults');
+    }
+    pool = mysql.createPool(config);
 }
-
-// Ensure connection settings are merged if using URL
-const poolConfig = connectionUrl ? { uri: connectionUrl, ...config } : config;
-const pool = mysql.createPool(poolConfig);
 
 // Test connection
 pool.getConnection()
