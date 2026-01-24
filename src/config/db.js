@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const pool = mysql.createPool(process.env.MYSQL_URL || {
+const config = process.env.MYSQL_URL || {
     host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
     user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
     password: process.env.MYSQLPASSWORD || process.env.DB_PASS || '',
@@ -11,8 +11,10 @@ const pool = mysql.createPool(process.env.MYSQL_URL || {
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
-    connectTimeout: 10000 // 10 seconds timeout
-});
+    connectTimeout: 10000
+};
+
+const pool = mysql.createPool(config);
 
 // Test connection
 pool.getConnection()
