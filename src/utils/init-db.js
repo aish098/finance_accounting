@@ -2,7 +2,7 @@ const db = require('../config/db');
 const fs = require('fs');
 const path = require('path');
 
-async function initDb() {
+async function initDb(retries = 5) {
     try {
         console.log('Database initialization started...');
         
@@ -18,8 +18,13 @@ async function initDb() {
         console.log('Database schema initialized successfully.');
         process.exit(0);
     } catch (error) {
-        console.error('Database initialization failed:', error);
-        process.exit(1);
+        if (retries > 0) {
+            console.log(`Database not ready, retrying in 5 seconds... (${retries} retries left)`);
+            setTimeout(() => initDb(retries - 1), 5000);
+        } else {
+            console.error('Database initialization failed after multiple retries:', error);
+            process.exit(1);
+        }
     }
 }
 

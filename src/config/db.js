@@ -10,7 +10,24 @@ const pool = mysql.createPool(process.env.MYSQL_URL || {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    multipleStatements: true
+    multipleStatements: true,
+    connectTimeout: 10000 // 10 seconds timeout
 });
+
+// Test connection
+pool.getConnection()
+    .then(conn => {
+        console.log('Successfully connected to MySQL');
+        conn.release();
+    })
+    .catch(err => {
+        console.error('MySQL Connection Error details:', {
+            host: process.env.MYSQLHOST || 'localhost',
+            user: process.env.MYSQLUSER || 'root',
+            database: process.env.MYSQLDATABASE || 'accounting_db',
+            port: process.env.MYSQLPORT || 3306,
+            error: err.message
+        });
+    });
 
 module.exports = pool;
