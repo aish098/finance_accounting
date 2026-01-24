@@ -1,24 +1,29 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-if (!process.env.MYSQLHOST && !process.env.MYSQL_URL && process.env.NODE_ENV === 'production') {
-    console.error('CRITICAL: Railway Database variables are missing! Make sure MySQL is added to this project.');
-}
-
-const config = process.env.MYSQL_URL || {
-    host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
-    user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
-    password: process.env.MYSQLPASSWORD || process.env.DB_PASS || '',
-    database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'accounting_db',
+// Prioritize Railway variables strictly
+const config = {
+    host: process.env.MYSQLHOST || 'localhost',
+    user: process.env.MYSQLUSER || 'root',
+    password: process.env.MYSQLPASSWORD || '',
+    database: process.env.MYSQLDATABASE || 'accounting_db',
     port: process.env.MYSQLPORT || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
-    connectTimeout: 15000
+    connectTimeout: 20000
 };
 
-const pool = mysql.createPool(config);
+if (process.env.MYSQL_URL) {
+    console.log('Using MYSQL_URL for connection');
+} else if (process.env.MYSQLHOST) {
+    console.log(`Connecting to Railway MySQL at ${process.env.MYSQLHOST}`);
+} else {
+    console.warn('WARNING: No Railway DB variables found, falling back to localhost');
+}
+
+const pool = mysql.createPool(process.env.MYSQL_URL || config);
 
 // Test connection
 pool.getConnection()
