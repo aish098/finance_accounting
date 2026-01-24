@@ -68,11 +68,10 @@ async function seed() {
         }
 
         console.log('Seeding completed successfully.');
-        process.exit(0);
     } catch (error) {
         console.error('Seeding failed:', error);
-        process.exit(1);
+        throw error;
     }
 }
 
-seed();
+module.exports = seed;

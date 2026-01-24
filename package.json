@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/utils/init-db.js && node src/utils/seed.js && node src/server.js",
+    "start": "node src/server.js",
     "init-db": "node src/utils/init-db.js",
     "seed": "node src/utils/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -16,17 +16,17 @@ async function initDb(retries = 5) {
         await db.query(schema);
         
         console.log('Database schema initialized successfully.');
-        process.exit(0);
     } catch (error) {
         if (retries > 0) {
             console.log(`Database not ready: ${error.message || error.code || error}`);
             console.log(`Retrying in 5 seconds... (${retries} retries left)`);
-            setTimeout(() => initDb(retries - 1), 5000);
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            return await initDb(retries - 1);
         } else {
             console.error('Database initialization failed after multiple retries:', error);
-            process.exit(1);
+            throw error;
         }
     }
 }
 
-initDb();
+module.exports = initDb;
