@@ -1,6 +1,18 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+// Debug environment variables (anonymized)
+console.log('--- Environment Check ---');
+const relevantKeys = ['MYSQLHOST', 'MYSQLUSER', 'MYSQLDATABASE', 'MYSQLPORT', 'MYSQL_URL', 'DATABASE_URL', 'MYSQL_PRIVATE_URL', 'DB_HOST', 'DB_USER', 'DB_NAME', 'RAILWAY_ENVIRONMENT'];
+relevantKeys.forEach(key => {
+    if (process.env[key]) {
+        let value = process.env[key];
+        if (key.includes('PASS') || key.includes('URL')) value = '********';
+        console.log(`${key}: ${value}`);
+    }
+});
+console.log('-------------------------');
+
 // Prioritize Railway variables then common alternatives
 const config = {
     host: process.env.MYSQLHOST || process.env.DB_HOST || process.env.MYSQL_HOST || 'localhost',
@@ -12,7 +24,8 @@ const config = {
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
-    connectTimeout: 20000
+    connectTimeout: 20000,
+    ssl: (process.env.MYSQL_URL || process.env.DATABASE_URL || '').includes('sslmode=require') ? { rejectUnauthorized: false } : undefined
 };
 
 const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL || process.env.MYSQL_INTERNAL_URL;
