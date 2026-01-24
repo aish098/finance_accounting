@@ -1,6 +1,10 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+if (!process.env.MYSQLHOST && !process.env.MYSQL_URL && process.env.NODE_ENV === 'production') {
+    console.error('CRITICAL: Railway Database variables are missing! Make sure MySQL is added to this project.');
+}
+
 const config = process.env.MYSQL_URL || {
     host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
     user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
@@ -11,7 +15,7 @@ const config = process.env.MYSQL_URL || {
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
-    connectTimeout: 10000
+    connectTimeout: 15000
 };
 
 const pool = mysql.createPool(config);
