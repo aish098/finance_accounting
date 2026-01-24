@@ -38,7 +38,9 @@ if (connectionUrl) {
     console.warn('WARNING: No database environment variables found, falling back to defaults');
 }
 
-const pool = mysql.createPool(connectionUrl || config);
+// Ensure connection settings are merged if using URL
+const poolConfig = connectionUrl ? { uri: connectionUrl, ...config } : config;
+const pool = mysql.createPool(poolConfig);
 
 // Test connection
 pool.getConnection()
