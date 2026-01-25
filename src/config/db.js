@@ -1,12 +1,11 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config();
 
 const parsePort = (val) => {
     const port = parseInt(val, 10);
     return isNaN(port) ? 3306 : port;
 };
 
-// Clean helper to remove quotes if they were accidentally added
+// Clean helper to remove quotes if they were accidentally added in Railway UI
 const cleanEnv = (val) => {
     if (!val) return val;
     return val.toString().replace(/^["']|["']$/g, '').trim();
@@ -25,11 +24,7 @@ const config = {
     connectTimeout: 20000
 };
 
-// Handle SSL for external connections
-if (config.host && !config.host.includes('localhost') && !config.host.includes('127.0.0.1') && !config.host.includes('.internal')) {
-    config.ssl = { rejectUnauthorized: false };
-}
-
+// Log only host and user for security
 console.log(`Attempting to connect to MySQL at ${config.host}:${config.port} as ${config.user}`);
 
 const pool = mysql.createPool(config);

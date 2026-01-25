@@ -3,33 +3,20 @@ const db = require('./config/db');
 const port = process.env.PORT || 3000;
 
 async function startServer() {
-    // 1. Simple Connection Test
-    db.getConnection()
-        .then(connection => {
-            console.log('✅ MySQL connected successfully');
-            connection.release();
-        })
-        .catch(err => {
-            console.error('❌ MySQL connection failed:', err.message);
-        });
-
-    // 2. Temporarily disabled init-db and seed to isolate connection
-    /*
-    const initDb = require('./utils/init-db');
-    const seed = require('./utils/seed');
+    // 1. Clear Connection Test
     try {
-        await initDb();
-        console.log('✅ Database initialized');
-        await seed();
-        console.log('✅ Database seeded');
+        const connection = await db.getConnection();
+        console.log('✅ MySQL connected successfully');
+        connection.release();
     } catch (err) {
-        console.error('⚠️ DB startup tasks failed:', err.message);
+        console.error('❌ MySQL Connection Failed:', err.message);
+        console.error('Check your Railway environment variables (MYSQLHOST, MYSQLUSER, etc.)');
     }
-    */
 
-    // 3. Start listening
+    // 2. Start Server
     app.listen(port, '0.0.0.0', () => {
         console.log(`🚀 Server is running on port ${port}`);
+        console.log(`Health check: http://0.0.0.0:${port}/health`);
     });
 }
 
