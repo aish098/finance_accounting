@@ -11,20 +11,21 @@ const parsePort = (val) => {
 const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_SERVICE_ID;
 const defaultDb = isRailway ? 'railway' : 'accounting_db';
 
-    const host = process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost';
-    
-    // Safety check for Railway
-    if (isRailway && (host === 'localhost' || host === '127.0.0.1')) {
-        console.error('WARNING: Running on Railway but MYSQLHOST is set to "localhost". This will likely fail.');
-        console.error('Please update your Railway Variables to use ${{MySQL.MYSQLHOST}} instead of "localhost".');
-    }
+let host = process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost';
 
-    const config = {
-        host: host,
-    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || process.env.DB_USERNAME || 'root',
-    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || '',
-    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || defaultDb,
-    port: parsePort(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || process.env.MYSQL_INTERNAL_PORT) || 3306,
+// Safety check for Railway - force internal host if localhost is detected
+if (isRailway && (host === 'localhost' || host === '127.0.0.1')) {
+    const railwayInternalHost = process.env.MYSQLHOST_INTERNAL || process.env.MYSQL_INTERNAL_HOST || 'mysql.railway.internal';
+    console.log(`Detected Railway environment with localhost. Redirecting to internal host: ${railwayInternalHost}`);
+    host = railwayInternalHost;
+}
+
+const config = {
+    host: host,
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || '',
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || defaultDb,
+    port: parsePort(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -68,7 +69,7 @@ if (connectionUrl) {
     });
 } else {
     // Check if we are in Railway but missing variables
-    if (process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_SERVICE_ID) {
+    if (isRailway) {
         if (!process.env.MYSQLHOST && !process.env.MYSQL_HOST) {
             console.error('CRITICAL: Running in Railway but database environment variables are missing.');
             console.log('Available Env Keys (to help debug):', Object.keys(process.env).filter(k => 
