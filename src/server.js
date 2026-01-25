@@ -5,6 +5,16 @@ const port = process.env.PORT || 3000;
 
 async function startServer() {
     try {
+        // Simple & Safe MySQL connection test
+        const db = require('./config/db');
+        try {
+            const connection = await db.getConnection();
+            console.log('✅ MySQL connected successfully');
+            connection.release();
+        } catch (err) {
+            console.error('❌ MySQL connection failed:', err.message);
+        }
+
         // Initialize and seed database before starting server
         await initDb();
         await seed();
