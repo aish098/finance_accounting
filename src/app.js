@@ -9,6 +9,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Health check endpoint
+const db = require('./config/db');
+app.get('/health', async (req, res) => {
+    try {
+        await db.query('SELECT 1');
+        res.json({ status: 'OK', database: 'connected' });
+    } catch (error) {
+        res.status(503).json({ status: 'Error', database: 'disconnected', error: error.message });
+    }
+});
+
 // Routes will be imported here
 const accountRoutes = require('./routes/accountRoutes');
 const journalRoutes = require('./routes/journalRoutes');

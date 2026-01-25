@@ -2,7 +2,7 @@
   "name": "financial_accounting_software",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "init-db": "node src/utils/init-db.js",

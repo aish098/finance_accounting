@@ -1,31 +1,70 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+// Helper to parse integer ports
+const parsePort = (val) => {
+    const port = parseInt(val, 10);
+    return isNaN(port) ? undefined : port;
+};
+
 // Prioritize Railway variables then common alternatives
 const config = {
-    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || 'localhost',
-    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
+    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost',
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || process.env.DB_USERNAME || 'root',
     password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || '',
     database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || 'accounting_db',
-    port: process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || 3306,
+    port: parsePort(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || process.env.MYSQL_INTERNAL_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
     connectTimeout: 20000,
-    ssl: (process.env.MYSQL_URL || process.env.DATABASE_URL || '').includes('sslmode=require') ? { rejectUnauthorized: false } : undefined
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 10000
 };
 
-const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL || process.env.MYSQL_INTERNAL_URL;
+// Handle SSL for Railway/External connections
+const isExternal = (host) => host && host !== 'localhost' && host !== '127.0.0.1' && !host.includes('internal');
+
+if (process.env.MYSQL_URL || process.env.DATABASE_URL || isExternal(config.host)) {
+    config.ssl = {
+        rejectUnauthorized: false
+    };
+}
+
+const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL || process.env.MYSQL_INTERNAL_URL || process.env.DATABASE_PRIVATE_URL;
 
 let pool;
 if (connectionUrl) {
     console.log('Using connection URL for MySQL');
-    pool = mysql.createPool(connectionUrl + (connectionUrl.includes('?') ? '&' : '?') + 'multipleStatements=true');
+    
+    // Ensure URL has multipleStatements=true if it doesn't already
+    let finalUrl = connectionUrl;
+    if (!finalUrl.includes('multipleStatements=true')) {
+        finalUrl += (finalUrl.includes('?') ? '&' : '?') + 'multipleStatements=true';
+    }
+    
+    const useSSL = !finalUrl.includes('localhost') && !finalUrl.includes('127.0.0.1');
+    
+    pool = mysql.createPool({
+        uri: finalUrl,
+        ssl: useSSL ? { rejectUnauthorized: false } : undefined,
+        multipleStatements: true,
+        waitForConnections: true,
+        connectionLimit: 10,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 10000
+    });
 } else {
     // Check if we are in Railway but missing variables
-    if (process.env.RAILWAY_ENVIRONMENT && !process.env.MYSQLHOST) {
-        console.error('CRITICAL: Running in Railway but MYSQLHOST is missing. Check your Service Variables.');
+    if (process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_SERVICE_ID) {
+        if (!process.env.MYSQLHOST && !process.env.MYSQL_HOST) {
+            console.error('CRITICAL: Running in Railway but database environment variables are missing.');
+            console.log('Available Env Keys (to help debug):', Object.keys(process.env).filter(k => 
+                k.includes('MYSQL') || k.includes('DB') || k.includes('DATABASE') || k.includes('HOST')
+            ).join(', '));
+            console.log('Ensure you have linked your MySQL service to this app in Railway Settings -> Variables -> New Variable -> Reference Variable.');
+        }
     }
     console.log(`Connecting to MySQL at ${config.host}:${config.port}`);
     pool = mysql.createPool(config);
