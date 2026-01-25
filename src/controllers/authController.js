@@ -10,7 +10,8 @@ class AuthController {
             if (!username || !password) {
                 return res.status(400).json({ 
                     success: false, 
-                    message: 'Username and password are required' 
+                    message: 'Username and password are required',
+                    payload: {} 
                 });
             }
 
@@ -32,7 +33,8 @@ class AuthController {
             console.error('Registration error:', error);
             res.status(500).json({ 
                 success: false, 
-                message: error.message 
+                message: error.message,
+                payload: {} // Ensure payload exists to avoid client-side crashes
             });
         }
     }
@@ -46,7 +48,8 @@ class AuthController {
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ 
                     success: false, 
-                    message: 'Invalid username or password' 
+                    message: 'Invalid username or password',
+                    payload: {}
                 });
             }
 
@@ -62,7 +65,6 @@ class AuthController {
                     token, 
                     user: { id: user.id, username: user.username, role: user.role } 
                 },
-                // Keep the original format as well for compatibility
                 token,
                 user: { id: user.id, username: user.username, role: user.role }
             });
@@ -70,7 +72,8 @@ class AuthController {
             console.error('Login error:', error);
             res.status(500).json({ 
                 success: false, 
-                message: error.message 
+                message: error.message,
+                payload: {}
             });
         }
     }
