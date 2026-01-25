@@ -8,11 +8,14 @@ const parsePort = (val) => {
 };
 
 // Prioritize Railway variables then common alternatives
+const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_SERVICE_ID;
+const defaultDb = isRailway ? 'railway' : 'accounting_db';
+
 const config = {
     host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost',
     user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || process.env.DB_USERNAME || 'root',
     password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || '',
-    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || 'accounting_db',
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || defaultDb,
     port: parsePort(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || process.env.MYSQL_INTERNAL_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 10,
