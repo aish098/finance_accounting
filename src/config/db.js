@@ -11,8 +11,16 @@ const parsePort = (val) => {
 const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_SERVICE_ID;
 const defaultDb = isRailway ? 'railway' : 'accounting_db';
 
-const config = {
-    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost',
+    const host = process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || process.env.DB_HOSTNAME || process.env.MYSQL_INTERNAL_HOST || 'localhost';
+    
+    // Safety check for Railway
+    if (isRailway && (host === 'localhost' || host === '127.0.0.1')) {
+        console.error('WARNING: Running on Railway but MYSQLHOST is set to "localhost". This will likely fail.');
+        console.error('Please update your Railway Variables to use ${{MySQL.MYSQLHOST}} instead of "localhost".');
+    }
+
+    const config = {
+        host: host,
     user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || process.env.DB_USERNAME || 'root',
     password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || process.env.DB_PASS || '',
     database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || process.env.DB_DATABASE || defaultDb,
