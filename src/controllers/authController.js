@@ -55,7 +55,7 @@ class AuthController {
 
             const token = jwt.sign(
                 { id: user.id, username: user.username, role: user.role },
-                process.env.JWT_SECRET || 'secret',
+                process.env.JWT_SECRET || 'finance_accounting_secret_key_123',
                 { expiresIn: '24h' }
             );
 
