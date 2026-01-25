@@ -1,22 +1,27 @@
 const app = require('./app');
 const db = require('./config/db');
-const port = process.env.PORT || 3000;
+
+// Ensure we don't use the MySQL port (3306) for the web server
+let port = process.env.PORT || 3000;
+if (port === '3306' || port === 3306) {
+    console.log('⚠️ PORT was set to 3306 (MySQL port). Defaulting to 3000 for the web server.');
+    port = 3000;
+}
 
 async function startServer() {
-    // 1. Clear Connection Test
+    // 1. Database Connection Test
     try {
         const connection = await db.getConnection();
         console.log('✅ MySQL connected successfully');
         connection.release();
     } catch (err) {
         console.error('❌ MySQL Connection Failed:', err.message);
-        console.error('Check your Railway environment variables (MYSQLHOST, MYSQLUSER, etc.)');
+        console.error('Check Railway Variables: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT');
     }
 
-    // 2. Start Server
+    // 2. Start Express Server
     app.listen(port, '0.0.0.0', () => {
         console.log(`🚀 Server is running on port ${port}`);
-        console.log(`Health check: http://0.0.0.0:${port}/health`);
     });
 }
 
