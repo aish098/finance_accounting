@@ -7,7 +7,6 @@
     "startCommand": "npm start",
     "restartPolicyType": "ON_FAILURE",
     "healthcheckPath": "/health",
-    "healthcheckTimeout": 300,
-    "serviceName": "financial-accounting-software"
+    "healthcheckTimeout": 300
   }
 }
