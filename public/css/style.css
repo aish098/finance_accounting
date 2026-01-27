@@ -367,4 +367,63 @@ body {
     font-weight: 700;
 }
 
+/* Reports Section */
+.report-nav .btn {
+    border-radius: 50px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.report-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    font-weight: 800;
+    color: var(--navy-dark);
+    margin-bottom: 0.5rem;
+}
+
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}
+
+/* Specific Report Styles */
+#pl-content, #bs-content {
+    background-color: #fff;
+}
+
+.total-section {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-blue) 100%);
+    color: var(--white) !important;
+    border-radius: 12px;
+}
+
+.total-section h3 {
+    margin: 0;
+}
+
+/* Report Summary Cards */
+.report-summary-card {
+    border-top: 4px solid var(--golden);
+    transition: all 0.3s ease;
+}
+
+.report-summary-card:hover {
+    transform: translateY(-5px);
+}
+
 
