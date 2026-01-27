@@ -134,6 +134,19 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-red {
+    background-color: #dc3545;
+    border: 2px solid #dc3545;
+    color: var(--white);
+}
+
+.btn-red:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
 .btn-outline-navy {
     border: 2px solid var(--navy-blue);
     color: var(--navy-blue);
