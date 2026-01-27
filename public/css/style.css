@@ -90,6 +90,12 @@ body {
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+#current-date {
+    background-color: var(--golden) !important;
+    color: var(--navy-dark) !important;
+    border: none;
+}
+
 /* Buttons */
 .btn {
     padding: 0.6rem 1.5rem;
