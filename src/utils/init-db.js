@@ -2,15 +2,15 @@ const db = require('../config/db');
 const fs = require('fs');
 const path = require('path');
 
-async function initDb(retries = 10) {
+async function initDb() {
     try {
-        console.log('Database initialization started...');
+        console.log('🚀 Starting Database Initialization...');
         
         const schemaPath = path.join(__dirname, '../../schema.sql');
-        let schema = fs.readFileSync(schemaPath, 'utf8');
+        const schema = fs.readFileSync(schemaPath, 'utf8');
         
-        // Remove comments and handle multiple statements properly
-        // This cleaning makes the schema more portable across different MySQL environments (like Railway)
+        // Split by semicolon to execute statements one by one if needed, 
+        // but with multipleStatements: true, we can try executing the cleaned block.
         const cleanedSchema = schema
             .split('\n')
             .filter(line => !line.trim().startsWith('--') && line.trim() !== '')
@@ -20,25 +20,13 @@ async function initDb(retries = 10) {
             .trim();
         
         if (cleanedSchema) {
-            console.log('Executing database schema...');
+            console.log('📜 Executing SQL Schema...');
             await db.query(cleanedSchema);
-            console.log('Database schema initialized successfully.');
-        } else {
-            console.log('Schema is empty after cleaning, skipping execution.');
+            console.log('✅ Database tables created/verified successfully.');
         }
-        
     } catch (error) {
-        if (retries > 0) {
-            console.log(`Database not ready or error occurred: ${error.message || error.code || error}`);
-            console.log(`Retrying in 5 seconds... (${retries} retries left)`);
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            return await initDb(retries - 1);
-        } else {
-            console.error('Database initialization failed after multiple retries:', error);
-            // Don't throw here to allow the server to start if the DB is already initialized
-            // and just connectivity was the issue during init
-            console.log('Continuing server startup despite init-db failure...');
-        }
+        console.error('❌ Database Init Error:', error.message);
+        throw error; // Re-throw so server.js knows it failed
     }
 }
 
