@@ -35,6 +35,14 @@ body {
     letter-spacing: 0.5px;
     color: var(--white) !important;
     font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    height: 40px;
+    width: auto;
+    margin-right: 12px;
 }
 
 .nav-link {
