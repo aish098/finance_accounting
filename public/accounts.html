@@ -4,46 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chart of Accounts - Accounting Record Book</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --navy-blue: #001f3f;
+            --golden: #FFD700;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .navbar { background-color: var(--navy-blue); border-bottom: 3px solid var(--golden); }
+        .navbar-brand, .nav-link { color: white !important; }
+        .nav-link:hover { color: var(--golden) !important; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .table thead th { background-color: #f1f3f5; color: var(--navy-blue); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
+    </style>
 </head>
 <body>
-    <header><h1>Accounting Record Book</h1></header>
-    <nav>
-        <a href="index.html">Dashboard</a>
-        <a href="accounts.html">Chart of Accounts</a>
-        <a href="journal.html">Journal Entries</a>
-        <a href="reports.html">Financial Reports</a>
-        <a href="#" onclick="api.logout()">Logout</a>
+    <nav class="navbar navbar-expand-lg sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ACCOUNTING BOOK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="accounts.html">Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
-    <main>
-        <div class="card">
-            <h2>Chart of Accounts</h2>
-            <table id="accounts-table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Normal Balance</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+
+    <main class="container">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0" style="color: var(--navy-blue);">Chart of Accounts</h2>
+            </div>
+            <div class="table-responsive">
+                <table id="accounts-table" class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Normal Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Accounts will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script>
         async function loadAccounts() {
-            const accounts = await api.get('/accounts');
-            const tbody = document.querySelector('#accounts-table tbody');
-            tbody.innerHTML = accounts.map(a => `
-                <tr>
-                    <td>${a.code}</td>
-                    <td>${a.name}</td>
-                    <td>${a.type}</td>
-                    <td>${a.normal_balance}</td>
-                </tr>
-            `).join('');
+            try {
+                const accounts = await api.get('/accounts');
+                const tbody = document.querySelector('#accounts-table tbody');
+                tbody.innerHTML = accounts.map(a => `
+                    <tr>
+                        <td><span class="badge bg-light text-dark font-monospace">${a.code}</span></td>
+                        <td class="fw-medium">${a.name}</td>
+                        <td><span class="badge rounded-pill bg-info text-dark">${a.type}</span></td>
+                        <td><span class="badge bg-secondary opacity-75">${a.normal_balance}</span></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load accounts:', error);
+            }
         }
         loadAccounts();
     </script>

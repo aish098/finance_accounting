@@ -4,174 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Reports - Accounting Record Book</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        :root {
+            --navy-blue: #001f3f;
+            --golden: #FFD700;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .navbar { background-color: var(--navy-blue); border-bottom: 3px solid var(--golden); }
+        .navbar-brand, .nav-link { color: white !important; }
+        .nav-link:hover { color: var(--golden) !important; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .report-section { display: none; }
-        .active { display: block; }
-        .report-nav { margin-bottom: 2rem; }
-        .report-nav button { margin-right: 1rem; }
+        .report-section.active { display: block; animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .report-nav .btn { border-radius: 20px; padding: 0.5rem 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .table thead th { background-color: #f1f3f5; color: var(--navy-blue); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+        .total-row { background-color: #f8f9fa; font-weight: 700; border-top: 2px solid var(--navy-blue); }
+        .section-header { color: var(--navy-blue); border-bottom: 2px solid var(--golden); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
     </style>
 </head>
 <body>
-    <header><h1>Accounting Record Book</h1></header>
-    <nav>
-        <a href="index.html">Dashboard</a>
-        <a href="accounts.html">Chart of Accounts</a>
-        <a href="journal.html">Journal Entries</a>
-        <a href="reports.html">Financial Reports</a>
-        <a href="#" onclick="api.logout()">Logout</a>
+    <nav class="navbar navbar-expand-lg sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ACCOUNTING BOOK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="reports.html">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
-    <main>
-        <div class="report-nav">
-            <button class="btn btn-primary" onclick="showReport('general-ledger')">General Ledger</button>
-            <button class="btn btn-primary" onclick="showReport('trial-balance')">Trial Balance</button>
-            <button class="btn btn-primary" onclick="showReport('profit-loss')">Profit & Loss</button>
-            <button class="btn btn-primary" onclick="showReport('balance-sheet')">Balance Sheet</button>
+
+    <main class="container mb-5">
+        <div class="report-nav d-flex flex-wrap gap-2 justify-content-center mb-4">
+            <button class="btn btn-outline-primary" id="btn-general-ledger" onclick="showReport('general-ledger')">General Ledger</button>
+            <button class="btn btn-outline-primary" id="btn-trial-balance" onclick="showReport('trial-balance')">Trial Balance</button>
+            <button class="btn btn-outline-primary" id="btn-profit-loss" onclick="showReport('profit-loss')">Profit & Loss</button>
+            <button class="btn btn-outline-primary" id="btn-balance-sheet" onclick="showReport('balance-sheet')">Balance Sheet</button>
         </div>
 
         <!-- General Ledger -->
-        <div id="general-ledger" class="report-section active card">
-            <h2>General Ledger</h2>
-            <div style="margin-bottom: 1rem;">
-                <label>Select Account:</label>
-                <select id="ledger-account-select" onchange="loadLedger()" class="form-control" style="display: inline-block; width: auto; margin-left: 1rem;">
-                    <option value="">-- Choose Account --</option>
-                </select>
+        <div id="general-ledger" class="report-section card p-4">
+            <h2 class="section-header">General Ledger</h2>
+            <div class="row mb-4 align-items-end g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small text-uppercase">Account Selection</label>
+                    <select id="ledger-account-select" onchange="loadLedger()" class="form-select shadow-sm">
+                        <option value="">-- Choose Account --</option>
+                    </select>
+                </div>
             </div>
-            <table id="ledger-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Reference</th>
-                        <th>Description</th>
-                        <th class="text-right">Debit</th>
-                        <th class="text-right">Credit</th>
-                        <th class="text-right">Balance</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="ledger-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Ref</th>
+                            <th>Description</th>
+                            <th class="text-end">Debit</th>
+                            <th class="text-end">Credit</th>
+                            <th class="text-end">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Trial Balance -->
-        <div id="trial-balance" class="report-section card">
-            <h2>Trial Balance</h2>
-            <table id="tb-table">
-                <thead>
-                    <tr>
-                        <th>Account</th>
-                        <th class="text-right">Debit</th>
-                        <th class="text-right">Credit</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr class="total-row">
-                        <td>Totals</td>
-                        <td class="text-right" id="tb-total-debit"></td>
-                        <td class="text-right" id="tb-total-credit"></td>
-                    </tr>
-                </tfoot>
-            </table>
+        <div id="trial-balance" class="report-section card p-4">
+            <h2 class="section-header">Trial Balance</h2>
+            <div class="table-responsive">
+                <table id="tb-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th class="text-end">Debit</th>
+                            <th class="text-end">Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr class="total-row fw-bold">
+                            <td>TOTALS</td>
+                            <td class="text-end" id="tb-total-debit"></td>
+                            <td class="text-end" id="tb-total-credit"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
 
         <!-- Profit & Loss -->
-        <div id="profit-loss" class="report-section card">
-            <h2>Profit & Loss Statement</h2>
+        <div id="profit-loss" class="report-section card p-4">
+            <h2 class="section-header">Profit & Loss Statement</h2>
             <div id="pl-content">
-                <h3>Revenue</h3>
-                <table id="pl-revenue-table"><tbody></tbody></table>
-                <h3>Expenses</h3>
-                <table id="pl-expense-table"><tbody></tbody></table>
-                <hr>
-                <div class="total-row" style="padding: 1rem; font-size: 1.2rem;">
-                    Net Income: <span id="pl-net-income" class="text-right" style="float: right;"></span>
+                <h5 class="fw-bold text-success mb-3">Operating Revenue</h5>
+                <table id="pl-revenue-table" class="table table-sm mb-4"><tbody></tbody></table>
+                
+                <h5 class="fw-bold text-danger mb-3">Operating Expenses</h5>
+                <table id="pl-expense-table" class="table table-sm mb-4"><tbody></tbody></table>
+                
+                <div class="card bg-light border-0 p-3 mt-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 fw-bold">NET INCOME</h4>
+                        <h4 class="mb-0 fw-bold" id="pl-net-income"></h4>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Balance Sheet -->
-        <div id="balance-sheet" class="report-section card">
-            <h2>Balance Sheet</h2>
-            <div id="bs-content">
-                <h3>Assets</h3>
-                <table id="bs-assets-table"><tbody></tbody></table>
-                <div class="total-row">Total Assets: <span id="bs-total-assets" style="float: right;"></span></div>
-                
-                <h3>Liabilities</h3>
-                <table id="bs-liabilities-table"><tbody></tbody></table>
-                <div class="total-row">Total Liabilities: <span id="bs-total-liabilities" style="float: right;"></span></div>
-
-                <h3>Equity</h3>
-                <table id="bs-equity-table"><tbody></tbody></table>
-                <div class="total-row">Total Equity: <span id="bs-total-equity" style="float: right;"></span></div>
-                
-                <hr>
-                <div class="total-row" style="padding: 1rem; font-size: 1.2rem;">
-                    Total Liabilities & Equity: <span id="bs-total-le" style="float: right;"></span>
+        <div id="balance-sheet" class="report-section card p-4">
+            <h2 class="section-header">Balance Sheet</h2>
+            <div id="bs-content" class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="p-3 bg-light rounded shadow-sm h-100">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2">ASSETS</h5>
+                        <table id="bs-assets-table" class="table table-sm table-borderless"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
+                            <span>Total Assets</span>
+                            <span id="bs-total-assets"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="p-3 bg-light rounded shadow-sm h-100 mb-4">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2">LIABILITIES</h5>
+                        <table id="bs-liabilities-table" class="table table-sm table-borderless"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
+                            <span>Total Liabilities</span>
+                            <span id="bs-total-liabilities"></span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-light rounded shadow-sm">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2">EQUITY</h5>
+                        <table id="bs-equity-table" class="table table-sm table-borderless"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
+                            <span>Total Equity</span>
+                            <span id="bs-total-equity"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card bg-navy text-white p-3" style="background-color: var(--navy-blue);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0 fw-bold" style="color: var(--golden);">TOTAL LIABILITIES & EQUITY</h4>
+                            <h4 class="mb-0 fw-bold" id="bs-total-le" style="color: var(--golden);"></h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script>
         function showReport(id) {
             document.querySelectorAll('.report-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.report-nav .btn').forEach(b => b.classList.replace('btn-primary', 'btn-outline-primary'));
+            
             document.getElementById(id).classList.add('active');
+            document.getElementById('btn-' + id).classList.replace('btn-outline-primary', 'btn-primary');
             loadReport(id);
         }
 
         async function loadReport(type) {
-            if (type === 'trial-balance') {
-                const data = await api.get('/reports/trial-balance');
-                const tbody = document.querySelector('#tb-table tbody');
-                tbody.innerHTML = data.rows.filter(r => r.debit > 0 || r.credit > 0).map(r => `
-                    <tr>
-                        <td>${r.account_code} - ${r.account_name}</td>
-                        <td class="text-right">${r.debit > 0 ? r.debit.toFixed(2) : ''}</td>
-                        <td class="text-right">${r.credit > 0 ? r.credit.toFixed(2) : ''}</td>
-                    </tr>
-                `).join('');
-                document.getElementById('tb-total-debit').innerText = data.totals.debit.toFixed(2);
-                document.getElementById('tb-total-credit').innerText = data.totals.credit.toFixed(2);
-            } else if (type === 'general-ledger') {
-                const accounts = await api.get('/accounts');
-                const select = document.getElementById('ledger-account-select');
-                const currentValue = select.value;
-                select.innerHTML = '<option value="">-- Choose Account --</option>' + 
-                    accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
-                select.value = currentValue;
-            } else if (type === 'profit-loss') {
-                const data = await api.get('/reports/profit-loss');
-                document.querySelector('#pl-revenue-table tbody').innerHTML = data.revenue.map(r => `
-                    <tr><td>${r.name}</td><td class="text-right">${r.amount.toFixed(2)}</td></tr>
-                `).join('') + `<tr><td><strong>Total Revenue</strong></td><td class="text-right"><strong>${data.totalRevenue.toFixed(2)}</strong></td></tr>`;
-                
-                document.querySelector('#pl-expense-table tbody').innerHTML = data.expenses.map(r => `
-                    <tr><td>${r.name}</td><td class="text-right">${r.amount.toFixed(2)}</td></tr>
-                `).join('') + `<tr><td><strong>Total Expenses</strong></td><td class="text-right"><strong>${data.totalExpenses.toFixed(2)}</strong></td></tr>`;
-                
-                document.getElementById('pl-net-income').innerText = '$' + data.netIncome.toFixed(2);
-            } else if (type === 'balance-sheet') {
-                const data = await api.get('/reports/balance-sheet');
-                document.querySelector('#bs-assets-table tbody').innerHTML = data.assets.map(r => `
-                    <tr><td>${r.name}</td><td class="text-right">${r.amount.toFixed(2)}</td></tr>
-                `).join('');
-                document.getElementById('bs-total-assets').innerText = data.totalAssets.toFixed(2);
+            try {
+                if (type === 'trial-balance') {
+                    const data = await api.get('/reports/trial-balance');
+                    const tbody = document.querySelector('#tb-table tbody');
+                    tbody.innerHTML = data.rows.filter(r => r.debit > 0 || r.credit > 0).map(r => `
+                        <tr>
+                            <td class="fw-medium">${r.account_code} - ${r.account_name}</td>
+                            <td class="text-end">${r.debit > 0 ? r.debit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
+                            <td class="text-end">${r.credit > 0 ? r.credit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
+                        </tr>
+                    `).join('');
+                    document.getElementById('tb-total-debit').innerText = data.totals.debit.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    document.getElementById('tb-total-credit').innerText = data.totals.credit.toLocaleString(undefined, {minimumFractionDigits: 2});
+                } else if (type === 'general-ledger') {
+                    const accounts = await api.get('/accounts');
+                    const select = document.getElementById('ledger-account-select');
+                    const currentValue = select.value;
+                    select.innerHTML = '<option value="">-- Choose Account --</option>' + 
+                        accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
+                    select.value = currentValue;
+                } else if (type === 'profit-loss') {
+                    const data = await api.get('/reports/profit-loss');
+                    document.querySelector('#pl-revenue-table tbody').innerHTML = data.revenue.map(r => `
+                        <tr><td class="ps-3">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('') + `<tr><td class="fw-bold">Total Revenue</td><td class="text-end fw-bold border-top border-dark">${data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
+                    
+                    document.querySelector('#pl-expense-table tbody').innerHTML = data.expenses.map(r => `
+                        <tr><td class="ps-3">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('') + `<tr><td class="fw-bold">Total Expenses</td><td class="text-end fw-bold border-top border-dark">${data.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
+                    
+                    document.getElementById('pl-net-income').innerText = '$' + data.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    document.getElementById('pl-net-income').className = data.netIncome >= 0 ? 'mb-0 fw-bold text-success' : 'mb-0 fw-bold text-danger';
+                } else if (type === 'balance-sheet') {
+                    const data = await api.get('/reports/balance-sheet');
+                    document.querySelector('#bs-assets-table tbody').innerHTML = data.assets.map(r => `
+                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('');
+                    document.getElementById('bs-total-assets').innerText = data.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                document.querySelector('#bs-liabilities-table tbody').innerHTML = data.liabilities.map(r => `
-                    <tr><td>${r.name}</td><td class="text-right">${r.amount.toFixed(2)}</td></tr>
-                `).join('');
-                document.getElementById('bs-total-liabilities').innerText = data.totalLiabilities.toFixed(2);
+                    document.querySelector('#bs-liabilities-table tbody').innerHTML = data.liabilities.map(r => `
+                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('');
+                    document.getElementById('bs-total-liabilities').innerText = data.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                document.querySelector('#bs-equity-table tbody').innerHTML = data.equity.map(r => `
-                    <tr><td>${r.name}</td><td class="text-right">${r.amount.toFixed(2)}</td></tr>
-                `).join('');
-                document.getElementById('bs-total-equity').innerText = data.totalEquity.toFixed(2);
-                
-                document.getElementById('bs-total-le').innerText = data.totalLiabilitiesAndEquity.toFixed(2);
-            }
+                    document.querySelector('#bs-equity-table tbody').innerHTML = data.equity.map(r => `
+                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('');
+                    document.getElementById('bs-total-equity').innerText = data.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    
+                    document.getElementById('bs-total-le').innerText = '$' + data.totalLiabilitiesAndEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
+                }
+            } catch (err) { console.error(err); }
         }
 
         async function loadLedger() {
@@ -181,42 +245,39 @@
                 return;
             }
 
-            const entries = await api.get(`/reports/ledger?accountId=${accountId}`);
-            
-            // Need normal balance to calculate running balance
-            const account = await api.get(`/accounts/${accountId}`);
-            const isDebitNormal = account.normal_balance === 'Debit';
-            
-            let runningBalance = 0;
-            const tbody = document.querySelector('#ledger-table tbody');
-            tbody.innerHTML = entries.map(e => {
-                const debit = parseFloat(e.debit || 0);
-                const credit = parseFloat(e.credit || 0);
+            try {
+                const entries = await api.get(`/reports/ledger?accountId=${accountId}`);
+                const account = await api.get(`/accounts/${accountId}`);
+                const isDebitNormal = account.normal_balance === 'Debit';
                 
-                if (isDebitNormal) {
-                    runningBalance += (debit - credit);
-                } else {
-                    runningBalance += (credit - debit);
-                }
+                let runningBalance = 0;
+                const tbody = document.querySelector('#ledger-table tbody');
+                tbody.innerHTML = entries.map(e => {
+                    const debit = parseFloat(e.debit || 0);
+                    const credit = parseFloat(e.credit || 0);
+                    
+                    if (isDebitNormal) { runningBalance += (debit - credit); } 
+                    else { runningBalance += (credit - debit); }
 
-                return `
-                    <tr>
-                        <td>${new Date(e.entry_date).toLocaleDateString()}</td>
-                        <td>${e.reference || ''}</td>
-                        <td>${e.description || ''}</td>
-                        <td class="text-right">${debit > 0 ? debit.toFixed(2) : ''}</td>
-                        <td class="text-right">${credit > 0 ? credit.toFixed(2) : ''}</td>
-                        <td class="text-right">${runningBalance.toFixed(2)}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            if (entries.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">No entries found for this account.</td></tr>';
-            }
+                    return `
+                        <tr>
+                            <td class="small">${new Date(e.entry_date).toLocaleDateString()}</td>
+                            <td class="small fw-bold">${e.reference || '-'}</td>
+                            <td class="small">${e.description || '-'}</td>
+                            <td class="text-end text-success">${debit > 0 ? debit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
+                            <td class="text-end text-danger">${credit > 0 ? credit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
+                            <td class="text-end fw-bold">${runningBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted small italic">No transactions found for this period.</td></tr>';
+                }
+            } catch (err) { console.error(err); }
         }
 
-        loadReport('general-ledger');
+        showReport('general-ledger');
     </script>
 </body>
 </html>

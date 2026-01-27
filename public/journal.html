@@ -4,71 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal Entry - Accounting Record Book</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --navy-blue: #001f3f;
+            --golden: #FFD700;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .navbar { background-color: var(--navy-blue); border-bottom: 3px solid var(--golden); }
+        .navbar-brand, .nav-link { color: white !important; }
+        .nav-link:hover { color: var(--golden) !important; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn-post { background-color: var(--navy-blue); color: var(--golden); border: 2px solid var(--golden); font-weight: 700; }
+        .btn-post:hover { background-color: var(--golden); color: var(--navy-blue); }
+        .line-item-row { background-color: white; border-radius: 8px; margin-bottom: 0.5rem; transition: all 0.2s; }
+        .line-item-row:hover { background-color: #f1f3f5; }
+        .total-section { background-color: var(--navy-blue); color: white; border-radius: 8px; }
+    </style>
 </head>
 <body>
-    <header><h1>Accounting Record Book</h1></header>
-    <nav>
-        <a href="index.html">Dashboard</a>
-        <a href="accounts.html">Chart of Accounts</a>
-        <a href="journal.html">Journal Entries</a>
-        <a href="reports.html">Financial Reports</a>
-        <a href="#" onclick="api.logout()">Logout</a>
-    </nav>
-    <main>
-        <div class="card">
-            <h2>New Journal Entry</h2>
-            <form id="journal-form">
-                <div class="journal-row">
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" id="entry_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Reference</label>
-                        <input type="text" id="reference">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="description"></textarea>
-                </div>
-                
-                <h3>Line Items</h3>
-                <div id="line-items">
-                    <!-- Dynamic rows will be added here -->
-                </div>
-                <button type="button" class="btn btn-primary" onclick="addRow()">Add Row</button>
-                
-                <div class="card" style="margin-top: 1rem; background: #f8f9fa;">
-                    <div class="journal-row total-row">
-                        <div>Totals</div>
-                        <div class="text-right" id="total-debit">$0.00</div>
-                        <div class="text-right" id="total-credit">$0.00</div>
-                    </div>
-                    <div id="balance-warning" style="color: red; display: none;">Warning: Entry is not balanced!</div>
-                </div>
-                
-                <button type="submit" class="btn btn-post" style="width: 100%;">Post Journal Entry</button>
-            </form>
+    <nav class="navbar navbar-expand-lg sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ACCOUNTING BOOK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="journal.html">Journal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <div class="card">
-            <h2>Recent Entries</h2>
-            <table id="recent-entries">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Reference</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <main class="container mb-5">
+        <div class="row g-4">
+            <!-- Entry Form -->
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <h2 class="fw-bold mb-4" style="color: var(--navy-blue);">New Journal Entry</h2>
+                    <form id="journal-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Entry Date</label>
+                                <input type="date" id="entry_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Reference #</label>
+                                <input type="text" id="reference" class="form-control" placeholder="e.g. INV-001">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea id="description" class="form-control" rows="2" placeholder="Brief explanation of the entry..."></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="mb-0 fw-bold">Line Items</h4>
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRow()">+ Add Line</button>
+                        </div>
+
+                        <div id="line-items" class="mb-4">
+                            <!-- Dynamic rows loaded here -->
+                        </div>
+
+                        <div class="total-section p-3 mb-4">
+                            <div class="row text-center fw-bold">
+                                <div class="col-6 text-start">TOTALS</div>
+                                <div class="col-3" id="total-debit">0.00</div>
+                                <div class="col-3" id="total-credit">0.00</div>
+                            </div>
+                            <div id="balance-warning" class="text-warning text-center small mt-2 fw-bold" style="display: none;">
+                                ⚠️ Entry is not balanced!
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-post w-100 py-3 text-uppercase">Post Journal Entry</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Recent Entries -->
+            <div class="col-lg-4">
+                <div class="card p-4">
+                    <h3 class="fw-bold mb-4" style="color: var(--navy-blue);">Recent Activity</h3>
+                    <div class="list-group list-group-flush" id="recent-entries-list">
+                        <!-- Loaded via JS -->
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script>
         let accounts = [];
@@ -83,22 +120,26 @@
         function addRow() {
             const container = document.getElementById('line-items');
             const row = document.createElement('div');
-            row.className = 'journal-row';
+            row.className = 'row g-2 mb-2 p-2 line-item-row align-items-center shadow-sm';
             row.innerHTML = `
-                <div>
-                    <select class="account-select" required>
+                <div class="col-md-6 col-12">
+                    <select class="form-select account-select" required>
                         <option value="">Select Account</option>
                         ${accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('')}
                     </select>
                 </div>
-                <div>
-                    <input type="number" step="0.01" class="debit-input" placeholder="Debit" onchange="updateTotals()">
+                <div class="col-md-2 col-5">
+                    <input type="number" step="0.01" class="form-control debit-input text-end" placeholder="Debit" onchange="updateTotals()">
                 </div>
-                <div>
-                    <input type="number" step="0.01" class="credit-input" placeholder="Credit" onchange="updateTotals()">
+                <div class="col-md-2 col-5">
+                    <input type="number" step="0.01" class="form-control credit-input text-end" placeholder="Credit" onchange="updateTotals()">
                 </div>
-                <div style="flex: 0 0 50px;">
-                    <button type="button" onclick="this.parentElement.parentElement.remove(); updateTotals();">X</button>
+                <div class="col-md-2 col-2 text-center">
+                    <button type="button" class="btn btn-link text-danger p-0" onclick="this.closest('.line-item-row').remove(); updateTotals();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
             `;
             container.appendChild(row);
@@ -111,8 +152,8 @@
             document.querySelectorAll('.debit-input').forEach(i => totalDebit += parseFloat(i.value || 0));
             document.querySelectorAll('.credit-input').forEach(i => totalCredit += parseFloat(i.value || 0));
             
-            document.getElementById('total-debit').innerText = '$' + totalDebit.toFixed(2);
-            document.getElementById('total-credit').innerText = '$' + totalCredit.toFixed(2);
+            document.getElementById('total-debit').innerText = totalDebit.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('total-credit').innerText = totalCredit.toLocaleString(undefined, {minimumFractionDigits: 2});
             
             const warning = document.getElementById('balance-warning');
             if (Math.abs(totalDebit - totalCredit) > 0.001) {
@@ -126,7 +167,7 @@
             e.preventDefault();
             
             const items = [];
-            document.querySelectorAll('#line-items .journal-row').forEach(row => {
+            document.querySelectorAll('#line-items .line-item-row').forEach(row => {
                 const accountId = row.querySelector('.account-select').value;
                 const debit = parseFloat(row.querySelector('.debit-input').value || 0);
                 const credit = parseFloat(row.querySelector('.credit-input').value || 0);
@@ -154,20 +195,25 @@
 
         async function loadRecentEntries() {
             const entries = await api.get('/journal');
-            const tbody = document.querySelector('#recent-entries tbody');
-            tbody.innerHTML = entries.map(e => `
-                <tr>
-                    <td>${e.entry_date.split('T')[0]}</td>
-                    <td>${e.reference || ''}</td>
-                    <td>${e.description || ''}</td>
-                    <td><button onclick="viewEntry(${e.id})">View</button></td>
-                </tr>
+            const list = document.getElementById('recent-entries-list');
+            list.innerHTML = entries.map(e => `
+                <a href="#" class="list-group-item list-group-item-action py-3 border-0 rounded mb-2 shadow-sm" onclick="viewEntry(${e.id})">
+                    <div class="d-flex w-100 justify-content-between mb-1">
+                        <h6 class="mb-1 fw-bold">${e.reference || 'No Ref'}</h6>
+                        <small class="text-muted">${e.entry_date.split('T')[0]}</small>
+                    </div>
+                    <p class="mb-1 small text-truncate">${e.description || 'No description provided'}</p>
+                </a>
             `).join('');
+            
+            if (entries.length === 0) {
+                list.innerHTML = '<p class="text-muted text-center py-4">No recent entries</p>';
+            }
         }
 
         async function viewEntry(id) {
             const entry = await api.get('/journal/' + id);
-            let detail = `Date: ${entry.entry_date}\nRef: ${entry.reference}\nDesc: ${entry.description}\n\n`;
+            let detail = `Date: ${entry.entry_date.split('T')[0]}\nRef: ${entry.reference}\nDesc: ${entry.description}\n\n`;
             entry.items.forEach(i => {
                 detail += `${i.account_code} ${i.account_name}: ${i.debit > 0 ? 'Dr ' + i.debit : 'Cr ' + i.credit}\n`;
             });
