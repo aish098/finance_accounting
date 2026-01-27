@@ -27,6 +27,26 @@
         .total-row { background-color: #f8f9fa; font-weight: 700; border-top: 2px solid var(--navy-blue); }
         .section-header { color: var(--navy-blue); border-bottom: 2px solid var(--golden); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
         
+        /* Custom Navy/Golden Buttons */
+        .btn-navy {
+            background-color: var(--navy-blue);
+            color: var(--golden);
+            border: 2px solid var(--golden);
+        }
+        .btn-navy:hover {
+            background-color: var(--golden);
+            color: var(--navy-blue);
+        }
+        .btn-outline-navy {
+            background-color: transparent;
+            color: var(--navy-blue);
+            border: 2px solid var(--navy-blue);
+        }
+        .btn-outline-navy:hover {
+            background-color: var(--navy-blue);
+            color: white;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 991.98px) {
             .navbar-toggler { border-color: rgba(255,255,255,0.1); }
@@ -55,7 +75,7 @@
                     <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
                     <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
                     <li class="nav-item"><a class="nav-link active" href="reports.html">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color: var(--golden) !important;" href="#" onclick="api.logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -63,10 +83,10 @@
 
     <main class="container mb-5">
         <div class="report-nav d-flex flex-wrap gap-2 justify-content-center mb-4">
-            <button class="btn btn-outline-primary" id="btn-general-ledger" onclick="showReport('general-ledger')">General Ledger</button>
-            <button class="btn btn-outline-primary" id="btn-trial-balance" onclick="showReport('trial-balance')">Trial Balance</button>
-            <button class="btn btn-outline-primary" id="btn-profit-loss" onclick="showReport('profit-loss')">Profit & Loss</button>
-            <button class="btn btn-outline-primary" id="btn-balance-sheet" onclick="showReport('balance-sheet')">Balance Sheet</button>
+            <button class="btn btn-outline-navy" id="btn-general-ledger" onclick="showReport('general-ledger')">General Ledger</button>
+            <button class="btn btn-outline-navy" id="btn-trial-balance" onclick="showReport('trial-balance')">Trial Balance</button>
+            <button class="btn btn-outline-navy" id="btn-profit-loss" onclick="showReport('profit-loss')">Profit & Loss</button>
+            <button class="btn btn-outline-navy" id="btn-balance-sheet" onclick="showReport('balance-sheet')">Balance Sheet</button>
         </div>
 
         <!-- General Ledger -->
@@ -190,10 +210,10 @@
     <script>
         function showReport(id) {
             document.querySelectorAll('.report-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.report-nav .btn').forEach(b => b.classList.replace('btn-primary', 'btn-outline-primary'));
+            document.querySelectorAll('.report-nav .btn').forEach(b => b.classList.replace('btn-navy', 'btn-outline-navy'));
             
             document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id).classList.replace('btn-outline-primary', 'btn-primary');
+            document.getElementById('btn-' + id).classList.replace('btn-outline-navy', 'btn-navy');
             loadReport(id);
         }
 

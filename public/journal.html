@@ -19,6 +19,10 @@
         .navbar-brand, .nav-link { color: white !important; }
         .nav-link:hover { color: var(--golden) !important; }
         .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn-navy { background-color: var(--navy-blue); color: var(--golden); border: 2px solid var(--golden); }
+        .btn-navy:hover { background-color: var(--golden); color: var(--navy-blue); }
+        .btn-outline-navy { background-color: transparent; color: var(--navy-blue); border: 2px solid var(--navy-blue); }
+        .btn-outline-navy:hover { background-color: var(--navy-blue); color: white; }
         .btn-post { background-color: var(--navy-blue); color: var(--golden); border: 2px solid var(--golden); font-weight: 700; }
         .btn-post:hover { background-color: var(--golden); color: var(--navy-blue); }
         .line-item-row { background-color: white; border-radius: 8px; margin-bottom: 0.5rem; transition: all 0.2s; }
@@ -44,7 +48,7 @@
                     <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
                     <li class="nav-item"><a class="nav-link active" href="journal.html">Journal</a></li>
                     <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color: var(--golden) !important;" href="#" onclick="api.logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -74,7 +78,7 @@
                         
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 class="mb-0 fw-bold">Line Items</h4>
-                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRow()">+ Add Line</button>
+                            <button type="button" class="btn btn-outline-navy btn-sm" onclick="addRow()">+ Add Line</button>
                         </div>
 
                         <div id="line-items" class="mb-4">

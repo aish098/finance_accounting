@@ -52,7 +52,7 @@
                     <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
                     <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
                     <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="api.logout()">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color: var(--golden) !important;" href="#" onclick="api.logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="col-md-4">
                 <div class="card stat-card p-4 text-center">
                     <h5 class="text-muted text-uppercase small fw-bold">Loading...</h5>
-                    <div class="stat-value text-primary">...</div>
+                    <div class="stat-value" style="color: var(--navy-blue);">...</div>
                 </div>
             </div>
         </div>
@@ -91,9 +91,9 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card stat-card p-4 text-center border-start border-primary border-4">
+                        <div class="card stat-card p-4 text-center border-start border-navy border-4" style="border-left-color: var(--navy-blue) !important;">
                             <h5 class="text-muted text-uppercase small fw-bold">Total Assets</h5>
-                            <div class="stat-value text-primary">$${bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+                            <div class="stat-value" style="color: var(--navy-blue);">$${bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
                         </div>
                     </div>
                     <div class="col-md-4">

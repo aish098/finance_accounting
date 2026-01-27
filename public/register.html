@@ -34,14 +34,16 @@
             border-color: var(--navy-blue);
             box-shadow: 0 0 0 0.25rem rgba(0,31,63,0.1);
         }
-        .btn-primary {
+        .btn-navy {
             background-color: var(--navy-blue);
-            border: none;
+            color: var(--golden);
+            border: 2px solid var(--golden);
             padding: 0.8rem;
             font-weight: 600;
         }
-        .btn-primary:hover {
-            background-color: #003366;
+        .btn-navy:hover {
+            background-color: var(--golden);
+            color: var(--navy-blue);
         }
         .brand-header {
             color: var(--navy-blue);
@@ -69,7 +71,7 @@
                     <label class="form-label small fw-bold">Password</label>
                     <input type="password" id="password" class="form-control" placeholder="Create password" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+                <button type="submit" class="btn btn-navy w-100 mb-3">Register</button>
             </form>
             
             <div class="text-center mt-3">
