@@ -293,3 +293,23 @@ body {
     color: var(--golden-dark);
 }
 
+/* Responsive Overrides */
+@media (max-width: 991.98px) {
+    .navbar-brand { font-size: 1.25rem; }
+    .nav-link { padding: 0.7rem 1rem !important; }
+}
+
+@media (max-width: 768px) {
+    .stat-value { font-size: 1.75rem; }
+    .welcome-card { padding: 2rem !important; }
+    .auth-card { padding: 2.5rem 1.5rem; }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand { font-size: 1.1rem; }
+    .section-header { font-size: 1.4rem; }
+    .auth-brand { font-size: 1.3rem; }
+    .display-5 { font-size: 1.8rem; }
+}
+
+
