@@ -26,6 +26,15 @@
         .table thead th { background-color: #f1f3f5; color: var(--navy-blue); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
         .total-row { background-color: #f8f9fa; font-weight: 700; border-top: 2px solid var(--navy-blue); }
         .section-header { color: var(--navy-blue); border-bottom: 2px solid var(--golden); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        
+        /* Mobile adjustments */
+        @media (max-width: 576px) {
+            .stat-value { font-size: 1.5rem; }
+            .section-header { font-size: 1.25rem; }
+            .total-row-main { flex-direction: column; text-align: center; gap: 0.5rem; }
+            .total-row-main h4 { font-size: 1.1rem; }
+            .table-sm td, .table-sm th { font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
@@ -160,8 +169,8 @@
                 </div>
                 <div class="col-12">
                     <div class="card bg-navy text-white p-3" style="background-color: var(--navy-blue);">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0 fw-bold" style="color: var(--golden);">TOTAL LIABILITIES & EQUITY</h4>
+                        <div class="d-flex justify-content-between align-items-center total-row-main">
+                            <h4 class="mb-0 fw-bold text-uppercase" style="color: var(--golden);">Total Liabilities & Equity</h4>
                             <h4 class="mb-0 fw-bold" id="bs-total-le" style="color: var(--golden);"></h4>
                         </div>
                     </div>
@@ -219,17 +228,17 @@
                 } else if (type === 'balance-sheet') {
                     const data = await api.get('/reports/balance-sheet');
                     document.querySelector('#bs-assets-table tbody').innerHTML = data.assets.map(r => `
-                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
                     `).join('');
                     document.getElementById('bs-total-assets').innerText = data.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2});
 
                     document.querySelector('#bs-liabilities-table tbody').innerHTML = data.liabilities.map(r => `
-                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
                     `).join('');
                     document.getElementById('bs-total-liabilities').innerText = data.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2});
 
                     document.querySelector('#bs-equity-table tbody').innerHTML = data.equity.map(r => `
-                        <tr><td>${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
                     `).join('');
                     document.getElementById('bs-total-equity').innerText = data.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
                     
