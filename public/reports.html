@@ -23,36 +23,14 @@
     </nav>
     <main>
         <div class="report-nav">
-            <button class="btn btn-primary" onclick="showReport('trial-balance')">Trial Balance</button>
             <button class="btn btn-primary" onclick="showReport('general-ledger')">General Ledger</button>
+            <button class="btn btn-primary" onclick="showReport('trial-balance')">Trial Balance</button>
             <button class="btn btn-primary" onclick="showReport('profit-loss')">Profit & Loss</button>
             <button class="btn btn-primary" onclick="showReport('balance-sheet')">Balance Sheet</button>
         </div>
 
-        <!-- Trial Balance -->
-        <div id="trial-balance" class="report-section active card">
-            <h2>Trial Balance</h2>
-            <table id="tb-table">
-                <thead>
-                    <tr>
-                        <th>Account</th>
-                        <th class="text-right">Debit</th>
-                        <th class="text-right">Credit</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr class="total-row">
-                        <td>Totals</td>
-                        <td class="text-right" id="tb-total-debit"></td>
-                        <td class="text-right" id="tb-total-credit"></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
         <!-- General Ledger -->
-        <div id="general-ledger" class="report-section card">
+        <div id="general-ledger" class="report-section active card">
             <h2>General Ledger</h2>
             <div style="margin-bottom: 1rem;">
                 <label>Select Account:</label>
@@ -72,6 +50,28 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Trial Balance -->
+        <div id="trial-balance" class="report-section card">
+            <h2>Trial Balance</h2>
+            <table id="tb-table">
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th class="text-right">Debit</th>
+                        <th class="text-right">Credit</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td>Totals</td>
+                        <td class="text-right" id="tb-total-debit"></td>
+                        <td class="text-right" id="tb-total-credit"></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 
@@ -216,7 +216,7 @@
             }
         }
 
-        loadReport('trial-balance');
+        loadReport('general-ledger');
     </script>
 </body>
 </html>
