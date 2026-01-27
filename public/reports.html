@@ -28,6 +28,12 @@
         .section-header { color: var(--navy-blue); border-bottom: 2px solid var(--golden); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
         
         /* Mobile adjustments */
+        @media (max-width: 991.98px) {
+            .navbar { background-color: white !important; }
+            .navbar-brand, .nav-link { color: var(--navy-blue) !important; }
+            .navbar-toggler { border-color: rgba(0,31,63,0.1); }
+        }
+
         @media (max-width: 576px) {
             .stat-value { font-size: 1.5rem; }
             .section-header { font-size: 1.25rem; }
