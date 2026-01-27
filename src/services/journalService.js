@@ -29,12 +29,12 @@ class JournalService {
         }
     }
 
-    async getAllEntries() {
-        return await journalRepository.getAll();
+    async getAllEntries(userId) {
+        return await journalRepository.getAll(userId);
     }
 
-    async getEntryDetails(id) {
-        return await journalRepository.getById(id);
+    async getEntryDetails(id, userId) {
+        return await journalRepository.getById(id, userId);
     }
 }
 

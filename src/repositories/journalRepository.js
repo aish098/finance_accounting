@@ -19,18 +19,19 @@ class JournalRepository {
         return journal_entry_id;
     }
 
-    async getAll() {
+    async getAll(userId) {
         const [rows] = await db.query(`
             SELECT je.*, u.username as created_by_name 
             FROM journal_entries je
             LEFT JOIN users u ON je.created_by = u.id
+            WHERE je.created_by = ?
             ORDER BY je.entry_date DESC, je.id DESC
-        `);
+        `, [userId]);
         return rows;
     }
 
-    async getById(id) {
-        const [entryRows] = await db.query('SELECT * FROM journal_entries WHERE id = ?', [id]);
+    async getById(id, userId) {
+        const [entryRows] = await db.query('SELECT * FROM journal_entries WHERE id = ? AND created_by = ?', [id, userId]);
         if (entryRows.length === 0) return null;
 
         const [itemRows] = await db.query(`

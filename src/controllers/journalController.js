@@ -3,9 +3,9 @@ const journalService = require('../services/journalService');
 class JournalController {
     async create(req, res) {
         try {
-            const { entry_date, reference, description, created_by, items } = req.body;
+            const { entry_date, reference, description, items } = req.body;
             const entryId = await journalService.createJournalEntry(
-                { entry_date, reference, description, created_by },
+                { entry_date, reference, description, created_by: req.user.id },
                 items
             );
             res.status(201).json({ id: entryId, message: 'Journal entry created and posted successfully' });
@@ -16,7 +16,7 @@ class JournalController {
 
     async getAll(req, res) {
         try {
-            const entries = await journalService.getAllEntries();
+            const entries = await journalService.getAllEntries(req.user.id);
             res.json(entries);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -25,7 +25,7 @@ class JournalController {
 
     async getById(req, res) {
         try {
-            const entry = await journalService.getEntryDetails(req.params.id);
+            const entry = await journalService.getEntryDetails(req.params.id, req.user.id);
             if (!entry) return res.status(404).json({ error: 'Entry not found' });
             res.json(entry);
         } catch (error) {
