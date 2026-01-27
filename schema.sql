@@ -59,4 +59,5 @@ INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 ('5000', 'Cost of Goods Sold', 'Expense', 'Debit'),
 ('5100', 'Rent Expense', 'Expense', 'Debit'),
 ('5200', 'Salary Expense', 'Expense', 'Debit'),
-('5300', 'Utility Expense', 'Expense', 'Debit');
+('5300', 'Utility Expense', 'Expense', 'Debit'),
+('5400', 'Purchases', 'Expense', 'Debit');
