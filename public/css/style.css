@@ -49,8 +49,8 @@ nav a {
 }
 
 nav a:hover {
-    background-color: var(--golden);
-    color: var(--navy-blue);
+    background-color: var(--dark-golden);
+    color: white;
 }
 
 main {
@@ -114,7 +114,8 @@ tr:hover {
 }
 
 .btn-primary:hover {
-    background-color: #002d5a;
+    background-color: var(--dark-golden);
+    color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
@@ -141,10 +142,10 @@ tr:hover {
 }
 
 .btn-post:hover {
-    background-color: var(--golden);
-    color: var(--navy-blue);
+    background-color: var(--dark-golden);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 6px 15px rgba(184, 134, 11, 0.3);
 }
 
 .form-group {
