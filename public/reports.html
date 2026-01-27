@@ -39,21 +39,24 @@
 
         <!-- General Ledger -->
         <div id="general-ledger" class="report-section card p-4">
-            <h2 class="section-header">General Ledger</h2>
+            <div class="mb-4">
+                <h2 class="section-header">General Ledger</h2>
+                <p class="text-muted small">Detailed record of all transactions for a specific account.</p>
+            </div>
             <div class="row mb-4 align-items-end g-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold small text-uppercase">Account Selection</label>
-                    <select id="ledger-account-select" onchange="loadLedger()" class="form-select shadow-sm">
+                <div class="col-md-5">
+                    <label class="form-label">Select Account</label>
+                    <select id="ledger-account-select" onchange="loadLedger()" class="form-select shadow-sm border-2">
                         <option value="">-- Choose Account --</option>
                     </select>
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="ledger-table" class="table table-hover">
+                <table id="ledger-table" class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Ref</th>
+                            <th>Reference</th>
                             <th>Description</th>
                             <th class="text-end">Debit</th>
                             <th class="text-end">Credit</th>
@@ -67,22 +70,25 @@
 
         <!-- Trial Balance -->
         <div id="trial-balance" class="report-section card p-4">
-            <h2 class="section-header">Trial Balance</h2>
+            <div class="mb-4">
+                <h2 class="section-header">Trial Balance</h2>
+                <p class="text-muted small">Verification that total debits equal total credits across all accounts.</p>
+            </div>
             <div class="table-responsive">
-                <table id="tb-table" class="table">
+                <table id="tb-table" class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>Account</th>
+                            <th>Account Name</th>
                             <th class="text-end">Debit</th>
                             <th class="text-end">Credit</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                     <tfoot>
-                        <tr class="total-row fw-bold">
-                            <td>TOTALS</td>
-                            <td class="text-end" id="tb-total-debit"></td>
-                            <td class="text-end" id="tb-total-credit"></td>
+                        <tr class="total-section fw-bold">
+                            <td class="ps-3">TOTALS</td>
+                            <td class="text-end pe-3" id="tb-total-debit"></td>
+                            <td class="text-end pe-3" id="tb-total-credit"></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -91,18 +97,25 @@
 
         <!-- Profit & Loss -->
         <div id="profit-loss" class="report-section card p-4">
-            <h2 class="section-header">Profit & Loss Statement</h2>
+            <div class="mb-4">
+                <h2 class="section-header">Profit & Loss Statement</h2>
+                <p class="text-muted small">Summary of revenue and expenses over a specific period.</p>
+            </div>
             <div id="pl-content">
-                <h5 class="fw-bold text-success mb-3">Operating Revenue</h5>
-                <table id="pl-revenue-table" class="table table-sm mb-4"><tbody></tbody></table>
+                <div class="mb-5">
+                    <h5 class="fw-bold text-navy mb-3 border-bottom pb-2">OPERATING REVENUE</h5>
+                    <table id="pl-revenue-table" class="table table-sm table-borderless mb-0"><tbody></tbody></table>
+                </div>
                 
-                <h5 class="fw-bold text-danger mb-3">Operating Expenses</h5>
-                <table id="pl-expense-table" class="table table-sm mb-4"><tbody></tbody></table>
+                <div class="mb-5">
+                    <h5 class="fw-bold text-navy mb-3 border-bottom pb-2">OPERATING EXPENSES</h5>
+                    <table id="pl-expense-table" class="table table-sm table-borderless mb-0"><tbody></tbody></table>
+                </div>
                 
-                <div class="card bg-light border-0 p-3 mt-4">
+                <div class="card total-section border-0 p-4 mt-4 shadow">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0 fw-bold">NET INCOME</h4>
-                        <h4 class="mb-0 fw-bold" id="pl-net-income"></h4>
+                        <h3 class="mb-0 fw-bold" style="color: var(--golden);">NET INCOME / (LOSS)</h3>
+                        <h3 class="mb-0 fw-bold" id="pl-net-income" style="color: var(--golden);"></h3>
                     </div>
                 </div>
             </div>
@@ -110,41 +123,44 @@
 
         <!-- Balance Sheet -->
         <div id="balance-sheet" class="report-section card p-4">
-            <h2 class="section-header">Balance Sheet</h2>
+            <div class="mb-4">
+                <h2 class="section-header">Balance Sheet</h2>
+                <p class="text-muted small">Financial position of the business at a specific point in time.</p>
+            </div>
             <div id="bs-content" class="row">
                 <div class="col-lg-6 mb-4">
-                    <div class="p-3 bg-light rounded shadow-sm h-100">
-                        <h5 class="fw-bold mb-3 border-bottom pb-2">ASSETS</h5>
-                        <table id="bs-assets-table" class="table table-sm table-borderless"><tbody></tbody></table>
-                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
-                            <span>Total Assets</span>
-                            <span id="bs-total-assets"></span>
+                    <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-top border-4 border-navy">
+                        <h5 class="fw-bold mb-4 text-navy text-uppercase letter-spacing-1">ASSETS</h5>
+                        <table id="bs-assets-table" class="table table-sm table-borderless mb-4"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-3 border-top border-navy">
+                            <span class="text-navy">Total Assets</span>
+                            <span id="bs-total-assets" class="text-navy"></span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 mb-4">
-                    <div class="p-3 bg-light rounded shadow-sm h-100 mb-4">
-                        <h5 class="fw-bold mb-3 border-bottom pb-2">LIABILITIES</h5>
-                        <table id="bs-liabilities-table" class="table table-sm table-borderless"><tbody></tbody></table>
-                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
-                            <span>Total Liabilities</span>
-                            <span id="bs-total-liabilities"></span>
+                    <div class="p-4 bg-light rounded-4 shadow-sm mb-4 border-top border-4 border-danger">
+                        <h5 class="fw-bold mb-4 text-danger text-uppercase letter-spacing-1">LIABILITIES</h5>
+                        <table id="bs-liabilities-table" class="table table-sm table-borderless mb-4"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-3 border-top border-danger">
+                            <span class="text-danger">Total Liabilities</span>
+                            <span id="bs-total-liabilities" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="p-3 bg-light rounded shadow-sm">
-                        <h5 class="fw-bold mb-3 border-bottom pb-2">EQUITY</h5>
-                        <table id="bs-equity-table" class="table table-sm table-borderless"><tbody></tbody></table>
-                        <div class="d-flex justify-content-between fw-bold pt-2 border-top">
-                            <span>Total Equity</span>
-                            <span id="bs-total-equity"></span>
+                    <div class="p-4 bg-light rounded-4 shadow-sm border-top border-4 border-primary">
+                        <h5 class="fw-bold mb-4 text-primary text-uppercase letter-spacing-1">EQUITY</h5>
+                        <table id="bs-equity-table" class="table table-sm table-borderless mb-4"><tbody></tbody></table>
+                        <div class="d-flex justify-content-between fw-bold pt-3 border-top border-primary">
+                            <span class="text-primary">Total Equity</span>
+                            <span id="bs-total-equity" class="text-primary"></span>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="card total-section">
-                        <div class="d-flex justify-content-between align-items-center total-row-main">
-                            <h4 class="mb-0 fw-bold text-uppercase" style="color: var(--golden);">Total Liabilities & Equity</h4>
-                            <h4 class="mb-0 fw-bold" id="bs-total-le" style="color: var(--golden);"></h4>
+                <div class="col-12 mt-4">
+                    <div class="card total-section p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <h3 class="mb-0 fw-bold text-uppercase" style="color: var(--golden);">Total Liabilities & Equity</h3>
+                            <h3 class="mb-0 fw-bold" id="bs-total-le" style="color: var(--golden);"></h3>
                         </div>
                     </div>
                 </div>
@@ -157,11 +173,30 @@
     <script src="js/api.js"></script>
     <script>
         function showReport(id) {
-            document.querySelectorAll('.report-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.report-nav .btn').forEach(b => b.classList.replace('btn-navy', 'btn-outline-navy'));
+            // Hide all report sections
+            document.querySelectorAll('.report-section').forEach(s => {
+                s.classList.remove('active');
+            });
+
+            // Reset all buttons to outline style
+            document.querySelectorAll('.report-nav .btn').forEach(b => {
+                b.classList.remove('btn-navy');
+                b.classList.add('btn-outline-navy');
+            });
             
-            document.getElementById(id).classList.add('active');
-            document.getElementById('btn-' + id).classList.replace('btn-outline-navy', 'btn-navy');
+            // Show the selected report
+            const selectedSection = document.getElementById(id);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            // Set the clicked button to solid style
+            const selectedBtn = document.getElementById('btn-' + id);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('btn-outline-navy');
+                selectedBtn.classList.add('btn-navy');
+            }
+
             loadReport(id);
         }
 
@@ -170,13 +205,19 @@
                 if (type === 'trial-balance') {
                     const data = await api.get('/reports/trial-balance');
                     const tbody = document.querySelector('#tb-table tbody');
-                    tbody.innerHTML = data.rows.filter(r => r.debit > 0 || r.credit > 0).map(r => `
-                        <tr>
-                            <td class="fw-medium">${r.account_code} - ${r.account_name}</td>
-                            <td class="text-end">${r.debit > 0 ? r.debit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
-                            <td class="text-end">${r.credit > 0 ? r.credit.toLocaleString(undefined, {minimumFractionDigits: 2}) : ''}</td>
-                        </tr>
-                    `).join('');
+                    const filteredRows = data.rows.filter(r => Math.abs(r.debit) > 0.001 || Math.abs(r.credit) > 0.001);
+                    
+                    if (filteredRows.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-5 text-muted italic">No account balances found.</td></tr>';
+                    } else {
+                        tbody.innerHTML = filteredRows.map(r => `
+                            <tr>
+                                <td class="fw-bold ps-3 text-navy">${r.account_code} - ${r.account_name}</td>
+                                <td class="text-end pe-3">${r.debit > 0 ? r.debit.toLocaleString(undefined, {minimumFractionDigits: 2}) : '-'}</td>
+                                <td class="text-end pe-3">${r.credit > 0 ? r.credit.toLocaleString(undefined, {minimumFractionDigits: 2}) : '-'}</td>
+                            </tr>
+                        `).join('');
+                    }
                     document.getElementById('tb-total-debit').innerText = data.totals.debit.toLocaleString(undefined, {minimumFractionDigits: 2});
                     document.getElementById('tb-total-credit').innerText = data.totals.credit.toLocaleString(undefined, {minimumFractionDigits: 2});
                 } else if (type === 'general-ledger') {
@@ -188,32 +229,49 @@
                     select.value = currentValue;
                 } else if (type === 'profit-loss') {
                     const data = await api.get('/reports/profit-loss');
-                    document.querySelector('#pl-revenue-table tbody').innerHTML = data.revenue.map(r => `
-                        <tr><td class="ps-3">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
-                    `).join('') + `<tr><td class="fw-bold">Total Revenue</td><td class="text-end fw-bold border-top border-dark">${data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
+                    const revBody = document.querySelector('#pl-revenue-table tbody');
+                    if (data.revenue.length === 0) {
+                        revBody.innerHTML = '<tr><td colspan="2" class="text-muted small ps-3">No revenue recorded</td></tr>';
+                    } else {
+                        revBody.innerHTML = data.revenue.map(r => `
+                            <tr><td class="ps-3 text-dark fw-medium">${r.name}</td><td class="text-end fw-bold text-navy">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        `).join('') + `
+                            <tr class="border-top"><td class="fw-bold ps-3">Total Revenue</td><td class="text-end fw-bold text-navy">${data.totalRevenue.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        `;
+                    }
                     
-                    document.querySelector('#pl-expense-table tbody').innerHTML = data.expenses.map(r => `
-                        <tr><td class="ps-3">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
-                    `).join('') + `<tr><td class="fw-bold">Total Expenses</td><td class="text-end fw-bold border-top border-dark">${data.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
+                    const expBody = document.querySelector('#pl-expense-table tbody');
+                    if (data.expenses.length === 0) {
+                        expBody.innerHTML = '<tr><td colspan="2" class="text-muted small ps-3">No expenses recorded</td></tr>';
+                    } else {
+                        expBody.innerHTML = data.expenses.map(r => `
+                            <tr><td class="ps-3 text-dark fw-medium">${r.name}</td><td class="text-end fw-bold text-danger">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        `).join('') + `
+                            <tr class="border-top"><td class="fw-bold ps-3">Total Expenses</td><td class="text-end fw-bold text-danger">${data.totalExpenses.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                        `;
+                    }
                     
                     document.getElementById('pl-net-income').innerText = '$' + data.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
-                    document.getElementById('pl-net-income').className = data.netIncome >= 0 ? 'mb-0 fw-bold text-success' : 'mb-0 fw-bold text-danger';
                 } else if (type === 'balance-sheet') {
                     const data = await api.get('/reports/balance-sheet');
-                    document.querySelector('#bs-assets-table tbody').innerHTML = data.assets.map(r => `
-                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
-                    `).join('');
-                    document.getElementById('bs-total-assets').innerText = data.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    
+                    const assetBody = document.querySelector('#bs-assets-table tbody');
+                    assetBody.innerHTML = data.assets.length ? data.assets.map(r => `
+                        <tr><td class="text-dark fw-medium ps-2">${r.name}</td><td class="text-end fw-bold text-navy">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('') : '<tr><td colspan="2" class="text-muted small ps-2">No assets recorded</td></tr>';
+                    document.getElementById('bs-total-assets').innerText = '$' + data.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                    document.querySelector('#bs-liabilities-table tbody').innerHTML = data.liabilities.map(r => `
-                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
-                    `).join('');
-                    document.getElementById('bs-total-liabilities').innerText = data.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    const liabBody = document.querySelector('#bs-liabilities-table tbody');
+                    liabBody.innerHTML = data.liabilities.length ? data.liabilities.map(r => `
+                        <tr><td class="text-dark fw-medium ps-2">${r.name}</td><td class="text-end fw-bold text-danger">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('') : '<tr><td colspan="2" class="text-muted small ps-2">No liabilities recorded</td></tr>';
+                    document.getElementById('bs-total-liabilities').innerText = '$' + data.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                    document.querySelector('#bs-equity-table tbody').innerHTML = data.equity.map(r => `
-                        <tr><td class="text-wrap">${r.name}</td><td class="text-end fw-bold">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
-                    `).join('');
-                    document.getElementById('bs-total-equity').innerText = data.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
+                    const equityBody = document.querySelector('#bs-equity-table tbody');
+                    equityBody.innerHTML = data.equity.length ? data.equity.map(r => `
+                        <tr><td class="text-dark fw-medium ps-2">${r.name}</td><td class="text-end fw-bold text-primary">${r.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>
+                    `).join('') : '<tr><td colspan="2" class="text-muted small ps-2">No equity recorded</td></tr>';
+                    document.getElementById('bs-total-equity').innerText = '$' + data.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
                     
                     document.getElementById('bs-total-le').innerText = '$' + data.totalLiabilitiesAndEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
                 }
@@ -259,7 +317,9 @@
             } catch (err) { console.error(err); }
         }
 
-        showReport('general-ledger');
+        document.addEventListener('DOMContentLoaded', () => {
+            showReport('general-ledger');
+        });
     </script>
 </body>
 </html>
