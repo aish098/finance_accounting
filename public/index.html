@@ -6,6 +6,8 @@
     <title>Dashboard - Accounting Record Book</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -13,33 +15,133 @@
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">ACCOUNTING BOOK</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-journal-check text-golden me-2"></i>ACCOUNTING BOOK
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="bi bi-list text-white fs-1"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="journal.html">Journal</a></li>
-                    <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="api.logout()">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-speedometer2"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="accounts.html"><i class="bi bi-list-columns-reverse"></i>Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="journal.html"><i class="bi bi-plus-circle"></i>Journal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph"></i>Reports</a></li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="btn btn-golden btn-sm w-100" href="#" onclick="api.logout()">
+                            <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <main class="container">
-        <div class="welcome-card p-4 p-md-5 mb-4 text-center">
-            <h1 class="display-5 fw-bold">Welcome Back</h1>
-            <p class="lead mb-0">Manage your finances with professional precision and ease.</p>
+        <div class="welcome-card p-4 p-md-5 mb-4 shadow-sm">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-2">Welcome Back</h1>
+                    <p class="lead mb-0 opacity-75">Your financial overview is ready for review.</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div id="current-date" class="badge bg-white text-navy p-2 px-3 fw-bold shadow-sm"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="row g-4" id="quick-stats">
+        <!-- Stats Overview -->
+        <div class="row g-4 mb-5" id="quick-stats">
             <div class="col-md-4">
-                <div class="card stat-card p-4 text-center">
-                    <h5 class="text-muted text-uppercase small fw-bold">Loading...</h5>
-                    <div class="stat-value" style="color: var(--navy-blue);">...</div>
+                <div class="card stat-card p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="text-muted text-uppercase small fw-bold mb-0">Net Income</h5>
+                        <div class="stat-icon bg-success-light text-success"><i class="bi bi-graph-up-arrow"></i></div>
+                    </div>
+                    <div class="stat-value text-success" id="net-income-val">Loading...</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="text-muted text-uppercase small fw-bold mb-0">Total Assets</h5>
+                        <div class="stat-icon bg-navy-light text-navy"><i class="bi bi-bank"></i></div>
+                    </div>
+                    <div class="stat-value text-navy" id="total-assets-val">Loading...</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="text-muted text-uppercase small fw-bold mb-0">Total Liabilities</h5>
+                        <div class="stat-icon bg-danger-light text-danger"><i class="bi bi-wallet2"></i></div>
+                    </div>
+                    <div class="stat-value text-danger" id="total-liabilities-val">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Transactions -->
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-header bg-white border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold mb-0">Recent Transactions</h4>
+                        <a href="journal.html" class="btn btn-sm btn-outline-navy">View All</a>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Reference</th>
+                                        <th>Description</th>
+                                        <th class="text-end">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-transactions-body">
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">Loading transactions...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white border-0 p-4 pb-0">
+                        <h4 class="fw-bold mb-0">Quick Actions</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-grid gap-3">
+                            <a href="journal.html" class="btn btn-navy text-start d-flex align-items-center">
+                                <i class="bi bi-plus-circle me-3 fs-5"></i>
+                                <div>
+                                    <div class="small fw-bold">Journal Entry</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Post a new transaction</div>
+                                </div>
+                            </a>
+                            <a href="accounts.html" class="btn btn-golden text-start d-flex align-items-center">
+                                <i class="bi bi-list-columns-reverse me-3 fs-5"></i>
+                                <div>
+                                    <div class="small fw-bold">Chart of Accounts</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Manage your ledger accounts</div>
+                                </div>
+                            </a>
+                            <a href="reports.html" class="btn btn-outline-navy text-start d-flex align-items-center">
+                                <i class="bi bi-file-earmark-bar-graph me-3 fs-5"></i>
+                                <div>
+                                    <div class="small fw-bold">Financial Reports</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Generate P&L and Balance Sheet</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,36 +151,45 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script>
-        async function loadStats() {
+        async function loadDashboard() {
             try {
+                // Set current date
+                const now = new Date();
+                document.getElementById('current-date').innerHTML = `<i class="bi bi-calendar3 me-2"></i>${now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+                // Fetch Stats
                 const pl = await api.get('/reports/profit-loss');
                 const bs = await api.get('/reports/balance-sheet');
                 
-                document.getElementById('quick-stats').innerHTML = `
-                    <div class="col-md-4">
-                        <div class="card stat-card p-4 text-center border-start border-success border-4">
-                            <h5 class="text-muted text-uppercase small fw-bold">Net Income</h5>
-                            <div class="stat-value text-success">$${pl.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card stat-card p-4 text-center border-4">
-                            <h5 class="text-muted text-uppercase small fw-bold">Total Assets</h5>
-                            <div class="stat-value">$${bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card stat-card p-4 text-center border-start border-danger border-4">
-                            <h5 class="text-muted text-uppercase small fw-bold">Total Liabilities</h5>
-                            <div class="stat-value text-danger">$${bs.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
-                        </div>
-                    </div>
-                `;
+                document.getElementById('net-income-val').innerText = `$${pl.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                document.getElementById('total-assets-val').innerText = `$${bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                document.getElementById('total-liabilities-val').innerText = `$${bs.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+                // Fetch Recent Transactions
+                const entries = await api.get('/journal');
+                const tbody = document.getElementById('recent-transactions-body');
+                
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions found.</td></tr>';
+                } else {
+                    tbody.innerHTML = entries.slice(0, 5).map(e => {
+                        const totalAmount = e.items ? e.items.reduce((sum, item) => sum + parseFloat(item.debit || 0), 0) : 0;
+                        return `
+                        <tr>
+                            <td><span class="text-muted small">${e.entry_date.split('T')[0]}</span></td>
+                            <td><span class="fw-bold text-navy">${e.reference || 'N/A'}</span></td>
+                            <td><span class="text-truncate d-inline-block" style="max-width: 200px;">${e.description || 'No description'}</span></td>
+                            <td class="text-end fw-bold text-navy">$${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                        </tr>
+                        `;
+                    }).join('');
+                }
             } catch (error) {
-                document.getElementById('quick-stats').innerHTML = '<div class="col-12 text-center text-danger">Error loading stats. Please try again later.</div>';
+                console.error('Dashboard error:', error);
+                // Handle error visually
             }
         }
-        loadStats();
+        loadDashboard();
     </script>
 </body>
 </html>

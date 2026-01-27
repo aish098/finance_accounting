@@ -41,11 +41,18 @@ body {
     font-weight: 600;
     color: rgba(255, 255, 255, 0.9) !important;
     transition: all 0.3s ease;
-    padding: 0.5rem 1.2rem !important;
-    border-radius: 4px;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -212,6 +219,35 @@ body {
 /* Stats */
 .stat-card {
     border-left: 5px solid var(--golden) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.bg-success-light { background-color: rgba(46, 204, 113, 0.1); }
+.bg-navy-light { background-color: rgba(0, 51, 102, 0.1); }
+.bg-danger-light { background-color: rgba(231, 76, 60, 0.1); }
+
+.x-small {
+    font-size: 0.75rem;
+}
+
+/* Custom Table Styles */
+.table-light th {
+    background-color: #f8f9fa !important;
+    color: var(--text-muted) !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    border-top: none !important;
 }
 
 .stat-value {
@@ -310,6 +346,25 @@ body {
     .section-header { font-size: 1.4rem; }
     .auth-brand { font-size: 1.3rem; }
     .display-5 { font-size: 1.8rem; }
+}
+
+/* Toast Customization */
+.toast-container {
+    z-index: 9999;
+}
+
+.toast {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.toast.bg-success { background-color: #2ecc71 !important; color: white !important; }
+.toast.bg-danger { background-color: #e74c3c !important; color: white !important; }
+
+.btn-link {
+    text-decoration: none;
+    font-weight: 700;
 }
 
 
