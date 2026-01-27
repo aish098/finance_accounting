@@ -9,31 +9,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        :root {
-            --navy-blue: #001f3f;
-            --golden: #FFD700;
-        }
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
-        .navbar { background-color: var(--navy-blue); border-bottom: 3px solid var(--golden); }
-        .navbar-brand, .nav-link { color: white !important; }
-        .nav-link:hover { color: var(--golden) !important; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .btn-navy { background-color: var(--navy-blue); color: #ffffff; border: 2px solid var(--golden); }
-        .btn-navy:hover { background-color: var(--dark-golden); color: white; border-color: var(--dark-golden); }
-        .btn-outline-navy { background-color: transparent; color: var(--navy-blue); border: 2px solid var(--navy-blue); }
-        .btn-outline-navy:hover { background-color: var(--navy-blue); color: white; }
-        .btn-post { background-color: var(--navy-blue); color: #ffffff; border: 2px solid var(--golden); font-weight: 700; }
-        .btn-post:hover { background-color: var(--dark-golden); color: white; border-color: var(--dark-golden); }
-        .line-item-row { background-color: white; border-radius: 8px; margin-bottom: 0.5rem; transition: all 0.2s; }
-        .line-item-row:hover { background-color: #f1f3f5; }
-        .total-section { background-color: var(--navy-blue); color: white; border-radius: 8px; }
-        
-        @media (max-width: 991.98px) {
-            .navbar-toggler { border-color: rgba(255,255,255,0.1); }
-            .navbar-toggler-icon { filter: invert(1); }
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
@@ -48,7 +23,7 @@
                     <li class="nav-item"><a class="nav-link" href="accounts.html">Accounts</a></li>
                     <li class="nav-item"><a class="nav-link active" href="journal.html">Journal</a></li>
                     <li class="nav-item"><a class="nav-link" href="reports.html">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link" style="color: var(--golden) !important;" href="#" onclick="api.logout()">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link logout-link" href="#" onclick="api.logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
