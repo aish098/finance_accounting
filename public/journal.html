@@ -180,18 +180,27 @@
         async function loadRecentEntries() {
             const entries = await api.get('/journal');
             const list = document.getElementById('recent-entries-list');
-            list.innerHTML = entries.map(e => `
-                <a href="#" class="list-group-item list-group-item-action py-3 border-0 rounded mb-2 shadow-sm" onclick="viewEntry(${e.id})">
-                    <div class="d-flex w-100 justify-content-between mb-1">
-                        <h6 class="mb-1 fw-bold">${e.reference || 'No Ref'}</h6>
-                        <small class="text-muted">${e.entry_date.split('T')[0]}</small>
+            list.innerHTML = entries.map(e => {
+                const totalAmount = e.items ? e.items.reduce((sum, item) => sum + parseFloat(item.debit || 0), 0) : 0;
+                return `
+                <div class="list-group-item p-3 shadow-sm border-start border-4 border-navy" style="border-left-color: var(--navy-blue) !important;">
+                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 fw-bold text-navy">${e.reference || 'No Reference'}</h6>
+                        <span class="badge bg-golden text-navy">$${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                     </div>
-                    <p class="mb-1 small text-truncate">${e.description || 'No description provided'}</p>
-                </a>
-            `).join('');
+                    <div class="d-flex justify-content-between small text-muted mb-2">
+                        <span><i class="bi bi-calendar"></i> ${e.entry_date.split('T')[0]}</span>
+                    </div>
+                    <p class="mb-2 small text-dark">${e.description || 'No description'}</p>
+                    <div class="border-top pt-2 mt-2">
+                        <button class="btn btn-sm btn-outline-navy w-100 py-1" onclick="viewEntry(${e.id})">View Details</button>
+                    </div>
+                </div>
+                `;
+            }).join('');
             
             if (entries.length === 0) {
-                list.innerHTML = '<p class="text-muted text-center py-4">No recent entries</p>';
+                list.innerHTML = '<div class="text-center py-5 text-muted"><p>No recent journal entries found.</p></div>';
             }
         }
 

@@ -62,10 +62,10 @@
                 const tbody = document.querySelector('#accounts-table tbody');
                 tbody.innerHTML = accounts.map(a => `
                     <tr>
-                        <td><span class="badge bg-light text-dark font-monospace">${a.code}</span></td>
-                        <td class="fw-medium">${a.name}</td>
-                        <td><span class="badge rounded-pill bg-info text-dark">${a.type}</span></td>
-                        <td><span class="badge bg-secondary opacity-75">${a.normal_balance}</span></td>
+                        <td><span class="badge badge-account-code">${a.code}</span></td>
+                        <td class="fw-bold text-navy">${a.name}</td>
+                        <td><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
+                        <td><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
                     </tr>
                 `).join('');
             } catch (error) {
