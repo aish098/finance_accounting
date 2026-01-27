@@ -9,51 +9,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        :root {
-            --navy-blue: #001f3f;
-            --golden: #FFD700;
-        }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, var(--navy-blue) 0%, #003366 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .auth-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-            padding: 2.5rem;
-        }
-        .form-control:focus {
-            border-color: var(--navy-blue);
-            box-shadow: 0 0 0 0.25rem rgba(0,31,63,0.1);
-        }
-        .btn-navy {
-            background-color: var(--navy-blue);
-            color: #ffffff;
-            border: 2px solid var(--golden);
-            padding: 0.8rem;
-            font-weight: 600;
-        }
-        .btn-navy:hover {
-            background-color: var(--dark-golden);
-            color: white;
-            border-color: var(--dark-golden);
-        }
-        .brand-header {
-            color: var(--navy-blue);
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-    </style>
 </head>
-<body>
+<body class="auth-body">
     <div class="container d-flex justify-content-center">
         <div class="auth-card">
             <div class="text-center mb-4">
@@ -77,7 +34,7 @@
             
             <div class="text-center mt-3">
                 <p class="small text-muted mb-0">Don't have an account? 
-                    <a href="register.html" class="text-decoration-none fw-bold" style="color: var(--navy-blue);">Register</a>
+                    <a href="register.html" class="text-decoration-none fw-bold">Register</a>
                 </p>
             </div>
         </div>
