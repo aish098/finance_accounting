@@ -1,8 +1,8 @@
 const reportRepository = require('../repositories/reportRepository');
 
 class ReportService {
-    async generateTrialBalance() {
-        const data = await reportRepository.getTrialBalance();
+    async generateTrialBalance(userId) {
+        const data = await reportRepository.getTrialBalance(userId);
         
         const trialBalance = data.map(account => {
             const totalDebit = parseFloat(account.total_debit || 0);
@@ -38,9 +38,8 @@ class ReportService {
         };
     }
 
-    async generateProfitAndLoss(startDate, endDate) {
-        // Implementation for P&L
-        const data = await reportRepository.getTrialBalance(); // Using same aggregation for now
+    async generateProfitAndLoss(userId, startDate, endDate) {
+        const data = await reportRepository.getTrialBalance(userId);
         
         const revenue = [];
         const expenses = [];
@@ -51,7 +50,6 @@ class ReportService {
         data.forEach(account => {
             const totalDebit = parseFloat(account.total_debit || 0);
             const totalCredit = parseFloat(account.total_credit || 0);
-            const balance = totalCredit - totalDebit; // Revenue/Expense usually credit normal or debit normal
 
             if (account.type === 'Revenue') {
                 const net = totalCredit - totalDebit;
@@ -77,8 +75,8 @@ class ReportService {
         };
     }
 
-    async generateBalanceSheet() {
-        const data = await reportRepository.getTrialBalance();
+    async generateBalanceSheet(userId) {
+        const data = await reportRepository.getTrialBalance(userId);
         
         const assets = [];
         const liabilities = [];
@@ -89,7 +87,7 @@ class ReportService {
         let totalEquity = 0;
 
         // Calculate Net Income for Retained Earnings
-        const pnL = await this.generateProfitAndLoss();
+        const pnL = await this.generateProfitAndLoss(userId);
         const netIncome = pnL.netIncome;
 
         data.forEach(account => {
@@ -117,7 +115,7 @@ class ReportService {
             }
         });
 
-        // Add Net Income to Equity (Retained Earnings)
+        // Add Net Income to Equity
         equity.push({ name: 'Net Income (Current Period)', amount: netIncome });
         totalEquity += netIncome;
 
@@ -130,6 +128,10 @@ class ReportService {
             totalEquity,
             totalLiabilitiesAndEquity: totalLiabilities + totalEquity
         };
+    }
+
+    async getLedger(userId, accountId, startDate, endDate) {
+        return await reportRepository.getLedgerEntries(userId, accountId, startDate, endDate);
     }
 }
 
