@@ -369,6 +369,36 @@ body {
     color: var(--golden-dark);
 }
 
+/* Auth logo – larger size, centered, responsive */
+.auth-logo-wrap {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.auth-logo {
+    height: 240px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+.auth-tagline {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 576px) {
+    .auth-logo {
+        height: 200px;
+    }
+    .auth-tagline {
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+}
+
 /* Responsive Overrides */
 @media (max-width: 991.98px) {
     .navbar-brand { font-size: 1.25rem; }
