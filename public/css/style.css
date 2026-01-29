@@ -378,41 +378,43 @@ body {
     color: var(--golden-dark);
 }
 
-/* Auth logo – no space between logo and tagline */
+/* Auth logo – zero gap between logo and tagline (override Bootstrap) */
 .auth-logo-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     margin-bottom: 1.25rem;
-    gap: 0;
+    gap: 0 !important;
+    line-height: 0;
 }
-.auth-logo {
-    height: 240px;
-    width: auto;
+.auth-logo-wrap .auth-logo {
+    display: block !important;
+    height: 240px !important;
+    width: auto !important;
     max-width: 100%;
     object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    padding: 0;
-    border: 0;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: 0 none !important;
+    vertical-align: top;
 }
-.auth-tagline {
+.auth-logo-wrap .auth-tagline {
     color: var(--text-muted);
     font-size: 0.9rem;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     line-height: 1.4;
+    margin-top: 0 !important;
 }
 
 /* Auth responsive: mobile */
 @media (max-width: 575.98px) {
-    .auth-logo {
-        height: 200px;
+    .auth-logo-wrap .auth-logo {
+        height: 200px !important;
     }
-    .auth-tagline {
+    .auth-logo-wrap .auth-tagline {
         font-size: 0.85rem;
-        margin-top: 0;
     }
     .auth-logo-wrap {
         margin-bottom: 1rem;
@@ -421,8 +423,8 @@ body {
 
 /* Auth responsive: tablet/laptop */
 @media (min-width: 576px) and (max-width: 991.98px) {
-    .auth-logo {
-        height: 220px;
+    .auth-logo-wrap .auth-logo {
+        height: 220px !important;
     }
 }
 
