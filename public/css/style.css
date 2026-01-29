@@ -40,7 +40,7 @@ body {
 }
 
 .navbar-logo {
-    height: 56px;
+    height: 64px;
     width: auto;
     margin-right: 10px;
     transition: height 0.3s ease;
@@ -50,7 +50,7 @@ body {
 /* Navbar: tablet (576px–991px) */
 @media (max-width: 991.98px) {
     .navbar-logo {
-        height: 48px;
+        height: 54px;
     }
     .navbar-brand {
         font-size: 1rem;
@@ -60,7 +60,7 @@ body {
 /* Navbar: mobile (<576px) */
 @media (max-width: 575.98px) {
     .navbar-logo {
-        height: 40px;
+        height: 44px;
     }
     .navbar-brand {
         font-size: 0.95rem;
@@ -378,14 +378,14 @@ body {
     color: var(--golden-dark);
 }
 
-/* Auth logo – larger size, centered, no gap between logo and tagline */
+/* Auth logo – no space between logo and tagline */
 .auth-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin-bottom: 1.25rem;
-    line-height: 0;
-}
-.auth-logo-wrap .auth-tagline {
-    line-height: 1.4;
+    gap: 0;
 }
 .auth-logo {
     height: 240px;
@@ -394,13 +394,15 @@ body {
     object-fit: contain;
     display: block;
     margin: 0 auto;
-    vertical-align: bottom;
+    padding: 0;
+    border: 0;
 }
 .auth-tagline {
     color: var(--text-muted);
     font-size: 0.9rem;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
 }
 
 /* Auth responsive: mobile */
