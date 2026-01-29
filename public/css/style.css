@@ -40,7 +40,7 @@ body {
 }
 
 .navbar-logo {
-    height: 120px;
+    height: 100px;
     width: auto;
     margin-right: 12px;
     transition: height 0.3s ease;
