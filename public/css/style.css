@@ -40,9 +40,22 @@ body {
 }
 
 .navbar-logo {
-    height: 150px;
+    height: 120px;
     width: auto;
     margin-right: 12px;
+    transition: height 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-logo {
+        height: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-logo {
+        height: 60px;
+    }
 }
 
 .nav-link {
