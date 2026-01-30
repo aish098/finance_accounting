@@ -27,7 +27,23 @@ class JournalRepository {
             WHERE je.created_by = ?
             ORDER BY je.entry_date DESC, je.id DESC
         `, [userId]);
-        return rows;
+        
+        if (rows.length === 0) return [];
+
+        const entryIds = rows.map(r => r.id);
+        if (entryIds.length === 0) return [];
+
+        const placeholders = entryIds.map(() => '?').join(',');
+        const [itemRows] = await db.query(
+            `SELECT * FROM journal_items WHERE journal_entry_id IN (${placeholders})`,
+            entryIds
+        );
+
+        return rows.map(row => {
+            const rowId = Number(row.id);
+            const items = itemRows.filter(item => Number(item.journal_entry_id) === rowId);
+            return { ...row, items };
+        });
     }
 
     async getById(id, userId) {

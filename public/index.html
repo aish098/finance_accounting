@@ -173,13 +173,16 @@
                     tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions found.</td></tr>';
                 } else {
                     tbody.innerHTML = entries.slice(0, 5).map(e => {
-                        const totalAmount = e.items ? e.items.reduce((sum, item) => sum + parseFloat(item.debit || 0), 0) : 0;
+                        const totalDebit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.debit || 0) || 0, 0);
+                        const totalCredit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.credit || 0) || 0, 0);
+                        const totalAmount = totalDebit > 0 ? totalDebit : totalCredit;
+                        const amountStr = totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         return `
                         <tr>
-                            <td><span class="text-muted small">${e.entry_date.split('T')[0]}</span></td>
+                            <td><span class="text-muted small">${(e.entry_date || '').split('T')[0]}</span></td>
                             <td><span class="fw-bold text-navy">${e.reference || 'N/A'}</span></td>
                             <td><span class="text-truncate d-inline-block" style="max-width: 200px;">${e.description || 'No description'}</span></td>
-                            <td class="text-end fw-bold text-navy">$${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                            <td class="text-end fw-bold text-navy">$${amountStr}</td>
                         </tr>
                         `;
                     }).join('');
