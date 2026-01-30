@@ -39,10 +39,7 @@
 
     <main class="container mb-5">
         <div class="report-nav d-flex flex-wrap gap-2 justify-content-center mb-5">
-            <button class="btn btn-navy" id="btn-summary" onclick="showReport('summary')">
-                <i class="bi bi-grid-fill"></i> Summary
-            </button>
-            <button class="btn btn-outline-navy" id="btn-general-ledger" onclick="showReport('general-ledger')">
+            <button class="btn btn-navy" id="btn-general-ledger" onclick="showReport('general-ledger')">
                 <i class="bi bi-journal-text"></i> General Ledger
             </button>
             <button class="btn btn-outline-navy" id="btn-trial-balance" onclick="showReport('trial-balance')">
@@ -56,60 +53,8 @@
             </button>
         </div>
 
-        <!-- Summary Overview -->
-        <div id="summary" class="report-section active">
-            <div class="row g-4 mb-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card report-summary-card p-4 h-100">
-                        <div class="text-muted small fw-bold text-uppercase mb-2">Net Income</div>
-                        <h2 class="fw-bold text-navy mb-0" id="summary-net-income">Loading...</h2>
-                        <div class="mt-2"><a href="#" onclick="showReport('profit-loss')" class="text-decoration-none small fw-bold text-golden">View P&L →</a></div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card report-summary-card p-4 h-100" style="border-top-color: #2ecc71;">
-                        <div class="text-muted small fw-bold text-uppercase mb-2">Total Assets</div>
-                        <h2 class="fw-bold text-navy mb-0" id="summary-assets">Loading...</h2>
-                        <div class="mt-2"><a href="#" onclick="showReport('balance-sheet')" class="text-decoration-none small fw-bold text-golden">View Balance Sheet →</a></div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card report-summary-card p-4 h-100" style="border-top-color: #e74c3c;">
-                        <div class="text-muted small fw-bold text-uppercase mb-2">Total Liabilities</div>
-                        <h2 class="fw-bold text-navy mb-0" id="summary-liabilities">Loading...</h2>
-                        <div class="mt-2"><a href="#" onclick="showReport('balance-sheet')" class="text-decoration-none small fw-bold text-golden">View Balance Sheet →</a></div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card report-summary-card p-4 h-100" style="border-top-color: #3498db;">
-                        <div class="text-muted small fw-bold text-uppercase mb-2">Total Equity</div>
-                        <h2 class="fw-bold text-navy mb-0" id="summary-equity">Loading...</h2>
-                        <div class="mt-2"><a href="#" onclick="showReport('balance-sheet')" class="text-decoration-none small fw-bold text-golden">View Balance Sheet →</a></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="card p-4">
-                        <h4 class="fw-bold mb-4">Quick Analysis</h4>
-                        <div id="quick-analysis-content">
-                            <p class="text-muted">Generate reports to see detailed financial analysis here.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card p-4 bg-navy text-white total-section h-100">
-                        <h4 class="fw-bold mb-3">Financial Health</h4>
-                        <div id="health-indicator" class="display-6 fw-bold mb-3">...</div>
-                        <p class="opacity-75" id="health-message">Accounting systems online and balanced.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- General Ledger -->
-        <div id="general-ledger" class="report-section card p-4">
+        <div id="general-ledger" class="report-section active card p-4">
             <div class="mb-4">
                 <h2 class="section-header">General Ledger</h2>
                 <p class="text-muted small">Detailed record of all transactions for a specific account.</p>
@@ -273,9 +218,7 @@
 
         async function loadReport(type) {
             try {
-                if (type === 'summary') {
-                    await loadSummary();
-                } else if (type === 'trial-balance') {
+                if (type === 'trial-balance') {
                     const data = await api.get('/reports/trial-balance');
                     const tbody = document.querySelector('#tb-table tbody');
                     const filteredRows = data.rows.filter(r => Math.abs(r.debit) > 0.001 || Math.abs(r.credit) > 0.001);
@@ -351,53 +294,6 @@
             } catch (err) { console.error(err); }
         }
 
-        async function loadSummary() {
-            try {
-                const pl = await api.get('/reports/profit-loss');
-                const bs = await api.get('/reports/balance-sheet');
-                const tb = await api.get('/reports/trial-balance');
-
-                document.getElementById('summary-net-income').innerText = '$' + pl.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('summary-assets').innerText = '$' + bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('summary-liabilities').innerText = '$' + bs.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('summary-equity').innerText = '$' + bs.totalEquity.toLocaleString(undefined, {minimumFractionDigits: 2});
-
-                // Analysis
-                const analysisContent = document.getElementById('quick-analysis-content');
-                const isBalanced = Math.abs(tb.totals.debit - tb.totals.credit) < 0.01;
-                
-                analysisContent.innerHTML = `
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="small fw-bold">Profit Margin</span>
-                            <span class="small text-navy">${pl.totalRevenue > 0 ? ((pl.netIncome / pl.totalRevenue) * 100).toFixed(1) : 0}%</span>
-                        </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-golden" style="width: ${pl.totalRevenue > 0 ? Math.min(100, Math.max(0, (pl.netIncome / pl.totalRevenue) * 100)) : 0}%"></div>
-                        </div>
-                    </div>
-                    <div class="mb-0">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="small fw-bold">Debt-to-Equity</span>
-                            <span class="small text-navy">${bs.totalEquity > 0 ? (bs.totalLiabilities / bs.totalEquity).toFixed(2) : 'N/A'}</span>
-                        </div>
-                    </div>
-                `;
-
-                const healthIndicator = document.getElementById('health-indicator');
-                const healthMessage = document.getElementById('health-message');
-                
-                if (isBalanced) {
-                    healthIndicator.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i> Balanced';
-                    healthMessage.innerText = 'Total Debits equal Total Credits. Your books are healthy.';
-                } else {
-                    healthIndicator.innerHTML = '<i class="bi bi-exclamation-triangle-fill text-warning"></i> Unbalanced';
-                    healthMessage.innerText = 'Discrepancy detected between Debits and Credits. Please review Journal entries.';
-                }
-
-            } catch (err) { console.error('Summary Error:', err); }
-        }
-
         async function loadLedger() {
             const accountId = document.getElementById('ledger-account-select').value;
             if (!accountId) {
@@ -438,7 +334,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            showReport('summary');
+            showReport('general-ledger');
         });
     </script>
 </body>
