@@ -40,17 +40,21 @@ body {
 }
 
 .navbar-logo {
-    height: 64px;
+    height: 100px;
     width: auto;
     margin-right: 10px;
-    transition: height 0.3s ease;
+    margin-top: -20px;
+    margin-bottom: -20px;
+    transition: all 0.3s ease;
     object-fit: contain;
 }
 
 /* Navbar: tablet (576px–991px) */
 @media (max-width: 991.98px) {
     .navbar-logo {
-        height: 54px;
+        height: 80px;
+        margin-top: -15px;
+        margin-bottom: -15px;
     }
     .navbar-brand {
         font-size: 1rem;
@@ -60,7 +64,9 @@ body {
 /* Navbar: mobile (<576px) */
 @media (max-width: 575.98px) {
     .navbar-logo {
-        height: 44px;
+        height: 70px;
+        margin-top: -10px;
+        margin-bottom: -10px;
     }
     .navbar-brand {
         font-size: 0.95rem;
@@ -394,7 +400,7 @@ body {
     width: auto !important;
     max-width: 100%;
     object-fit: contain;
-    margin: 0 auto !important;
+    margin: -40px auto -70px !important;
     padding: 0 !important;
     border: 0 none !important;
     vertical-align: top;
@@ -411,20 +417,22 @@ body {
 /* Auth responsive: mobile */
 @media (max-width: 575.98px) {
     .auth-logo-wrap .auth-logo {
-        height: 200px !important;
+        height: 180px !important;
+        margin: -30px auto -50px !important;
     }
     .auth-logo-wrap .auth-tagline {
         font-size: 0.85rem;
     }
     .auth-logo-wrap {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 }
 
 /* Auth responsive: tablet/laptop */
 @media (min-width: 576px) and (max-width: 991.98px) {
     .auth-logo-wrap .auth-logo {
-        height: 220px !important;
+        height: 200px !important;
+        margin: -35px auto -60px !important;
     }
 }
 
