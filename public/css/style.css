@@ -40,21 +40,17 @@ body {
 }
 
 .navbar-logo {
-    height: 100px;
+    height: 72px;
     width: auto;
     margin-right: 10px;
-    margin-top: -20px;
-    margin-bottom: -20px;
-    transition: all 0.3s ease;
+    transition: height 0.3s ease;
     object-fit: contain;
 }
 
 /* Navbar: tablet (576px–991px) */
 @media (max-width: 991.98px) {
     .navbar-logo {
-        height: 80px;
-        margin-top: -15px;
-        margin-bottom: -15px;
+        height: 64px;
     }
     .navbar-brand {
         font-size: 1rem;
@@ -64,9 +60,7 @@ body {
 /* Navbar: mobile (<576px) */
 @media (max-width: 575.98px) {
     .navbar-logo {
-        height: 70px;
-        margin-top: -10px;
-        margin-bottom: -10px;
+        height: 56px;
     }
     .navbar-brand {
         font-size: 0.95rem;
@@ -436,22 +430,12 @@ body {
     }
 }
 
-/* Navbar logout button – compact on mobile (when navbar is collapsed) */
+/* Navbar logout button – normal size on mobile (not full-width) */
 @media (max-width: 991.98px) {
     .navbar .btn-red {
         width: auto !important;
-        padding: 0.3rem 0.65rem !important;
-        font-size: 0.65rem !important;
-    }
-    .navbar .btn-red i {
-        font-size: 0.75rem;
-        margin-right: 0.35rem !important;
-    }
-}
-@media (max-width: 575.98px) {
-    .navbar .btn-red {
-        padding: 0.25rem 0.5rem !important;
-        font-size: 0.6rem !important;
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.75rem !important;
     }
 }
 
