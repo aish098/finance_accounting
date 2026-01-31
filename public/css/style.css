@@ -40,7 +40,7 @@ body {
 }
 
 .navbar-logo {
-    height: 72px;
+    height: 88px;
     width: auto;
     margin-right: 10px;
     transition: height 0.3s ease;
@@ -50,7 +50,7 @@ body {
 /* Navbar: tablet (576px–991px) */
 @media (max-width: 991.98px) {
     .navbar-logo {
-        height: 64px;
+        height: 76px;
     }
     .navbar-brand {
         font-size: 1rem;
@@ -60,7 +60,7 @@ body {
 /* Navbar: mobile (<576px) */
 @media (max-width: 575.98px) {
     .navbar-logo {
-        height: 56px;
+        height: 64px;
     }
     .navbar-brand {
         font-size: 0.95rem;
