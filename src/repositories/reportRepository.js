@@ -16,11 +16,15 @@ class ReportRepository {
         const query = `
             SELECT 
                 a.id, a.code, a.name, a.type, a.normal_balance,
-                SUM(CASE WHEN je.id IS NOT NULL THEN ji.debit ELSE 0 END) as total_debit,
-                SUM(CASE WHEN je.id IS NOT NULL THEN ji.credit ELSE 0 END) as total_credit
+                COALESCE(SUM(t.debit), 0) as total_debit,
+                COALESCE(SUM(t.credit), 0) as total_credit
             FROM accounts a
-            LEFT JOIN journal_items ji ON a.id = ji.account_id
-            LEFT JOIN journal_entries je ON ji.journal_entry_id = je.id AND je.created_by = ? ${dateFilter}
+            LEFT JOIN (
+                SELECT ji.account_id, ji.debit, ji.credit
+                FROM journal_items ji
+                JOIN journal_entries je ON ji.journal_entry_id = je.id
+                WHERE je.created_by = ? ${dateFilter}
+            ) t ON a.id = t.account_id
             GROUP BY a.id, a.code, a.name, a.type, a.normal_balance
             ORDER BY a.code ASC
         `;
