@@ -11,6 +11,8 @@
     --text-muted: #6c757d;
     --border-color: #e9ecef;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --success-accent: #2ecc71;
+    --danger-accent: #e74c3c;
 }
 
 body {
@@ -104,9 +106,10 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* Welcome Card */
+
+/* Welcome Card – gradient + subtle pattern, prominent date */
 .welcome-card {
-    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-blue) 100%);
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-blue) 50%, var(--navy-light) 100%);
     color: var(--white);
     border-radius: 15px;
     position: relative;
@@ -114,10 +117,29 @@ body {
     border: none;
     box-shadow: 0 10px 30px rgba(0, 51, 102, 0.2);
 }
+.welcome-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+.welcome-card > * { position: relative; z-index: 1; }
 
 .welcome-card h1 {
     color: var(--golden) !important;
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.welcome-date-badge {
+    background-color: var(--golden) !important;
+    color: var(--navy-dark) !important;
+    border: none;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 #current-date {
@@ -126,7 +148,7 @@ body {
     border: none;
 }
 
-/* Buttons */
+/* Buttons – clear hierarchy, consistent spacing */
 .btn {
     padding: 0.6rem 1.5rem;
     font-weight: 700;
@@ -135,7 +157,9 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.85rem;
+    min-height: 44px;
 }
+.btn-sm { min-height: 38px; padding: 0.4rem 1rem; }
 
 .btn-navy {
     background-color: var(--navy-blue);
@@ -213,11 +237,29 @@ body {
     background-color: #fff;
 }
 
-/* Tables */
+/* Tables – alternating rows, sticky header */
 .table {
     border-collapse: separate;
     border-spacing: 0;
 }
+
+.table-responsive { position: relative; }
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--navy-dark) !important;
+    color: var(--white) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.table-responsive .table-light thead th {
+    background-color: #f8f9fa !important;
+    color: var(--text-muted) !important;
+}
+
+.table tbody tr:nth-child(even) { background-color: rgba(0, 51, 102, 0.02); }
+.table tbody tr:nth-child(odd) { background-color: var(--white); }
+.table tbody tr:hover { background-color: rgba(0, 51, 102, 0.04) !important; }
 
 .table thead th {
     background-color: var(--navy-dark);
@@ -259,17 +301,22 @@ body {
     font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-.badge-type-asset { background-color: #2ecc71; color: white; }
-.badge-type-liability { background-color: #e74c3c; color: white; }
+.badge-type-asset { background-color: var(--success-accent); color: white; }
+.badge-type-liability { background-color: var(--danger-accent); color: white; }
 .badge-type-equity { background-color: #3498db; color: white; }
 .badge-type-revenue { background-color: #f1c40f; color: #333; }
 .badge-type-expense { background-color: #9b59b6; color: white; }
 
-/* Stats */
+/* Stats – hover elevation, icons */
 .stat-card {
     border-left: 5px solid var(--golden) !important;
     position: relative;
     overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .stat-icon {
@@ -458,6 +505,18 @@ body {
     .display-5 { font-size: 1.8rem; }
 }
 
+/* Mobile – larger tap targets, simplified tables */
+@media (max-width: 575.98px) {
+    .btn, .nav-link, .form-control, .form-select {
+        min-height: 44px;
+    }
+    .btn-sm { min-height: 40px; }
+    .report-nav .btn { padding: 0.65rem 1rem; min-height: 44px; }
+    .table-responsive { font-size: 0.9rem; }
+    .table th, .table td { padding: 0.75rem 0.5rem; }
+    .welcome-date-badge { font-size: 0.85rem !important; padding: 0.5rem 0.75rem !important; }
+}
+
 /* Toast Customization */
 .toast-container {
     z-index: 9999;
@@ -477,14 +536,25 @@ body {
     font-weight: 700;
 }
 
-/* Reports Section */
+/* Reports – tabbed appearance */
+.report-nav {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
 .report-nav .btn {
-    border-radius: 50px;
+    border-radius: 8px 8px 0 0;
     padding: 0.6rem 1.2rem;
     font-size: 0.75rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+.report-nav .btn-navy {
+    border-color: var(--navy-blue);
+    border-bottom-color: var(--white);
+    margin-bottom: -2px;
 }
 
 .report-section {
@@ -550,6 +620,20 @@ body {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* Empty states – icon + message */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+}
+.empty-state-icon {
+    font-size: 4rem;
+    opacity: 0.4;
+    margin-bottom: 1rem;
+    color: var(--navy-light);
+}
+.empty-state p { margin: 0; font-size: 0.95rem; }
 
 /* Print styles for reports */
 @media print {

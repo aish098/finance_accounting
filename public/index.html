@@ -45,7 +45,7 @@
                     <p class="lead mb-0 opacity-75">Your financial overview is ready for review.</p>
                 </div>
                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <div id="current-date" class="badge bg-white text-navy p-2 px-3 fw-bold shadow-sm"></div>
+                    <div id="current-date" class="welcome-date-badge d-inline-block p-3 px-4 fw-bold"></div>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
             const tbody = document.getElementById('recent-transactions-body');
             if (!tbody) return;
             if (entries.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No transactions found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><i class="bi bi-journal-x empty-state-icon"></i><p>No transactions found.</p><p class="small mt-2">Post a journal entry to get started.</p></div></td></tr>';
             } else {
                 tbody.innerHTML = entries.map(e => {
                         const totalDebit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.debit || 0) || 0, 0);

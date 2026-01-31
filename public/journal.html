@@ -271,7 +271,7 @@
             }).join('');
             
             if (entries.length === 0) {
-                list.innerHTML = '<div class="text-center py-5 text-muted"><p>No recent journal entries found.</p></div>';
+                list.innerHTML = '<div class="empty-state py-5"><i class="bi bi-journal-plus empty-state-icon"></i><p>No recent journal entries.</p><p class="small mt-2">Create a journal entry above to get started.</p></div>';
             }
         }
 
