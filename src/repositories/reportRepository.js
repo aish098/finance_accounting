@@ -1,23 +1,22 @@
 const db = require('../config/db');
 
 class ReportRepository {
-    async getTrialBalance(userId) {
+    async getTrialBalance(userId, startDate, endDate) {
+        const params = [userId, userId, userId];
+        const dateFilter = ' AND (? IS NULL OR je.entry_date >= ?) AND (? IS NULL OR je.entry_date <= ?)';
+        params.push(startDate || null, startDate || null, endDate || null, endDate || null);
         const query = `
             SELECT 
-                a.id, 
-                a.code, 
-                a.name, 
-                a.type, 
-                a.normal_balance,
+                a.id, a.code, a.name, a.type, a.normal_balance,
                 SUM(CASE WHEN je.created_by = ? THEN ji.debit ELSE 0 END) as total_debit,
                 SUM(CASE WHEN je.created_by = ? THEN ji.credit ELSE 0 END) as total_credit
             FROM accounts a
             LEFT JOIN journal_items ji ON a.id = ji.account_id
-            LEFT JOIN journal_entries je ON ji.journal_entry_id = je.id
+            LEFT JOIN journal_entries je ON ji.journal_entry_id = je.id AND je.created_by = ? ${dateFilter}
             GROUP BY a.id, a.code, a.name, a.type, a.normal_balance
             ORDER BY a.code ASC
         `;
-        const [rows] = await db.query(query, [userId, userId]);
+        const [rows] = await db.query(query, params);
         return rows;
     }
 

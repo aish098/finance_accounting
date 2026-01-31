@@ -66,6 +66,23 @@ const api = {
         return await response.json();
     },
 
+    async delete(endpoint) {
+        const token = this.getToken();
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': token ? `Bearer ${token}` : '' }
+        });
+        if (response.status === 401) {
+            window.location.href = 'login.html';
+            return;
+        }
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'API Request Failed');
+        }
+        return await response.json();
+    },
+
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -73,6 +90,10 @@ const api = {
     },
 
     showToast(message, type = 'success') {
+        if (typeof bootstrap === 'undefined') {
+            alert(message);
+            return;
+        }
         let container = document.getElementById('toast-container');
         if (!container) {
             container = document.createElement('div');
@@ -87,7 +108,7 @@ const api = {
                 <div class="d-flex">
                     <div class="toast-body">
                         <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
-                        ${message}
+                        ${typeof message === 'string' ? message.replace(/</g, '&lt;').replace(/>/g, '&gt;') : message}
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>

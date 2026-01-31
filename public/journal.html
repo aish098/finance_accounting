@@ -96,17 +96,75 @@
         </div>
     </main>
 
+    <!-- Entry Detail Modal -->
+    <div class="modal fade" id="entryDetailModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-navy text-white">
+                    <h5 class="modal-title fw-bold">Journal Entry Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="entry-detail-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-navy" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-navy" id="btn-edit-entry" style="display:none;">
+                        <i class="bi bi-pencil me-2"></i>Edit
+                    </button>
+                    <button type="button" class="btn btn-red" id="btn-delete-entry" style="display:none;">
+                        <i class="bi bi-trash me-2"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script>
         let accounts = [];
+        let editingEntryId = null;
 
         async function init() {
             accounts = await api.get('/accounts');
-            addRow();
-            addRow();
+            const params = new URLSearchParams(window.location.search);
+            editingEntryId = params.get('edit');
+            if (editingEntryId) {
+                document.querySelector('h2.fw-bold').innerText = 'Edit Journal Entry';
+                document.querySelector('button[type="submit"]').innerHTML = 'Update Journal Entry <i class="bi bi-check-circle ms-2"></i>';
+                await loadEntryForEdit(editingEntryId);
+            } else {
+                document.getElementById('entry_date').value = new Date().toISOString().split('T')[0];
+                addRow();
+                addRow();
+            }
             loadRecentEntries();
+        }
+
+        async function loadEntryForEdit(id) {
+            try {
+                const entry = await api.get('/journal/' + id);
+                document.getElementById('entry_date').value = (entry.entry_date || '').split('T')[0];
+                document.getElementById('reference').value = entry.reference || '';
+                document.getElementById('description').value = entry.description || '';
+                const container = document.getElementById('line-items');
+                container.innerHTML = '';
+                (entry.items || []).forEach(item => {
+                    addRow();
+                    const rows = container.querySelectorAll('.line-item-row');
+                    const last = rows[rows.length - 1];
+                    last.querySelector('.account-select').value = item.account_id;
+                    last.querySelector('.debit-input').value = parseFloat(item.debit || 0) || '';
+                    last.querySelector('.credit-input').value = parseFloat(item.credit || 0) || '';
+                });
+                if ((entry.items || []).length < 2) addRow();
+                updateTotals();
+            } catch (err) {
+                api.showToast(err.message, 'error');
+                window.location.href = 'journal.html';
+            }
         }
 
         function addRow() {
@@ -177,9 +235,14 @@
             };
 
             try {
-                await api.post('/journal', data);
-                api.showToast('Journal Entry Posted successfully!');
-                setTimeout(() => location.reload(), 1500);
+                if (editingEntryId) {
+                    await api.put('/journal/' + editingEntryId, data);
+                    api.showToast('Journal entry updated successfully!', 'success');
+                } else {
+                    await api.post('/journal', data);
+                    api.showToast('Journal Entry Posted successfully!', 'success');
+                }
+                setTimeout(() => window.location.href = 'journal.html', 1000);
             } catch (err) {
                 api.showToast(err.message, 'error');
             }
@@ -212,13 +275,46 @@
             }
         }
 
+        let currentViewEntryId = null;
+
         async function viewEntry(id) {
-            const entry = await api.get('/journal/' + id);
-            let detail = `Date: ${entry.entry_date.split('T')[0]}\nRef: ${entry.reference}\nDesc: ${entry.description}\n\n`;
-            entry.items.forEach(i => {
-                detail += `${i.account_code} ${i.account_name}: ${i.debit > 0 ? 'Dr ' + i.debit : 'Cr ' + i.credit}\n`;
-            });
-            alert(detail);
+            try {
+                currentViewEntryId = id;
+                const entry = await api.get('/journal/' + id);
+                const body = document.getElementById('entry-detail-body');
+                let html = `<p><strong>Date:</strong> ${(entry.entry_date || '').split('T')[0]}</p>
+                    <p><strong>Reference:</strong> ${entry.reference || 'N/A'}</p>
+                    <p><strong>Description:</strong> ${entry.description || '—'}</p>
+                    <table class="table table-sm mt-3"><thead><tr><th>Account</th><th class="text-end">Debit</th><th class="text-end">Credit</th></tr></thead><tbody>`;
+                (entry.items || []).forEach(i => {
+                    const dr = parseFloat(i.debit || 0);
+                    const cr = parseFloat(i.credit || 0);
+                    html += `<tr><td>${i.account_code || ''} - ${i.account_name || ''}</td>
+                        <td class="text-end">${dr > 0 ? dr.toLocaleString(undefined,{minimumFractionDigits:2}) : '—'}</td>
+                        <td class="text-end">${cr > 0 ? cr.toLocaleString(undefined,{minimumFractionDigits:2}) : '—'}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                body.innerHTML = html;
+                document.getElementById('btn-edit-entry').style.display = 'inline-block';
+                document.getElementById('btn-edit-entry').onclick = () => { bootstrap.Modal.getInstance(document.getElementById('entryDetailModal')).hide(); window.location.href = 'journal.html?edit=' + id; };
+                document.getElementById('btn-delete-entry').style.display = 'inline-block';
+                document.getElementById('btn-delete-entry').onclick = () => deleteEntry(id);
+                new bootstrap.Modal(document.getElementById('entryDetailModal')).show();
+            } catch (err) {
+                api.showToast(err.message, 'error');
+            }
+        }
+
+        async function deleteEntry(id) {
+            if (!confirm('Are you sure you want to delete this journal entry? This cannot be undone.')) return;
+            try {
+                await api.delete('/journal/' + id);
+                bootstrap.Modal.getInstance(document.getElementById('entryDetailModal')).hide();
+                api.showToast('Journal entry deleted successfully', 'success');
+                loadRecentEntries();
+            } catch (err) {
+                api.showToast(err.message, 'error');
+            }
         }
 
         init();

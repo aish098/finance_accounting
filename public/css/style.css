@@ -536,4 +536,28 @@ body {
     transform: translateY(-5px);
 }
 
+/* Loading skeletons */
+.skeleton {
+    background: linear-gradient(90deg, var(--border-color) 25%, #f8f9fa 50%, var(--border-color) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+.skeleton-text { height: 1rem; }
+.skeleton-text-lg { height: 2rem; }
+.skeleton-row { height: 2.5rem; margin-bottom: 0.5rem; }
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Print styles for reports */
+@media print {
+    .navbar, .report-nav, .btn, .d-print-none, nav, .toast-container { display: none !important; }
+    .report-section { display: block !important; }
+    .report-section.active { display: block !important; }
+    body { background: white; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+}
+
 

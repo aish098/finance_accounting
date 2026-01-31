@@ -32,6 +32,30 @@ class JournalController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async update(req, res) {
+        try {
+            const { entry_date, reference, description, items } = req.body;
+            await journalService.updateJournalEntry(
+                req.params.id,
+                req.user.id,
+                { entry_date, reference, description },
+                items
+            );
+            res.json({ message: 'Journal entry updated successfully' });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            await journalService.deleteJournalEntry(req.params.id, req.user.id);
+            res.json({ message: 'Journal entry deleted successfully' });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new JournalController();

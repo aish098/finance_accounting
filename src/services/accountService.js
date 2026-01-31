@@ -10,12 +10,23 @@ class AccountService {
     }
 
     async createAccount(accountData) {
-        // Business logic: check if code already exists, etc.
+        const existing = await accountRepository.getByCode(accountData.code);
+        if (existing) throw new Error('Account code already exists');
         return await accountRepository.create(accountData);
     }
 
     async updateAccount(id, accountData) {
+        const existing = await accountRepository.getByCode(accountData.code, id);
+        if (existing) throw new Error('Account code already exists');
         return await accountRepository.update(id, accountData);
+    }
+
+    async deleteAccount(id) {
+        const hasTransactions = await accountRepository.hasTransactions(id);
+        if (hasTransactions) {
+            throw new Error('Cannot delete account that has journal transactions. Archive or reassign transactions first.');
+        }
+        return await accountRepository.delete(id);
     }
 }
 

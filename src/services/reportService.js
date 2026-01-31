@@ -1,8 +1,8 @@
 const reportRepository = require('../repositories/reportRepository');
 
 class ReportService {
-    async generateTrialBalance(userId) {
-        const data = await reportRepository.getTrialBalance(userId);
+    async generateTrialBalance(userId, startDate, endDate) {
+        const data = await reportRepository.getTrialBalance(userId, startDate, endDate);
         
         const trialBalance = data.map(account => {
             const totalDebit = parseFloat(account.total_debit || 0);
@@ -39,7 +39,7 @@ class ReportService {
     }
 
     async generateProfitAndLoss(userId, startDate, endDate) {
-        const data = await reportRepository.getTrialBalance(userId);
+        const data = await reportRepository.getTrialBalance(userId, startDate, endDate);
         
         const revenue = [];
         const expenses = [];
@@ -75,8 +75,8 @@ class ReportService {
         };
     }
 
-    async generateBalanceSheet(userId) {
-        const data = await reportRepository.getTrialBalance(userId);
+    async generateBalanceSheet(userId, startDate, endDate) {
+        const data = await reportRepository.getTrialBalance(userId, startDate, endDate);
         
         const assets = [];
         const liabilities = [];
@@ -87,7 +87,7 @@ class ReportService {
         let totalEquity = 0;
 
         // Calculate Net Income for Retained Earnings
-        const pnL = await this.generateProfitAndLoss(userId);
+        const pnL = await this.generateProfitAndLoss(userId, startDate, endDate);
         const netIncome = pnL.netIncome;
 
         data.forEach(account => {

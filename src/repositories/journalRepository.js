@@ -59,6 +59,29 @@ class JournalRepository {
 
         return { ...entryRows[0], items: itemRows };
     }
+
+    async updateEntry(entryId, entryData, items, connection) {
+        const { entry_date, reference, description } = entryData;
+        await connection.query(
+            'UPDATE journal_entries SET entry_date = ?, reference = ?, description = ? WHERE id = ?',
+            [entry_date, reference, description, entryId]
+        );
+        await connection.query('DELETE FROM journal_items WHERE journal_entry_id = ?', [entryId]);
+        for (const item of items) {
+            await connection.query(
+                'INSERT INTO journal_items (journal_entry_id, account_id, debit, credit) VALUES (?, ?, ?, ?)',
+                [entryId, item.account_id, item.debit || 0, item.credit || 0]
+            );
+        }
+    }
+
+    async deleteEntry(entryId, userId) {
+        const [result] = await db.query(
+            'DELETE FROM journal_entries WHERE id = ? AND created_by = ?',
+            [entryId, userId]
+        );
+        if (result.affectedRows === 0) throw new Error('Journal entry not found or access denied');
+    }
 }
 
 module.exports = new JournalRepository();

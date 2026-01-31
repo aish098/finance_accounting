@@ -38,6 +38,27 @@
     </nav>
 
     <main class="container mb-5">
+        <!-- Date Range Filter -->
+        <div class="card p-3 mb-4">
+            <div class="row align-items-end g-3">
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold">Start Date</label>
+                    <input type="date" id="report-start-date" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold">End Date</label>
+                    <input type="date" id="report-end-date" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-navy btn-sm" onclick="applyDateRange()">Apply Filter</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-navy btn-sm d-print-none" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i>Print / PDF
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="report-nav d-flex flex-wrap gap-2 justify-content-center mb-5">
             <button class="btn btn-navy" id="btn-general-ledger" onclick="showReport('general-ledger')">
                 <i class="bi bi-journal-text"></i> General Ledger
@@ -216,10 +237,24 @@
             loadReport(id);
         }
 
+        function getDateParams() {
+            const start = document.getElementById('report-start-date').value;
+            const end = document.getElementById('report-end-date').value;
+            let q = '';
+            if (start) q += 'startDate=' + encodeURIComponent(start);
+            if (end) q += (q ? '&' : '') + 'endDate=' + encodeURIComponent(end);
+            return q ? '?' + q : '';
+        }
+
+        function applyDateRange() {
+            loadReport(document.querySelector('.report-section.active')?.id || 'general-ledger');
+        }
+
         async function loadReport(type) {
             try {
+                const dateParams = getDateParams();
                 if (type === 'trial-balance') {
-                    const data = await api.get('/reports/trial-balance');
+                    const data = await api.get('/reports/trial-balance' + dateParams);
                     const tbody = document.querySelector('#tb-table tbody');
                     const filteredRows = data.rows.filter(r => Math.abs(r.debit) > 0.001 || Math.abs(r.credit) > 0.001);
                     
@@ -244,7 +279,7 @@
                         accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
                     select.value = currentValue;
                 } else if (type === 'profit-loss') {
-                    const data = await api.get('/reports/profit-loss');
+                    const data = await api.get('/reports/profit-loss' + dateParams);
                     const revBody = document.querySelector('#pl-revenue-table tbody');
                     if (data.revenue.length === 0) {
                         revBody.innerHTML = '<tr><td colspan="2" class="text-muted small ps-3">No revenue recorded</td></tr>';
@@ -269,7 +304,7 @@
                     
                     document.getElementById('pl-net-income').innerText = '$' + data.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
                 } else if (type === 'balance-sheet') {
-                    const data = await api.get('/reports/balance-sheet');
+                    const data = await api.get('/reports/balance-sheet' + dateParams);
                     
                     const assetBody = document.querySelector('#bs-assets-table tbody');
                     assetBody.innerHTML = data.assets.length ? data.assets.map(r => `
@@ -300,9 +335,9 @@
                 document.querySelector('#ledger-table tbody').innerHTML = '';
                 return;
             }
-
+            const dateParams = getDateParams();
             try {
-                const entries = await api.get(`/reports/ledger?accountId=${accountId}`);
+                const entries = await api.get(`/reports/ledger?accountId=${accountId}${dateParams ? dateParams.replace('?', '&') : ''}`);
                 const account = await api.get(`/accounts/${accountId}`);
                 const isDebitNormal = account.normal_balance === 'Debit';
                 
@@ -330,7 +365,10 @@
                 if (entries.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted small italic">No transactions found for this period.</td></tr>';
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) {
+                console.error(err);
+                api.showToast(err.message || 'Failed to load report', 'error');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
