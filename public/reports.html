@@ -278,6 +278,7 @@
                     select.innerHTML = '<option value="">-- Choose Account --</option>' + 
                         accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
                     select.value = currentValue;
+                    if (currentValue) loadLedger();
                 } else if (type === 'profit-loss') {
                     const data = await api.get('/reports/profit-loss' + dateParams);
                     const revBody = document.querySelector('#pl-revenue-table tbody');

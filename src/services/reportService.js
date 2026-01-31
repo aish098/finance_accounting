@@ -76,7 +76,8 @@ class ReportService {
     }
 
     async generateBalanceSheet(userId, startDate, endDate) {
-        const data = await reportRepository.getTrialBalance(userId, startDate, endDate);
+        // Balance sheet is "as of" a date. We use endDate for the snapshot.
+        const data = await reportRepository.getTrialBalance(userId, null, endDate);
         
         const assets = [];
         const liabilities = [];
@@ -85,10 +86,12 @@ class ReportService {
         let totalAssets = 0;
         let totalLiabilities = 0;
         let totalEquity = 0;
+        let cumulativeRevenue = 0;
+        let cumulativeExpenses = 0;
 
-        // Calculate Net Income for Retained Earnings
+        // Calculate Net Income for the specific requested period
         const pnL = await this.generateProfitAndLoss(userId, startDate, endDate);
-        const netIncome = pnL.netIncome;
+        const currentNetIncome = pnL.netIncome;
 
         data.forEach(account => {
             const totalDebit = parseFloat(account.total_debit || 0);
@@ -112,12 +115,25 @@ class ReportService {
                     equity.push({ name: account.name, amount: net });
                     totalEquity += net;
                 }
+            } else if (account.type === 'Revenue') {
+                cumulativeRevenue += (totalCredit - totalDebit);
+            } else if (account.type === 'Expense') {
+                cumulativeExpenses += (totalDebit - totalCredit);
             }
         });
 
+        // Retained Earnings logic (Total Net Income - Current Period Net Income)
+        const totalNetIncome = cumulativeRevenue - cumulativeExpenses;
+        const priorRetainedEarnings = totalNetIncome - currentNetIncome;
+
+        if (Math.abs(priorRetainedEarnings) > 0.001) {
+            equity.push({ name: 'Retained Earnings (Prior Periods)', amount: priorRetainedEarnings });
+            totalEquity += priorRetainedEarnings;
+        }
+
         // Add Net Income to Equity
-        equity.push({ name: 'Net Income (Current Period)', amount: netIncome });
-        totalEquity += netIncome;
+        equity.push({ name: 'Net Income (Current Period)', amount: currentNetIncome });
+        totalEquity += currentNetIncome;
 
         return {
             assets,
