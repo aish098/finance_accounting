@@ -56,6 +56,7 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th>Normal Balance</th>
+                            <th class="text-end">Balance</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -167,6 +168,7 @@
         async function loadAccounts() {
             try {
                 const accounts = await api.get('/accounts');
+                const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 const tbody = document.querySelector('#accounts-table tbody');
                 tbody.innerHTML = accounts.map(a => `
                     <tr>
@@ -174,6 +176,9 @@
                         <td class="fw-bold text-navy">${a.name}</td>
                         <td><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
                         <td><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
+                        <td class="text-end fw-bold ${a.balance < 0 ? 'text-danger' : 'text-success'}">
+                            ${formatter.format(Math.abs(a.balance))}${a.balance < 0 ? ' (Dr)' : ''}
+                        </td>
                         <td class="text-end">
                             <button class="btn btn-sm btn-outline-navy me-1" onclick="editAccount(${a.id})"><i class="bi bi-pencil"></i></button>
                             <button class="btn btn-sm btn-outline-danger" onclick="deleteAccount(${a.id})"><i class="bi bi-trash"></i></button>

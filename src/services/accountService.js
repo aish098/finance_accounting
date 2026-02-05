@@ -2,7 +2,13 @@ const accountRepository = require('../repositories/accountRepository');
 
 class AccountService {
     async getAllAccounts() {
-        return await accountRepository.getAll();
+        const accounts = await accountRepository.getAll();
+        return accounts.map(account => {
+            const balance = account.normal_balance === 'Debit' 
+                ? account.total_debit - account.total_credit
+                : account.total_credit - account.total_debit;
+            return { ...account, balance };
+        });
     }
 
     async getAccountById(id) {

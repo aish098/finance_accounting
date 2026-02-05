@@ -2,7 +2,15 @@ const db = require('../config/db');
 
 class AccountRepository {
     async getAll() {
-        const [rows] = await db.query('SELECT * FROM accounts ORDER BY code ASC');
+        const [rows] = await db.query(`
+            SELECT a.*, 
+                COALESCE(SUM(ji.debit), 0) as total_debit, 
+                COALESCE(SUM(ji.credit), 0) as total_credit
+            FROM accounts a
+            LEFT JOIN journal_items ji ON a.id = ji.account_id
+            GROUP BY a.id
+            ORDER BY a.code ASC
+        `);
         return rows;
     }
 

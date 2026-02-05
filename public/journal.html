@@ -42,7 +42,12 @@
             <!-- Entry Form -->
             <div class="col-lg-8">
                 <div class="card p-4">
-                    <h2 class="fw-bold mb-4">New Journal Entry</h2>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold mb-0">New Journal Entry</h2>
+                        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#adjustingEntryHelp">
+                            <i class="bi bi-question-circle me-1"></i>What's this?
+                        </button>
+                    </div>
                     <form id="journal-form">
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -133,6 +138,80 @@
                     <button type="button" class="btn btn-red" id="btn-delete-entry" style="display:none;">
                         <i class="bi bi-trash me-2"></i>Delete
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adjusting Entry Help Modal -->
+    <div class="modal fade" id="adjustingEntryHelp" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-info-circle me-2"></i>Guide: Adjusting Journal Entries</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6><strong>What are Adjusting Journal Entries (AJE)?</strong></h6>
+                    <p>Adjusting entries are made at the end of an accounting period to record revenues and expenses that have occurred but are not yet recorded.</p>
+                    
+                    <h6 class="mt-4"><strong>Key Rules:</strong></h6>
+                    <ul>
+                        <li>Must affect at least one <strong>Income Statement</strong> account (Revenue/Expense) and one <strong>Balance Sheet</strong> account (Asset/Liability).</li>
+                        <li><strong>Cash</strong> account should never be used in adjusting entries.</li>
+                        <li>Debits must always equal Credits.</li>
+                    </ul>
+
+                    <h6 class="mt-4"><strong>Common Examples:</strong></h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Scenario</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Accrued Expense (e.g. Salaries)</td>
+                                    <td>Expense Account</td>
+                                    <td>Liability (Payable)</td>
+                                </tr>
+                                <tr>
+                                    <td>Accrued Revenue (e.g. Interest)</td>
+                                    <td>Asset (Receivable)</td>
+                                    <td>Revenue Account</td>
+                                </tr>
+                                <tr>
+                                    <td>Prepaid Expense Expiration (e.g. Rent)</td>
+                                    <td>Expense Account</td>
+                                    <td>Asset (Prepaid)</td>
+                                </tr>
+                                <tr>
+                                    <td>Unearned Revenue Earned</td>
+                                    <td>Liability (Unearned)</td>
+                                    <td>Revenue Account</td>
+                                </tr>
+                                <tr>
+                                    <td>Depreciation</td>
+                                    <td>Depreciation Expense</td>
+                                    <td>Accumulated Depreciation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="mt-4"><strong>How to record in this system:</strong></h6>
+                    <ol>
+                        <li>Toggle the <strong>Adjusting Entry</strong> switch to "ON".</li>
+                        <li>Select the appropriate accounts (system will block Cash selections).</li>
+                        <li>Ensure the date is the last day of your accounting period.</li>
+                        <li>Click <strong>Post Journal Entry</strong>.</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-navy" data-bs-dismiss="modal">I Understand</button>
                 </div>
             </div>
         </div>
