@@ -276,10 +276,10 @@ body {
 .table thead th:last-child { border-radius: 0 8px 0 0; }
 
 .table tbody td {
-    padding: 1.2rem 1rem;
+    padding: 0.8rem 1rem;
     vertical-align: middle;
     border-bottom: 1px solid var(--border-color);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .table-hover tbody tr:hover {
