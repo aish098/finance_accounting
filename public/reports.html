@@ -319,17 +319,27 @@
                     const tbody = document.querySelector('#atb-table tbody');
                     const format = (num) => num > 0.001 ? num.toLocaleString(undefined, {minimumFractionDigits: 2}) : '-';
                     
-                    tbody.innerHTML = data.rows.map(r => `
-                        <tr>
-                            <td class="fw-bold ps-3 text-navy">${r.account_code} - ${r.account_name}</td>
-                            <td class="text-end">${format(r.unadjusted_debit)}</td>
-                            <td class="text-end">${format(r.unadjusted_credit)}</td>
-                            <td class="text-end text-info">${format(r.adjusting_debit)}</td>
-                            <td class="text-end text-info">${format(r.adjusting_credit)}</td>
-                            <td class="text-end fw-bold">${format(r.adjusted_debit)}</td>
-                            <td class="text-end fw-bold">${format(r.adjusted_credit)}</td>
-                        </tr>
-                    `).join('');
+                    const filteredRows = data.rows.filter(r => 
+                        Math.abs(r.unadjusted_debit) > 0.001 || Math.abs(r.unadjusted_credit) > 0.001 ||
+                        Math.abs(r.adjusting_debit) > 0.001 || Math.abs(r.adjusting_credit) > 0.001 ||
+                        Math.abs(r.adjusted_debit) > 0.001 || Math.abs(r.adjusted_credit) > 0.001
+                    );
+
+                    if (filteredRows.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted italic">No account balances found.</td></tr>';
+                    } else {
+                        tbody.innerHTML = filteredRows.map(r => `
+                            <tr>
+                                <td class="fw-bold ps-3 text-navy">${r.account_code} - ${r.account_name}</td>
+                                <td class="text-end">${format(r.unadjusted_debit)}</td>
+                                <td class="text-end">${format(r.unadjusted_credit)}</td>
+                                <td class="text-end text-info">${format(r.adjusting_debit)}</td>
+                                <td class="text-end text-info">${format(r.adjusting_credit)}</td>
+                                <td class="text-end fw-bold">${format(r.adjusted_debit)}</td>
+                                <td class="text-end fw-bold">${format(r.adjusted_credit)}</td>
+                            </tr>
+                        `).join('');
+                    }
 
                     document.getElementById('atb-unadjusted-debit').innerText = format(data.totals.unadjusted_debit);
                     document.getElementById('atb-unadjusted-credit').innerText = format(data.totals.unadjusted_credit);
