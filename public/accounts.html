@@ -177,7 +177,8 @@
                         <td><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
                         <td><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
                         <td class="text-end fw-bold ${a.balance < 0 ? 'text-danger' : 'text-success'}">
-                            ${formatter.format(Math.abs(a.balance))}${a.balance < 0 ? ' (Dr)' : ''}
+                            ${formatter.format(Math.abs(a.balance))}
+                            ${a.balance < 0 ? (a.normal_balance === 'Debit' ? ' (Cr)' : ' (Dr)') : ''}
                         </td>
                         <td class="text-end">
                             <button class="btn btn-sm btn-outline-navy me-1" onclick="editAccount(${a.id})"><i class="bi bi-pencil"></i></button>
