@@ -899,165 +899,129 @@ body {
 @media print {}
 
 /* =========================================
-   Fixed Layout Table Styles (Migrated from accounts.html)
+   Fixed Layout Table Styles (User Provided)
    ========================================= */
-.page-title {
-    color: var(--navy-blue);
-    font-weight: 800;
-    font-size: 2.2rem;
-    letter-spacing: -0.8px;
-    text-transform: none;
-}
 
-/* Final Redesign - Forced Update (v2) */
-.accounts-table-wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
-    overflow-x: auto;
-}
-
-.accounts-table-fixed {
-    width: 1100px;
-    /* Strict fixed width */
+.coa-table {
+    width: 100%;
+    border-collapse: collapse;
     table-layout: fixed;
-    /* Enforce column widths */
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    /* 🔥 MAIN FIX */
+    font-size: 16px;
+    background: white;
 }
 
-/* HEADER STYLING - Clean Modern */
-.accounts-table-fixed thead th {
-    background-color: #f8f9fa !important;
-    color: #495057 !important;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 1rem 1rem !important;
-    border-bottom: 2px solid #dee2e6 !important;
+/* HEADER */
+.coa-table thead th {
+    background: #0b2c5f;
+    /* Navy */
+    color: white;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 3px solid #f4c430;
+    /* Gold */
+}
+
+/* BODY */
+.coa-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
     vertical-align: middle;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* Added for alignment */
 }
 
-.accounts-table-fixed thead th.text-end {
-    text-align: right !important;
+/* COLUMN WIDTHS (IMPORTANT) */
+.coa-table th:nth-child(1),
+.coa-table td:nth-child(1) {
+    width: 15%;
 }
 
-.accounts-table-fixed thead th.text-center {
-    text-align: center !important;
+.coa-table th:nth-child(2),
+.coa-table td:nth-child(2) {
+    width: 35%;
 }
 
-/* BODY STYLING */
-.accounts-table-fixed tbody tr {
-    background-color: #ffffff;
-    transition: background-color 0.15s ease-in-out;
+.coa-table th:nth-child(3),
+.coa-table td:nth-child(3) {
+    width: 15%;
 }
 
-.accounts-table-fixed tbody tr:nth-child(even) {
-    background-color: #ffffff;
+.coa-table th:nth-child(4),
+.coa-table td:nth-child(4) {
+    width: 20%;
 }
 
-.accounts-table-fixed tbody tr:hover {
-    background-color: #f1f3f5 !important;
+.coa-table th:nth-child(5),
+.coa-table td:nth-child(5) {
+    width: 15%;
+    text-align: center;
 }
 
-.accounts-table-fixed tbody td {
-    color: #343a40;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.85rem 1rem !important;
-    border-bottom: 1px solid #ebedef;
-    vertical-align: middle;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left;
-}
-
-/* TYPOGRAPHY HELPERS */
-.accounts-table-fixed .fw-mono {
-    color: var(--navy-blue) !important;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
+/* BADGES */
+.badge {
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 0.95rem;
-    /* Increased mono font */
-    letter-spacing: -0.5px;
+    display: inline-block;
 }
 
-/* COMPONENT HELPERS */
-.accounts-table-fixed .badge-soft {
-    padding: 0.4rem 0.6rem !important;
-    font-size: 0.85rem !important;
-    font-weight: 600;
-    border-radius: 6px;
+.asset {
+    background: #e8fff3;
+    color: #0f9d58;
 }
 
-.accounts-table-fixed .pill-balance {
-    padding: 0.35rem 0.6rem !important;
-    font-size: 0.8rem !important;
-    font-weight: 700;
+.liability {
+    background: #fef2f2;
+    color: #991b1b;
 }
 
-.accounts-table-fixed .btn-link {
-    padding: 0.2rem !important;
-    color: var(--navy-light);
-    transition: color 0.2s ease;
+.equity {
+    background: #eff6ff;
+    color: #1d3a9c;
 }
 
-.accounts-table-fixed .btn-link:hover {
-    color: var(--navy-blue);
+.revenue {
+    background: #fffbeb;
+    color: #964410;
 }
 
-.accounts-table-fixed .btn-link.text-danger:hover {
-    color: #dc3545;
+.expense {
+    background: #faf5ff;
+    color: #621d9a;
 }
 
-/* STRICT COLUMN WIDTHS */
-.col-code {
-    width: 130px;
-    text-align: left;
-    padding-left: 1rem !important;
+/* Balance Badges */
+.debit {
+    background: #ecfdf5;
+    color: #047857;
 }
 
-.col-name {
-    width: 550px;
-    text-align: left;
+.credit {
+    background: #fef2f2;
+    color: #9b1e1e;
 }
 
-.col-type {
-    width: 150px;
-    text-align: left;
+/* ACTION ICONS */
+.actions {
+    font-size: 18px;
+    cursor: pointer;
 }
 
-.col-balance {
-    width: 150px;
-    text-align: left;
+/* ROW HOVER */
+.coa-table tbody tr:hover {
+    background: #f8fafc;
 }
 
-.col-actions {
-    width: 120px;
-    text-align: right;
-    padding-right: 1rem !important;
-}
-
-/* Overrides */
-thead .col-code {
-    padding-left: 1rem !important;
-}
-
-thead .col-actions {
-    padding-right: 1rem !important;
-}
-
+/* Responsive adjustments */
 @media (max-width: 992px) {
     .accounts-table-wrapper {
         overflow-x: auto;
+    }
+
+    .coa-table {
+        min-width: 800px;
+        /* Ensure fixed layout works on small screens by scrolling */
     }
 }
