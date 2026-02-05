@@ -43,8 +43,8 @@
         .custom-table thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
-            padding: 0.85rem 0.5rem !important;
-            /* Slightly reduced horizontal padding for 'close' feel */
+            padding: 0.85rem 0.4rem !important;
+            /* Reduced horizontal padding to 0.4rem */
             text-transform: uppercase;
             font-weight: 700;
             font-size: 0.85rem;
@@ -87,7 +87,7 @@
 
         .custom-table tbody td {
             color: var(--navy-dark);
-            padding: 0.8rem 0.5rem !important;
+            padding: 0.8rem 0.4rem !important;
             /* Matches header padding */
             border-bottom: 1px solid #f0f0f0;
             /* Softer border */
@@ -142,53 +142,52 @@
             color: #dc3545;
         }
 
-        /* Column Widths - Close Alignment Strategy */
+        /* Column Widths - Fixed Pixels (Total 1100px) */
         .col-code {
-            width: 12%;
+            width: 130px;
             text-align: left;
-            padding-left: 1.5rem !important;
+            padding-left: 1rem !important;
         }
 
-        /* Extra padding for edge */
         .col-name {
-            width: 43%;
+            width: 550px;
             text-align: left;
         }
 
         .col-type {
-            width: 15%;
+            width: 150px;
             text-align: left;
         }
 
         .col-balance {
-            width: 15%;
+            width: 150px;
             text-align: left;
         }
 
         .col-actions {
-            width: 15%;
+            width: 120px;
             text-align: right;
-            padding-right: 1.5rem !important;
+            padding-right: 1rem !important;
         }
-
-        /* Extra padding for edge */
 
         /* Header specific padding overrides to match cells */
         thead .col-code {
-            padding-left: 1.5rem !important;
+            padding-left: 1rem !important;
         }
 
         thead .col-actions {
-            padding-right: 1.5rem !important;
+            padding-right: 1rem !important;
         }
 
         @media (max-width: 992px) {
+
+            /* Maintain proportions on smaller screens (approximate) */
             .col-code {
-                width: 15%;
+                width: 12%;
             }
 
             .col-name {
-                width: 35%;
+                width: 45%;
             }
 
             .col-type {
@@ -196,11 +195,11 @@
             }
 
             .col-balance {
-                width: 20%;
+                width: 15%;
             }
 
             .col-actions {
-                width: 15%;
+                width: 13%;
             }
         }
 
