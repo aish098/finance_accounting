@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,7 @@
         }
 
         .custom-table-container {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -32,20 +33,22 @@
             background-color: #ffffff;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
             table-layout: auto;
         }
 
         .custom-table thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
-            padding: 0.4rem 0.6rem !important;
+            padding: 0.5rem 0.6rem !important;
             text-transform: uppercase;
             font-weight: 700;
             font-size: 0.7rem;
             letter-spacing: 0.5px;
             border-bottom: 3px solid var(--golden) !important;
             vertical-align: middle;
+            white-space: nowrap;
+            /* Prevent wrapping for cleaner alignment */
         }
 
         .custom-table tbody tr {
@@ -63,7 +66,7 @@
 
         .custom-table tbody td {
             color: var(--navy-dark);
-            padding: 0.35rem 0.6rem !important;
+            padding: 0.45rem 0.6rem !important;
             border-bottom: 1px solid #edf2f7;
             font-weight: 500;
             font-size: 0.8rem;
@@ -81,13 +84,13 @@
 
         /* Compact Badge Overrides */
         .custom-table .badge-soft {
-            padding: 0.2rem 0.5rem !important;
+            padding: 0.2rem 0.6rem !important;
             font-size: 0.7rem !important;
             font-weight: 600;
         }
 
         .custom-table .pill-balance {
-            padding: 0.15rem 0.45rem !important;
+            padding: 0.15rem 0.55rem !important;
             font-size: 0.65rem !important;
             font-weight: 700;
         }
@@ -103,23 +106,55 @@
             transform: scale(1.1);
         }
 
-        /* Column Widths */
-        .col-code { width: 90px; }
-        .col-name { width: auto; }
-        .col-type { width: 130px; }
-        .col-balance { width: 120px; }
-        .col-actions { width: 80px; }
+        /* Column Widths - Optimized */
+        .col-code {
+            width: 120px;
+        }
+
+        .col-name {
+            width: auto;
+        }
+
+        .col-type {
+            width: 110px;
+        }
+
+        .col-balance {
+            width: 140px;
+        }
+
+        .col-actions {
+            width: 80px;
+        }
 
         @media (max-width: 768px) {
-            .page-title { font-size: 1.6rem; }
-            .col-code { width: 70px; }
-            .col-type { display: none; }
-            .col-balance { width: 90px; }
-            .col-actions { width: 70px; }
-            .custom-table-container { padding: 0; }
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .col-code {
+                width: 80px;
+            }
+
+            .col-type {
+                display: none;
+            }
+
+            .col-balance {
+                width: 100px;
+            }
+
+            .col-actions {
+                width: 70px;
+            }
+
+            .custom-table-container {
+                padding: 0;
+            }
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
         <div class="container">
@@ -131,10 +166,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-speedometer2"></i>Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="accounts.html"><i class="bi bi-list-columns-reverse"></i>Accounts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="journal.html"><i class="bi bi-plus-circle"></i>Journal</a></li>
-                    <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph"></i>Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i
+                                class="bi bi-speedometer2"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="accounts.html"><i
+                                class="bi bi-list-columns-reverse"></i>Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="journal.html"><i
+                                class="bi bi-plus-circle"></i>Journal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html"><i
+                                class="bi bi-file-earmark-bar-graph"></i>Reports</a></li>
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         <a class="btn btn-red btn-sm w-100" href="#" onclick="api.logout()">
                             <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
@@ -162,8 +201,10 @@
                 <div class="row g-2">
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="account-search" class="form-control border-start-0 ps-0" placeholder="Filter by name or code..." onkeyup="filterAccounts()">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" id="account-search" class="form-control border-start-0 ps-0"
+                                placeholder="Filter by name or code..." onkeyup="filterAccounts()">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -216,11 +257,13 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label mb-1">Account Code</label>
-                                <input type="text" id="account-code" class="form-control" placeholder="e.g. 1001" required maxlength="10">
+                                <input type="text" id="account-code" class="form-control" placeholder="e.g. 1001"
+                                    required maxlength="10">
                             </div>
                             <div class="col-md-8">
                                 <label class="form-label mb-1">Account Name</label>
-                                <input type="text" id="account-name" class="form-control" placeholder="e.g. Cash in Bank" required>
+                                <input type="text" id="account-name" class="form-control"
+                                    placeholder="e.g. Cash in Bank" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label mb-1">Account Type</label>
@@ -243,12 +286,14 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label mb-1">Description</label>
-                                <textarea id="account-description" class="form-control" rows="2" placeholder="Account purpose or details..."></textarea>
+                                <textarea id="account-description" class="form-control" rows="2"
+                                    placeholder="Account purpose or details..."></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer border-top-0 p-4 pt-0">
-                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-secondary px-4"
+                            data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-navy px-4">Save Account</button>
                     </div>
                 </form>
@@ -288,7 +333,7 @@
             document.getElementById('account-type').value = account ? account.type : '';
             document.getElementById('account-normal-balance').value = account ? account.normal_balance : '';
             document.getElementById('account-description').value = account ? (account.description || '') : '';
-            
+
             const modal = new bootstrap.Modal(document.getElementById('accountModal'));
             modal.show();
         }
@@ -307,13 +352,13 @@
         function filterAccounts() {
             const searchTerm = document.getElementById('account-search').value.toLowerCase();
             const filterType = document.getElementById('filter-type').value;
-            
+
             const filtered = allAccounts.filter(a => {
                 const matchesSearch = a.name.toLowerCase().includes(searchTerm) || a.code.toLowerCase().includes(searchTerm);
                 const matchesType = !filterType || a.type === filterType;
                 return matchesSearch && matchesType;
             });
-            
+
             renderAccounts(filtered);
         }
 
@@ -355,7 +400,7 @@
             try {
                 const tbody = document.querySelector('#accounts-table tbody');
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5"><div class="spinner-border spinner-border-sm text-navy" role="status"></div> Loading...</td></tr>';
-                
+
                 allAccounts = await api.get('/accounts');
                 filterAccounts(); // Initial render with filters
             } catch (err) {
@@ -392,4 +437,5 @@
         loadAccounts();
     </script>
 </body>
+
 </html>
