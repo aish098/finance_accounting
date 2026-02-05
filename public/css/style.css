@@ -587,9 +587,42 @@ body {
 .toast.bg-success { background-color: #2ecc71 !important; color: white !important; }
 .toast.bg-danger { background-color: #e74c3c !important; color: white !important; }
 
+.text-navy { color: var(--navy-blue) !important; }
+.bg-navy { background-color: var(--navy-blue) !important; }
+.fw-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+/* QuickBooks Style refinements */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    font-size: 0.8rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.75rem 1rem;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+    font-size: 0.9rem;
+}
+
 .btn-link {
-    text-decoration: none;
-    font-weight: 700;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.btn-link:hover {
+    transform: scale(1.1);
 }
 
 /* Reports – tabbed appearance */
