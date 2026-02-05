@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
@@ -49,11 +49,11 @@
                 </button>
             </div>
             <div class="table-responsive">
-                <table id="accounts-table" class="table table-hover align-middle mb-0">
+                <table id="accounts-table" class="table table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
                     <thead>
                         <tr>
-                            <th style="width: 10%;">Code</th>
-                            <th style="min-width: 250px;">Account Name</th>
+                            <th style="width: 15%;">Code</th>
+                            <th style="width: 40%;">Account Name</th>
                             <th style="width: 15%;" class="text-center">Type</th>
                             <th style="width: 15%;" class="text-center">Balance</th>
                             <th style="width: 15%;" class="text-end">Actions</th>
@@ -171,7 +171,7 @@
                 tbody.innerHTML = accounts.map(a => `
                     <tr>
                         <td class="text-nowrap"><span class="badge badge-account-code">${a.code}</span></td>
-                        <td class="fw-bold text-navy text-truncate">${a.name}</td>
+                        <td class="fw-bold text-navy">${a.name}</td>
                         <td class="text-center text-nowrap"><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
                         <td class="text-center text-nowrap"><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
                         <td class="text-end text-nowrap">
