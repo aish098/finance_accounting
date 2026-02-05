@@ -55,14 +55,14 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="accounts-table" class="table table-hover align-middle mb-0">
+                <table id="accounts-table" class="table table-hover align-middle mb-0" style="table-layout: fixed;">
                     <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Normal Balance</th>
-                            <th class="text-end">Actions</th>
+                            <th style="width: 15%;">Code</th>
+                            <th style="width: 45%;">Account Name</th>
+                            <th style="width: 15%;">Type</th>
+                            <th style="width: 15%;">Normal Bal</th>
+                            <th style="width: 10%;" class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,17 +195,17 @@
             const tbody = document.querySelector('#accounts-table tbody');
             tbody.innerHTML = accounts.map(a => `
                 <tr>
-                    <td style="width: 120px;"><span class="badge badge-account-code px-2 py-1">${a.code}</span></td>
-                    <td>
+                    <td class="text-truncate"><span class="badge badge-account-code px-2 py-1">${a.code}</span></td>
+                    <td class="text-truncate">
                         <div class="fw-bold text-navy">${a.name}</div>
-                        ${a.description ? `<div class="text-muted x-small">${a.description}</div>` : ''}
+                        ${a.description ? `<div class="text-muted x-small text-truncate" title="${a.description}">${a.description}</div>` : ''}
                     </td>
                     <td><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
                     <td><span class="badge bg-light text-dark border-0 shadow-sm x-small">${a.normal_balance}</span></td>
                     <td class="text-end">
                         <div class="btn-group">
-                            <button class="btn btn-sm btn-outline-navy p-1 px-2" onclick="editAccount(${a.id})" title="Edit"><i class="bi bi-pencil-square"></i></button>
-                            <button class="btn btn-sm btn-outline-danger p-1 px-2" onclick="deleteAccount(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-sm btn-outline-navy p-1 px-2 border-0" onclick="editAccount(${a.id})" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-sm btn-outline-danger p-1 px-2 border-0" onclick="deleteAccount(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>
                         </div>
                     </td>
                 </tr>
