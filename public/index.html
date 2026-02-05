@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=9">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
         <div class="container">
@@ -23,10 +25,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-speedometer2"></i>Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="accounts.html"><i class="bi bi-list-columns-reverse"></i>Accounts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="journal.html"><i class="bi bi-plus-circle"></i>Journal</a></li>
-                    <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph"></i>Reports</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i
+                                class="bi bi-speedometer2"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="accounts.html"><i
+                                class="bi bi-list-columns-reverse"></i>Accounts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="journal.html"><i
+                                class="bi bi-plus-circle"></i>Journal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reports.html"><i
+                                class="bi bi-file-earmark-bar-graph"></i>Reports</a></li>
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         <a class="btn btn-red btn-sm w-100" href="#" onclick="api.logout()">
                             <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
@@ -90,7 +96,8 @@
                             <h4 class="fw-bold mb-0">Recent Transactions</h4>
                             <a href="journal.html" class="btn btn-sm btn-outline-navy">View All</a>
                         </div>
-                        <input type="text" id="transaction-search" class="form-control form-control-sm" placeholder="Search by reference or description..." oninput="filterTransactions()">
+                        <input type="text" id="transaction-search" class="form-control form-control-sm"
+                            placeholder="Search by reference or description..." oninput="filterTransactions()">
                     </div>
                     <div class="card-body p-4">
                         <div class="table-responsive">
@@ -126,21 +133,24 @@
                                 <i class="bi bi-plus-circle me-3 fs-5"></i>
                                 <div>
                                     <div class="small fw-bold">Journal Entry</div>
-                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Post a new transaction</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Post a new
+                                        transaction</div>
                                 </div>
                             </a>
                             <a href="accounts.html" class="btn btn-golden text-start d-flex align-items-center">
                                 <i class="bi bi-list-columns-reverse me-3 fs-5"></i>
                                 <div>
                                     <div class="small fw-bold">Chart of Accounts</div>
-                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Manage your ledger accounts</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Manage your
+                                        ledger accounts</div>
                                 </div>
                             </a>
                             <a href="reports.html" class="btn btn-outline-navy text-start d-flex align-items-center">
                                 <i class="bi bi-file-earmark-bar-graph me-3 fs-5"></i>
                                 <div>
                                     <div class="small fw-bold">Financial Reports</div>
-                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Generate P&L and Balance Sheet</div>
+                                    <div class="x-small opacity-75 fw-normal" style="text-transform: none;">Generate P&L
+                                        and Balance Sheet</div>
                                 </div>
                             </a>
                         </div>
@@ -170,10 +180,10 @@
                 // Fetch Stats
                 const pl = await api.get('/reports/profit-loss');
                 const bs = await api.get('/reports/balance-sheet');
-                
-                document.getElementById('net-income-val').innerText = `$${pl.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('total-assets-val').innerText = `$${bs.totalAssets.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('total-liabilities-val').innerText = `$${bs.totalLiabilities.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+                document.getElementById('net-income-val').innerText = `$${pl.netIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                document.getElementById('total-assets-val').innerText = `$${bs.totalAssets.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+                document.getElementById('total-liabilities-val').innerText = `$${bs.totalLiabilities.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
                 // Fetch Recent Transactions
                 const entries = await api.get('/journal');
@@ -188,8 +198,8 @@
         function filterTransactions() {
             const q = (document.getElementById('transaction-search')?.value || '').toLowerCase().trim();
             const entries = window._allEntries || [];
-            const filtered = q ? entries.filter(e => 
-                (e.reference || '').toLowerCase().includes(q) || 
+            const filtered = q ? entries.filter(e =>
+                (e.reference || '').toLowerCase().includes(q) ||
                 (e.description || '').toLowerCase().includes(q)
             ) : entries;
             renderTransactions(filtered.slice(0, 10));
@@ -202,11 +212,11 @@
                 tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><i class="bi bi-journal-x empty-state-icon"></i><p>No transactions found.</p><p class="small mt-2">Post a journal entry to get started.</p></div></td></tr>';
             } else {
                 tbody.innerHTML = entries.map(e => {
-                        const totalDebit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.debit || 0) || 0, 0);
-                        const totalCredit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.credit || 0) || 0, 0);
-                        const totalAmount = totalDebit > 0 ? totalDebit : totalCredit;
-                        const amountStr = totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        return `
+                    const totalDebit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.debit || 0) || 0, 0);
+                    const totalCredit = (e.items || []).reduce((sum, item) => sum + parseFloat(item.credit || 0) || 0, 0);
+                    const totalAmount = totalDebit > 0 ? totalDebit : totalCredit;
+                    const amountStr = totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    return `
                         <tr>
                             <td><span class="text-muted small">${(e.entry_date || '').split('T')[0]}</span></td>
                             <td><span class="fw-bold text-navy">${e.reference || 'N/A'}</span></td>
@@ -220,4 +230,5 @@
         loadDashboard();
     </script>
 </body>
+
 </html>
