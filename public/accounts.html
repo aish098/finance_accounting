@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
@@ -52,12 +52,11 @@
                 <table id="accounts-table" class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Normal Balance</th>
-                            <th class="text-end">Balance</th>
-                            <th class="text-end">Actions</th>
+                            <th style="width: 10%;">Code</th>
+                            <th style="min-width: 250px;">Account Name</th>
+                            <th style="width: 15%;" class="text-center">Type</th>
+                            <th style="width: 15%;" class="text-center">Balance</th>
+                            <th style="width: 15%;" class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -168,20 +167,16 @@
         async function loadAccounts() {
             try {
                 const accounts = await api.get('/accounts');
-                const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 const tbody = document.querySelector('#accounts-table tbody');
                 tbody.innerHTML = accounts.map(a => `
                     <tr>
-                        <td><span class="badge badge-account-code">${a.code}</span></td>
-                        <td class="fw-bold text-navy">${a.name}</td>
-                        <td><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
-                        <td><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
-                        <td class="text-end fw-bold ${a.balance < 0 ? 'text-danger' : 'text-success'}">
-                            ${formatter.format(Math.abs(a.balance))}${a.balance < 0 ? ' (Dr)' : ''}
-                        </td>
-                        <td class="text-end">
-                            <button class="btn btn-sm btn-outline-navy me-1" onclick="editAccount(${a.id})"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteAccount(${a.id})"><i class="bi bi-trash"></i></button>
+                        <td class="text-nowrap"><span class="badge badge-account-code">${a.code}</span></td>
+                        <td class="fw-bold text-navy text-truncate">${a.name}</td>
+                        <td class="text-center text-nowrap"><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
+                        <td class="text-center text-nowrap"><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
+                        <td class="text-end text-nowrap">
+                            <button class="btn btn-sm btn-outline-navy me-1" title="Edit" onclick="editAccount(${a.id})"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" onclick="deleteAccount(${a.id})"><i class="bi bi-trash"></i></button>
                         </td>
                     </tr>
                 `).join('');
