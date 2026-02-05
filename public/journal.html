@@ -54,6 +54,19 @@
                                 <input type="text" id="reference" class="form-control" placeholder="e.g. INV-001">
                             </div>
                         </div>
+                        
+                        <div class="mb-3 d-flex align-items-center">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="entry_type_switch">
+                                <label class="form-check-label fw-bold text-navy" for="entry_type_switch">
+                                    <i class="bi bi-gear-fill me-1"></i>Adjusting Entry
+                                </label>
+                            </div>
+                            <div class="ms-3 text-muted small">
+                                <i class="bi bi-info-circle me-1"></i>Adjusting entries are for period-end adjustments.
+                            </div>
+                        </div>
+
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Description</label>
                             <textarea id="description" class="form-control" rows="2" placeholder="Brief explanation of the entry..."></textarea>
@@ -87,7 +100,14 @@
             <!-- Recent Entries -->
             <div class="col-lg-4">
                 <div class="card p-4">
-                    <h3 class="fw-bold mb-4">Recent Activity</h3>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="fw-bold mb-0">Recent Activity</h3>
+                        <select id="filter-entry-type" class="form-select form-select-sm w-auto" onchange="loadRecentEntries()">
+                            <option value="">All</option>
+                            <option value="regular">Regular</option>
+                            <option value="adjusting">Adjusting</option>
+                        </select>
+                    </div>
                     <div class="list-group list-group-flush" id="recent-entries-list">
                         <!-- Loaded via JS -->
                     </div>
@@ -149,6 +169,7 @@
                 document.getElementById('entry_date').value = (entry.entry_date || '').split('T')[0];
                 document.getElementById('reference').value = entry.reference || '';
                 document.getElementById('description').value = entry.description || '';
+                document.getElementById('entry_type_switch').checked = entry.entry_type === 'adjusting';
                 const container = document.getElementById('line-items');
                 container.innerHTML = '';
                 (entry.items || []).forEach(item => {
@@ -230,6 +251,7 @@
             const data = {
                 entry_date: document.getElementById('entry_date').value,
                 reference: document.getElementById('reference').value,
+                entry_type: document.getElementById('entry_type_switch').checked ? 'adjusting' : 'regular',
                 description: document.getElementById('description').value,
                 items: items
             };
@@ -249,14 +271,16 @@
         };
 
         async function loadRecentEntries() {
-            const entries = await api.get('/journal');
+            const entryType = document.getElementById('filter-entry-type').value;
+            const entries = await api.get('/journal' + (entryType ? '?entry_type=' + entryType : ''));
             const list = document.getElementById('recent-entries-list');
             list.innerHTML = entries.map(e => {
                 const totalAmount = e.items ? e.items.reduce((sum, item) => sum + parseFloat(item.debit || 0), 0) : 0;
+                const typeBadge = e.entry_type === 'adjusting' ? '<span class="badge bg-info ms-2">Adj</span>' : '';
                 return `
                 <div class="list-group-item p-3 shadow-sm border-start border-4 border-navy" style="border-left-color: var(--navy-blue) !important;">
                     <div class="d-flex w-100 justify-content-between align-items-center mb-2">
-                        <h6 class="mb-0 fw-bold text-navy">${e.reference || 'No Reference'}</h6>
+                        <h6 class="mb-0 fw-bold text-navy">${e.reference || 'No Reference'}${typeBadge}</h6>
                         <span class="badge bg-golden text-navy">$${totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                     </div>
                     <div class="d-flex justify-content-between small text-muted mb-2">

@@ -11,6 +11,13 @@ class AccountRepository {
         return rows[0];
     }
 
+    async getByIds(ids) {
+        if (!ids.length) return [];
+        const placeholders = ids.map(() => '?').join(',');
+        const [rows] = await db.query(`SELECT * FROM accounts WHERE id IN (${placeholders})`, ids);
+        return rows;
+    }
+
     async getByCode(code, excludeId = null) {
         let query = 'SELECT * FROM accounts WHERE code = ?';
         const params = [code];

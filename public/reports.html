@@ -66,6 +66,9 @@
             <button class="btn btn-outline-navy" id="btn-trial-balance" onclick="showReport('trial-balance')">
                 <i class="bi bi-scale"></i> Trial Balance
             </button>
+            <button class="btn btn-outline-navy" id="btn-adjusted-trial-balance" onclick="showReport('adjusted-trial-balance')">
+                <i class="bi bi-calculator"></i> Adjusted TB
+            </button>
             <button class="btn btn-outline-navy" id="btn-profit-loss" onclick="showReport('profit-loss')">
                 <i class="bi bi-graph-up"></i> Profit & Loss
             </button>
@@ -108,8 +111,8 @@
         <!-- Trial Balance -->
         <div id="trial-balance" class="report-section card p-4">
             <div class="mb-4">
-                <h2 class="section-header">Trial Balance</h2>
-                <p class="text-muted small">Verification that total debits equal total credits across all accounts.</p>
+                <h2 class="section-header">Trial Balance (Unadjusted)</h2>
+                <p class="text-muted small">Verification that total debits equal total credits across all accounts before adjustments.</p>
             </div>
             <div class="table-responsive">
                 <table id="tb-table" class="table table-hover align-middle">
@@ -126,6 +129,46 @@
                             <td class="ps-3">TOTALS</td>
                             <td class="text-end pe-3" id="tb-total-debit"></td>
                             <td class="text-end pe-3" id="tb-total-credit"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Adjusted Trial Balance -->
+        <div id="adjusted-trial-balance" class="report-section card p-4">
+            <div class="mb-4">
+                <h2 class="section-header">Adjusted Trial Balance</h2>
+                <p class="text-muted small">Summary of all accounts and their final balances after period-end adjustments.</p>
+            </div>
+            <div class="table-responsive">
+                <table id="atb-table" class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th rowspan="2" class="align-middle">Account Name</th>
+                            <th colspan="2" class="text-center">Unadjusted Balance</th>
+                            <th colspan="2" class="text-center">Adjustments</th>
+                            <th colspan="2" class="text-center">Adjusted Balance</th>
+                        </tr>
+                        <tr>
+                            <th class="text-end" style="width: 120px;">Debit</th>
+                            <th class="text-end" style="width: 120px;">Credit</th>
+                            <th class="text-end" style="width: 120px;">Debit</th>
+                            <th class="text-end" style="width: 120px;">Credit</th>
+                            <th class="text-end" style="width: 120px;">Debit</th>
+                            <th class="text-end" style="width: 120px;">Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot class="fw-bold">
+                        <tr class="total-section">
+                            <td class="ps-3">TOTALS</td>
+                            <td class="text-end" id="atb-unadjusted-debit"></td>
+                            <td class="text-end" id="atb-unadjusted-credit"></td>
+                            <td class="text-end" id="atb-adjusting-debit"></td>
+                            <td class="text-end" id="atb-adjusting-credit"></td>
+                            <td class="text-end" id="atb-adjusted-debit"></td>
+                            <td class="text-end" id="atb-adjusted-credit"></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -254,7 +297,7 @@
             try {
                 const dateParams = getDateParams();
                 if (type === 'trial-balance') {
-                    const data = await api.get('/reports/trial-balance' + dateParams);
+                    const data = await api.get('/reports/trial-balance' + dateParams + (dateParams ? '&' : '?') + 'entry_type=regular');
                     const tbody = document.querySelector('#tb-table tbody');
                     const filteredRows = data.rows.filter(r => Math.abs(r.debit) > 0.001 || Math.abs(r.credit) > 0.001);
                     
@@ -271,6 +314,29 @@
                     }
                     document.getElementById('tb-total-debit').innerText = data.totals.debit.toLocaleString(undefined, {minimumFractionDigits: 2});
                     document.getElementById('tb-total-credit').innerText = data.totals.credit.toLocaleString(undefined, {minimumFractionDigits: 2});
+                } else if (type === 'adjusted-trial-balance') {
+                    const data = await api.get('/reports/adjusted-trial-balance' + dateParams);
+                    const tbody = document.querySelector('#atb-table tbody');
+                    const format = (num) => num > 0.001 ? num.toLocaleString(undefined, {minimumFractionDigits: 2}) : '-';
+                    
+                    tbody.innerHTML = data.rows.map(r => `
+                        <tr>
+                            <td class="fw-bold ps-3 text-navy">${r.account_code} - ${r.account_name}</td>
+                            <td class="text-end">${format(r.unadjusted_debit)}</td>
+                            <td class="text-end">${format(r.unadjusted_credit)}</td>
+                            <td class="text-end text-info">${format(r.adjusting_debit)}</td>
+                            <td class="text-end text-info">${format(r.adjusting_credit)}</td>
+                            <td class="text-end fw-bold">${format(r.adjusted_debit)}</td>
+                            <td class="text-end fw-bold">${format(r.adjusted_credit)}</td>
+                        </tr>
+                    `).join('');
+
+                    document.getElementById('atb-unadjusted-debit').innerText = format(data.totals.unadjusted_debit);
+                    document.getElementById('atb-unadjusted-credit').innerText = format(data.totals.unadjusted_credit);
+                    document.getElementById('atb-adjusting-debit').innerText = format(data.totals.adjusting_debit);
+                    document.getElementById('atb-adjusting-credit').innerText = format(data.totals.adjusting_credit);
+                    document.getElementById('atb-adjusted-debit').innerText = format(data.totals.adjusted_debit);
+                    document.getElementById('atb-adjusted-credit').innerText = format(data.totals.adjusted_credit);
                 } else if (type === 'general-ledger') {
                     const accounts = await api.get('/accounts');
                     const select = document.getElementById('ledger-account-select');

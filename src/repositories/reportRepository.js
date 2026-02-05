@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 class ReportRepository {
-    async getTrialBalance(userId, startDate, endDate) {
+    async getTrialBalance(userId, startDate, endDate, entryType = null) {
         const params = [userId];
         let dateFilter = '';
         if (startDate) {
@@ -11,6 +11,12 @@ class ReportRepository {
         if (endDate) {
             dateFilter += ' AND je.entry_date <= ?';
             params.push(endDate);
+        }
+
+        let typeFilter = '';
+        if (entryType) {
+            typeFilter = ' AND je.entry_type = ?';
+            params.push(entryType);
         }
 
         const query = `
@@ -23,7 +29,7 @@ class ReportRepository {
                 SELECT ji.account_id, ji.debit, ji.credit
                 FROM journal_items ji
                 JOIN journal_entries je ON ji.journal_entry_id = je.id
-                WHERE je.created_by = ? ${dateFilter}
+                WHERE je.created_by = ? ${dateFilter} ${typeFilter}
             ) t ON a.id = t.account_id
             GROUP BY a.id, a.code, a.name, a.type, a.normal_balance
             ORDER BY a.code ASC

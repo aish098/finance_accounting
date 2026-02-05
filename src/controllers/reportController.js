@@ -12,6 +12,17 @@ class ReportController {
         }
     }
 
+    async getAdjustedTrialBalance(req, res) {
+        try {
+            const userId = req.user.id;
+            const { startDate, endDate } = req.query;
+            const report = await reportService.generateAdjustedTrialBalance(userId, startDate, endDate);
+            res.json(report);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
     async getProfitAndLoss(req, res) {
         try {
             const userId = req.user.id;

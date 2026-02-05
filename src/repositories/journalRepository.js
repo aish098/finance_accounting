@@ -2,10 +2,10 @@ const db = require('../config/db');
 
 class JournalRepository {
     async createEntry(entryData, items, connection) {
-        const { entry_date, reference, description, created_by } = entryData;
+        const { entry_date, reference, entry_type, description, created_by } = entryData;
         const [result] = await connection.query(
-            'INSERT INTO journal_entries (entry_date, reference, description, created_by) VALUES (?, ?, ?, ?)',
-            [entry_date, reference, description, created_by]
+            'INSERT INTO journal_entries (entry_date, reference, entry_type, description, created_by) VALUES (?, ?, ?, ?, ?)',
+            [entry_date, reference, entry_type || 'regular', description, created_by]
         );
         const journal_entry_id = result.insertId;
 
@@ -19,14 +19,23 @@ class JournalRepository {
         return journal_entry_id;
     }
 
-    async getAll(userId) {
-        const [rows] = await db.query(`
+    async getAll(userId, filters = {}) {
+        let query = `
             SELECT je.*, u.username as created_by_name 
             FROM journal_entries je
             LEFT JOIN users u ON je.created_by = u.id
             WHERE je.created_by = ?
-            ORDER BY je.entry_date DESC, je.id DESC
-        `, [userId]);
+        `;
+        const params = [userId];
+
+        if (filters.entry_type) {
+            query += ' AND je.entry_type = ?';
+            params.push(filters.entry_type);
+        }
+
+        query += ' ORDER BY je.entry_date DESC, je.id DESC';
+
+        const [rows] = await db.query(query, params);
         
         if (rows.length === 0) return [];
 
@@ -61,10 +70,10 @@ class JournalRepository {
     }
 
     async updateEntry(entryId, entryData, items, connection) {
-        const { entry_date, reference, description } = entryData;
+        const { entry_date, reference, entry_type, description } = entryData;
         await connection.query(
-            'UPDATE journal_entries SET entry_date = ?, reference = ?, description = ? WHERE id = ?',
-            [entry_date, reference, description, entryId]
+            'UPDATE journal_entries SET entry_date = ?, reference = ?, entry_type = ?, description = ? WHERE id = ?',
+            [entry_date, reference, entry_type || 'regular', description, entryId]
         );
         await connection.query('DELETE FROM journal_items WHERE journal_entry_id = ?', [entryId]);
         for (const item of items) {

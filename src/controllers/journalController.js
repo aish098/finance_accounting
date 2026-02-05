@@ -3,9 +3,9 @@ const journalService = require('../services/journalService');
 class JournalController {
     async create(req, res) {
         try {
-            const { entry_date, reference, description, items } = req.body;
+            const { entry_date, reference, entry_type, description, items } = req.body;
             const entryId = await journalService.createJournalEntry(
-                { entry_date, reference, description, created_by: req.user.id },
+                { entry_date, reference, entry_type, description, created_by: req.user.id },
                 items
             );
             res.status(201).json({ id: entryId, message: 'Journal entry created and posted successfully' });
@@ -16,7 +16,10 @@ class JournalController {
 
     async getAll(req, res) {
         try {
-            const entries = await journalService.getAllEntries(req.user.id);
+            const filters = {
+                entry_type: req.query.entry_type
+            };
+            const entries = await journalService.getAllEntries(req.user.id, filters);
             res.json(entries);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -35,11 +38,11 @@ class JournalController {
 
     async update(req, res) {
         try {
-            const { entry_date, reference, description, items } = req.body;
+            const { entry_date, reference, entry_type, description, items } = req.body;
             await journalService.updateJournalEntry(
                 req.params.id,
                 req.user.id,
-                { entry_date, reference, description },
+                { entry_date, reference, entry_type, description },
                 items
             );
             res.json({ message: 'Journal entry updated successfully' });
