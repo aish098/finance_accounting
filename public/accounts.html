@@ -38,31 +38,33 @@
     </nav>
 
     <main class="container mb-5">
-        <div class="card p-0 overflow-hidden">
-            <div class="p-4 border-bottom bg-light d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="card p-0 overflow-hidden border-0 shadow-sm">
+            <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <div>
-                    <h2 class="fw-bold mb-0 text-navy">Chart of Accounts</h2>
-                    <p class="text-muted small mb-0">List of all accounts used to record financial transactions.</p>
+                    <h2 class="fw-bold mb-1 text-navy">Chart of Accounts</h2>
+                    <p class="text-muted small mb-0">List of all financial accounts used in the system</p>
                 </div>
-                <button class="btn btn-navy btn-sm" onclick="openAccountModal()">
+                <button class="btn btn-navy btn-sm px-4" onclick="openAccountModal()">
                     <i class="bi bi-plus-lg me-2"></i>Add Account
                 </button>
             </div>
-            <div class="table-responsive">
-                <table id="accounts-table" class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%;">Code</th>
-                            <th style="min-width: 250px;">Account Name</th>
-                            <th style="width: 15%;" class="text-center">Type</th>
-                            <th style="width: 15%;" class="text-center">Balance</th>
-                            <th style="width: 15%;" class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Accounts will be loaded here -->
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table id="accounts-table" class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width: 12%;" class="ps-4">Account Code</th>
+                                <th style="min-width: 200px;">Account Name</th>
+                                <th style="width: 18%;" class="text-center">Account Type</th>
+                                <th style="width: 18%;" class="text-center">Normal Balance</th>
+                                <th style="width: 12%;" class="text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Accounts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
@@ -170,13 +172,17 @@
                 const tbody = document.querySelector('#accounts-table tbody');
                 tbody.innerHTML = accounts.map(a => `
                     <tr>
-                        <td class="text-nowrap"><span class="badge badge-account-code">${a.code}</span></td>
-                        <td class="fw-bold text-navy text-truncate">${a.name}</td>
-                        <td class="text-center text-nowrap"><span class="badge badge-type-${a.type.toLowerCase()}">${a.type}</span></td>
-                        <td class="text-center text-nowrap"><span class="badge bg-light text-dark border">${a.normal_balance}</span></td>
-                        <td class="text-end text-nowrap">
-                            <button class="btn btn-sm btn-outline-navy me-1" title="Edit" onclick="editAccount(${a.id})"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger" title="Delete" onclick="deleteAccount(${a.id})"><i class="bi bi-trash"></i></button>
+                        <td class="ps-4 text-nowrap"><span class="badge-account-code">${a.code}</span></td>
+                        <td class="fw-semibold text-navy">${a.name}</td>
+                        <td class="text-center text-nowrap">
+                            <span class="badge-soft badge-soft-${a.type.toLowerCase()}">${a.type}</span>
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <span class="pill-balance pill-${a.normal_balance.toLowerCase()}">${a.normal_balance}</span>
+                        </td>
+                        <td class="text-end pe-4 text-nowrap">
+                            <button class="btn btn-sm btn-table-action p-1 px-2 me-1" title="Edit" onclick="editAccount(${a.id})"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-sm btn-table-action btn-table-action-delete p-1 px-2" title="Delete" onclick="deleteAccount(${a.id})"><i class="bi bi-trash3"></i></button>
                         </td>
                     </tr>
                 `).join('');

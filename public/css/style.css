@@ -201,6 +201,34 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-outline-danger {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    background: transparent;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-table-action {
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.btn-table-action:hover {
+    background-color: rgba(0, 51, 102, 0.08);
+    color: var(--navy-blue);
+}
+
+.btn-table-action-delete:hover {
+    background-color: #fff5f5;
+    color: #dc3545;
+}
+
 .btn-outline-navy {
     border: 2px solid var(--navy-blue);
     color: var(--navy-blue);
@@ -248,27 +276,24 @@ body {
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: var(--navy-dark) !important;
-    color: var(--white) !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.table-responsive .table-light thead th {
     background-color: #f8f9fa !important;
-    color: var(--text-muted) !important;
+    color: var(--navy-dark) !important;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    border-bottom: 2px solid #edeff2 !important;
 }
 
-.table tbody tr:nth-child(even) { background-color: rgba(0, 51, 102, 0.02); }
+.table tbody tr:nth-child(even) { background-color: #fafbfc; }
 .table tbody tr:nth-child(odd) { background-color: var(--white); }
-.table tbody tr:hover { background-color: rgba(0, 51, 102, 0.04) !important; }
+.table tbody tr:hover { background-color: #f1f3f5 !important; }
 
 .table thead th {
-    background-color: var(--navy-dark);
-    color: var(--white);
+    background-color: #f8f9fa;
+    color: var(--navy-dark);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    padding: 1.25rem 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.8px;
+    padding: 1rem 1rem;
     border: none;
 }
 
@@ -276,9 +301,9 @@ body {
 .table thead th:last-child { border-radius: 0 8px 0 0; }
 
 .table tbody td {
-    padding: 0.8rem 1rem;
+    padding: 1rem 1rem;
     vertical-align: middle;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f1f3f5;
     font-size: 0.9rem;
 }
 
@@ -296,16 +321,47 @@ body {
 }
 
 .badge-account-code {
-    background-color: var(--navy-light);
-    color: var(--white);
+    background-color: transparent;
+    color: var(--text-muted);
     font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 400;
+    padding: 0;
+    font-size: 0.85rem;
 }
 
-.badge-type-asset { background-color: var(--success-accent); color: white; }
-.badge-type-liability { background-color: var(--danger-accent); color: white; }
-.badge-type-equity { background-color: #3498db; color: white; }
-.badge-type-revenue { background-color: #f1c40f; color: #333; }
-.badge-type-expense { background-color: #9b59b6; color: white; }
+/* Soft Badges for Account Types */
+.badge-soft {
+    padding: 0.35em 0.8em;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    border-radius: 6px;
+    font-size: 0.75rem;
+}
+.badge-soft-asset { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.badge-soft-liability { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+.badge-soft-equity { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.badge-soft-revenue { background-color: #fffde7; color: #f9a825; border: 1px solid #fff9c4; }
+.badge-soft-expense { background-color: #f3e5f5; color: #7b1e89; border: 1px solid #e1bee7; }
+
+/* Pills for Normal Balance */
+.pill-balance {
+    display: inline-block;
+    padding: 0.2rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.pill-debit { background-color: #e8f5e9; color: #2e7d32; }
+.pill-credit { background-color: #ffebee; color: #c62828; }
+
+.table-container {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 1px;
+}
 
 /* Stats – hover elevation, icons */
 .stat-card {
