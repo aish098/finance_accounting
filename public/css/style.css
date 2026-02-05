@@ -913,19 +913,19 @@ body {
 
 /* HEADER */
 .coa-table thead th {
-    background: #0b2c5f;
-    /* Navy */
-    color: white;
+    background: var(--navy-dark);
+    /* Navy Theme */
+    color: var(--white);
     padding: 12px;
     text-align: left;
-    border-bottom: 3px solid #f4c430;
-    /* Gold */
+    border-bottom: 3px solid var(--golden);
+    /* Gold Theme */
 }
 
 /* BODY */
 .coa-table tbody td {
     padding: 10px 12px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
     text-align: left;
     vertical-align: middle;
     /* Added for alignment */
