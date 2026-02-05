@@ -339,11 +339,11 @@ body {
     font-size: 0.75rem;
     display: inline-block;
 }
-.badge-soft-asset { background-color: #f0fdf4; color: #166534; border: 1px solid #dcfce7; }
+.badge-soft-asset { background-color: #f0fdf4; color: #16753b; border: 1px solid #dcfce7; }
 .badge-soft-liability { background-color: #fef2f2; color: #991b1b; border: 1px solid #fee2e2; }
-.badge-soft-equity { background-color: #eff6ff; color: #1e40af; border: 1px solid #dbeafe; }
-.badge-soft-revenue { background-color: #fffbeb; color: #92400e; border: 1px solid #fef3c7; }
-.badge-soft-expense { background-color: #faf5ff; color: #6b21a8; border: 1px solid #f3e8ff; }
+.badge-soft-equity { background-color: #eff6ff; color: #1d3a9c; border: 1px solid #dbeafe; }
+.badge-soft-revenue { background-color: #fffbeb; color: #964410; border: 1px solid #fef3c7; }
+.badge-soft-expense { background-color: #faf5ff; color: #621d9a; border: 1px solid #f3e8ff; }
 
 /* Pills for Normal Balance */
 .pill-balance {
@@ -355,8 +355,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-.pill-debit { background-color: #f0fdf4; color: #166534; }
-.pill-credit { background-color: #fef2f2; color: #991b1b; }
+.pill-debit { background-color: #f0fdf4; color: #196b39; }
+.pill-credit { background-color: #fef2f2; color: #9b1e1e; }
 
 .table-container {
     background-color: #f8f9fa;
