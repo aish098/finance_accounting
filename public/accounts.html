@@ -21,15 +21,14 @@
             text-transform: none;
         }
 
-        /* Final Redesign - Clean, Fixed, Professional */
-        .custom-table-container {
+        /* Final Redesign - Forced Update (v2) */
+        .accounts-table-wrapper {
             max-width: 1100px;
             margin: 0 auto;
             overflow-x: auto;
-            /* Safety for very small screens */
         }
 
-        .custom-table {
+        .accounts-table-fixed {
             width: 1100px;
             /* Strict fixed width */
             table-layout: fixed;
@@ -40,20 +39,17 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            /* Clean shadow */
         }
 
         /* HEADER STYLING */
-        .custom-table thead th {
+        .accounts-table-fixed thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
             font-size: 0.85rem;
-            /* Increased readability */
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             padding: 0.85rem 0.4rem !important;
-            /* Tight padding */
             border-bottom: 3px solid var(--golden) !important;
             vertical-align: middle;
             text-align: left;
@@ -62,37 +58,33 @@
             text-overflow: ellipsis;
         }
 
-        .custom-table thead th.text-end {
+        .accounts-table-fixed thead th.text-end {
             text-align: right !important;
         }
 
-        .custom-table thead th.text-center {
+        .accounts-table-fixed thead th.text-center {
             text-align: center !important;
         }
 
         /* BODY STYLING */
-        .custom-table tbody tr {
+        .accounts-table-fixed tbody tr {
             background-color: #ffffff;
             transition: background-color 0.2s ease;
         }
 
-        .custom-table tbody tr:nth-child(even) {
+        .accounts-table-fixed tbody tr:nth-child(even) {
             background-color: #fcfdfe;
-            /* Subtle stripe */
         }
 
-        .custom-table tbody tr:hover {
+        .accounts-table-fixed tbody tr:hover {
             background-color: #fff8e1 !important;
-            /* Gold tint hover */
         }
 
-        .custom-table tbody td {
+        .accounts-table-fixed tbody td {
             color: var(--navy-dark);
             font-size: 0.95rem;
-            /* Increased readability */
             font-weight: 500;
             padding: 0.8rem 0.4rem !important;
-            /* Tight padding matches header */
             border-bottom: 1px solid #f0f0f0;
             vertical-align: middle;
             white-space: nowrap;
@@ -102,7 +94,7 @@
         }
 
         /* TYPOGRAPHY HELPERS */
-        .custom-table .fw-mono {
+        .accounts-table-fixed .fw-mono {
             color: var(--navy-blue) !important;
             font-family: 'JetBrains Mono', 'Courier New', monospace;
             font-weight: 600;
@@ -111,34 +103,34 @@
         }
 
         /* COMPONENT HELPERS */
-        .custom-table .badge-soft {
+        .accounts-table-fixed .badge-soft {
             padding: 0.35rem 0.5rem !important;
             font-size: 0.8rem !important;
             font-weight: 600;
             border-radius: 4px;
         }
 
-        .custom-table .pill-balance {
+        .accounts-table-fixed .pill-balance {
             padding: 0.3rem 0.5rem !important;
             font-size: 0.75rem !important;
             font-weight: 700;
         }
 
-        .custom-table .btn-link {
+        .accounts-table-fixed .btn-link {
             padding: 0.2rem !important;
             color: var(--navy-light);
             transition: color 0.2s ease;
         }
 
-        .custom-table .btn-link:hover {
+        .accounts-table-fixed .btn-link:hover {
             color: var(--navy-blue);
         }
 
-        .custom-table .btn-link.text-danger:hover {
+        .accounts-table-fixed .btn-link.text-danger:hover {
             color: #dc3545;
         }
 
-        /* STRICT COLUMN CONTROL (Total 1100px) */
+        /* STRICT COLUMN WIDTHS */
         .col-code {
             width: 130px;
             text-align: left;
@@ -166,7 +158,7 @@
             padding-right: 1rem !important;
         }
 
-        /* Header Alignment Overrides */
+        /* Overrides */
         thead .col-code {
             padding-left: 1rem !important;
         }
@@ -175,15 +167,9 @@
             padding-right: 1rem !important;
         }
 
-        /* RESPONSIVE ADJUSTMENTS */
         @media (max-width: 992px) {
-
-            .col-actions {
-                width: 15%;
-            }
-
-            .custom-table-container {
-                padding: 0;
+            .accounts-table-wrapper {
+                overflow-x: auto;
             }
         }
     </style>
