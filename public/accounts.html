@@ -21,42 +21,47 @@
             text-transform: none;
         }
 
+        /* Final Redesign - Clean, Fixed, Professional */
         .custom-table-container {
             max-width: 1100px;
             margin: 0 auto;
+            overflow-x: auto;
+            /* Safety for very small screens */
         }
 
         .custom-table {
+            width: 1100px;
+            /* Strict fixed width */
+            table-layout: fixed;
+            /* Enforce column widths */
             border-collapse: separate;
             border-spacing: 0;
-            width: 100%;
             background-color: #ffffff;
-            border-radius: 12px;
-            /* Softened radius */
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            /* Softer, deeper shadow */
-            table-layout: fixed;
-            /* Essential for precise control */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            /* Clean shadow */
         }
 
+        /* HEADER STYLING */
         .custom-table thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
-            padding: 0.85rem 0.4rem !important;
-            /* Reduced horizontal padding to 0.4rem */
-            text-transform: uppercase;
-            font-weight: 700;
             font-size: 0.85rem;
+            /* Increased readability */
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 0.8px;
-            /* Improved readability */
+            padding: 0.85rem 0.4rem !important;
+            /* Tight padding */
             border-bottom: 3px solid var(--golden) !important;
             vertical-align: middle;
             text-align: left;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Specific header overrides */
         .custom-table thead th.text-end {
             text-align: right !important;
         }
@@ -65,35 +70,30 @@
             text-align: center !important;
         }
 
+        /* BODY STYLING */
         .custom-table tbody tr {
             background-color: #ffffff;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease;
         }
 
         .custom-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-            /* Lighter alternate row */
+            background-color: #fcfdfe;
+            /* Subtle stripe */
         }
 
         .custom-table tbody tr:hover {
             background-color: #fff8e1 !important;
-            /* Very subtle golden lint */
-            transform: translateY(-1px);
-            /* Micro-interaction */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: 1;
+            /* Gold tint hover */
         }
 
         .custom-table tbody td {
             color: var(--navy-dark);
-            padding: 0.8rem 0.4rem !important;
-            /* Matches header padding */
-            border-bottom: 1px solid #f0f0f0;
-            /* Softer border */
-            font-weight: 500;
             font-size: 0.95rem;
-            /* Slightly larger for readability */
+            /* Increased readability */
+            font-weight: 500;
+            padding: 0.8rem 0.4rem !important;
+            /* Tight padding matches header */
+            border-bottom: 1px solid #f0f0f0;
             vertical-align: middle;
             white-space: nowrap;
             overflow: hidden;
@@ -101,48 +101,44 @@
             text-align: left;
         }
 
+        /* TYPOGRAPHY HELPERS */
         .custom-table .fw-mono {
             color: var(--navy-blue) !important;
-            font-weight: 600;
             font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-weight: 600;
             font-size: 0.9rem;
             letter-spacing: -0.5px;
         }
 
-        /* Badge adjustments */
+        /* COMPONENT HELPERS */
         .custom-table .badge-soft {
             padding: 0.35rem 0.5rem !important;
             font-size: 0.8rem !important;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 4px;
         }
 
         .custom-table .pill-balance {
             padding: 0.3rem 0.5rem !important;
             font-size: 0.75rem !important;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .custom-table .btn-link {
             padding: 0.2rem !important;
             color: var(--navy-light);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            opacity: 0.8;
+            transition: color 0.2s ease;
         }
 
         .custom-table .btn-link:hover {
-            transform: scale(1.15);
             color: var(--navy-blue);
-            opacity: 1;
         }
 
         .custom-table .btn-link.text-danger:hover {
             color: #dc3545;
         }
 
-        /* Column Widths - Fixed Pixels (Total 1100px) */
+        /* STRICT COLUMN CONTROL (Total 1100px) */
         .col-code {
             width: 130px;
             text-align: left;
@@ -170,7 +166,7 @@
             padding-right: 1rem !important;
         }
 
-        /* Header specific padding overrides to match cells */
+        /* Header Alignment Overrides */
         thead .col-code {
             padding-left: 1rem !important;
         }
@@ -179,46 +175,8 @@
             padding-right: 1rem !important;
         }
 
+        /* RESPONSIVE ADJUSTMENTS */
         @media (max-width: 992px) {
-
-            /* Maintain proportions on smaller screens (approximate) */
-            .col-code {
-                width: 12%;
-            }
-
-            .col-name {
-                width: 45%;
-            }
-
-            .col-type {
-                width: 15%;
-            }
-
-            .col-balance {
-                width: 15%;
-            }
-
-            .col-actions {
-                width: 13%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .col-code {
-                width: 20%;
-            }
-
-            .col-name {
-                width: auto;
-            }
-
-            .col-type {
-                display: none;
-            }
-
-            .col-balance {
-                width: 25%;
-            }
 
             .col-actions {
                 width: 15%;
