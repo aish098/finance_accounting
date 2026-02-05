@@ -577,8 +577,6 @@ body {
 }
 
 .auth-logo-wrap .auth-tagline {
-
-
     color: var(--text-muted);
     font-size: 0.9rem;
     margin: 0 !important;
@@ -896,168 +894,31 @@ body {
 }
 
 /* Print styles for reports */
-@media print {}
+@media print {
 
-/* =========================================
-   Fixed Layout Table Styles (Migrated from accounts.html)
-   ========================================= */
-.page-title {
-    color: var(--navy-blue);
-    font-weight: 800;
-    font-size: 2.2rem;
-    letter-spacing: -0.8px;
-    text-transform: none;
-}
+    .navbar,
+    .report-nav,
+    .btn,
+    .d-print-none,
+    nav,
+    .toast-container {
+        display: none !important;
+    }
 
-/* Final Redesign - Forced Update (v2) */
-.accounts-table-wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
-    overflow-x: auto;
-}
+    .report-section {
+        display: block !important;
+    }
 
-.accounts-table-fixed {
-    width: 1100px;
-    /* Strict fixed width */
-    table-layout: fixed;
-    /* Enforce column widths */
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
+    .report-section.active {
+        display: block !important;
+    }
 
-/* HEADER STYLING - Clean Modern */
-.accounts-table-fixed thead th {
-    background-color: #f8f9fa !important;
-    color: #495057 !important;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 1rem 1rem !important;
-    border-bottom: 2px solid #dee2e6 !important;
-    vertical-align: middle;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+    body {
+        background: white;
+    }
 
-.accounts-table-fixed thead th.text-end {
-    text-align: right !important;
-}
-
-.accounts-table-fixed thead th.text-center {
-    text-align: center !important;
-}
-
-/* BODY STYLING */
-.accounts-table-fixed tbody tr {
-    background-color: #ffffff;
-    transition: background-color 0.15s ease-in-out;
-}
-
-.accounts-table-fixed tbody tr:nth-child(even) {
-    background-color: #ffffff;
-}
-
-.accounts-table-fixed tbody tr:hover {
-    background-color: #f1f3f5 !important;
-}
-
-.accounts-table-fixed tbody td {
-    color: #343a40;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.85rem 1rem !important;
-    border-bottom: 1px solid #ebedef;
-    vertical-align: middle;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left;
-}
-
-/* TYPOGRAPHY HELPERS */
-.accounts-table-fixed .fw-mono {
-    color: var(--navy-blue) !important;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    font-weight: 600;
-    font-size: 0.95rem;
-    /* Increased mono font */
-    letter-spacing: -0.5px;
-}
-
-/* COMPONENT HELPERS */
-.accounts-table-fixed .badge-soft {
-    padding: 0.4rem 0.6rem !important;
-    font-size: 0.85rem !important;
-    font-weight: 600;
-    border-radius: 6px;
-}
-
-.accounts-table-fixed .pill-balance {
-    padding: 0.35rem 0.6rem !important;
-    font-size: 0.8rem !important;
-    font-weight: 700;
-}
-
-.accounts-table-fixed .btn-link {
-    padding: 0.2rem !important;
-    color: var(--navy-light);
-    transition: color 0.2s ease;
-}
-
-.accounts-table-fixed .btn-link:hover {
-    color: var(--navy-blue);
-}
-
-.accounts-table-fixed .btn-link.text-danger:hover {
-    color: #dc3545;
-}
-
-/* STRICT COLUMN WIDTHS */
-.col-code {
-    width: 130px;
-    text-align: left;
-    padding-left: 1rem !important;
-}
-
-.col-name {
-    width: 550px;
-    text-align: left;
-}
-
-.col-type {
-    width: 150px;
-    text-align: left;
-}
-
-.col-balance {
-    width: 150px;
-    text-align: left;
-}
-
-.col-actions {
-    width: 120px;
-    text-align: right;
-    padding-right: 1rem !important;
-}
-
-/* Overrides */
-thead .col-code {
-    padding-left: 1rem !important;
-}
-
-thead .col-actions {
-    padding-right: 1rem !important;
-}
-
-@media (max-width: 992px) {
-    .accounts-table-wrapper {
-        overflow-x: auto;
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
     }
 }
