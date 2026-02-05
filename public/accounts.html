@@ -31,29 +31,31 @@
             border-spacing: 0;
             width: 100%;
             background-color: #ffffff;
-            border-radius: 8px;
+            border-radius: 12px;
+            /* Softened radius */
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            /* Softer, deeper shadow */
             table-layout: fixed;
-            /* Fixed layout for precise column widths */
         }
 
         .custom-table thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
-            padding: 0.6rem 1rem !important;
-            /* Restored generous padding */
+            padding: 0.85rem 1rem !important;
+            /* Increased for professional spacing */
             text-transform: uppercase;
             font-weight: 700;
             font-size: 0.75rem;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            /* Improved readability */
             border-bottom: 3px solid var(--golden) !important;
             vertical-align: middle;
             text-align: left;
-            /* Default left alignment for headers */
+            white-space: nowrap;
         }
 
-        /* Specific header overrides if needed */
+        /* Specific header overrides */
         .custom-table thead th.text-end {
             text-align: right !important;
         }
@@ -64,63 +66,82 @@
 
         .custom-table tbody tr {
             background-color: #ffffff;
-            transition: background-color 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .custom-table tbody tr:nth-child(even) {
-            background-color: #fcfdfe;
+            background-color: #f8f9fa;
+            /* Lighter alternate row */
         }
 
         .custom-table tbody tr:hover {
-            background-color: var(--golden-light) !important;
+            background-color: #fff8e1 !important;
+            /* Very subtle golden lint */
+            transform: translateY(-1px);
+            /* Micro-interaction */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
         }
 
         .custom-table tbody td {
             color: var(--navy-dark);
-            padding: 0.6rem 1rem !important;
-            /* Restored generous padding */
-            border-bottom: 1px solid #edf2f7;
+            padding: 0.8rem 1rem !important;
+            /* Consistent, breathable padding */
+            border-bottom: 1px solid #f0f0f0;
+            /* Softer border */
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            /* Slightly larger for readability */
             vertical-align: middle;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: left;
-            /* Default left alignment for cells */
         }
 
         .custom-table .fw-mono {
             color: var(--navy-blue) !important;
-            font-weight: 700;
-            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.85rem;
+            letter-spacing: -0.5px;
         }
 
         /* Compact Badge Overrides */
         .custom-table .badge-soft {
-            padding: 0.25rem 0.6rem !important;
+            padding: 0.35rem 0.75rem !important;
             font-size: 0.75rem !important;
             font-weight: 600;
+            border-radius: 6px;
         }
 
         .custom-table .pill-balance {
-            padding: 0.2rem 0.6rem !important;
+            padding: 0.3rem 0.75rem !important;
             font-size: 0.7rem !important;
             font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .custom-table .btn-link {
-            padding: 0 !important;
-            color: var(--navy-blue);
+            padding: 0.2rem !important;
+            color: var(--navy-light);
             text-decoration: none;
-            transition: transform 0.1s ease;
+            transition: all 0.2s ease;
+            opacity: 0.8;
         }
 
         .custom-table .btn-link:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            color: var(--navy-blue);
+            opacity: 1;
         }
 
-        /* Column Widths - Balanced & Even */
+        .custom-table .btn-link.text-danger:hover {
+            color: #dc3545;
+        }
+
+        /* Column Widths - Percentage based for 1100px Layout */
         .col-code {
             width: 15%;
             text-align: left;
@@ -132,23 +153,63 @@
         }
 
         .col-type {
-            width: 18%;
+            width: 15%;
             text-align: left;
         }
 
         .col-balance {
-            width: 18%;
+            width: 15%;
             text-align: left;
         }
 
         .col-actions {
-            width: 14%;
+            width: 20%;
             text-align: right;
         }
 
-        @media (max-width: 768px) {
+        /* More room for actions */
+
+        @media (max-width: 992px) {
+            .col-code {
+                width: 18%;
+            }
+
+            .col-name {
+                width: 32%;
+            }
+
+            .col-type {
+                width: 15%;
+            }
+
+            .col-balance {
+                width: 15%;
+            }
+
             .col-actions {
-                width: 70px;
+                width: 20%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-code {
+                width: 20%;
+            }
+
+            .col-name {
+                width: auto;
+            }
+
+            .col-type {
+                display: none;
+            }
+
+            .col-balance {
+                width: 25%;
+            }
+
+            .col-actions {
+                width: 15%;
             }
 
             .custom-table-container {
