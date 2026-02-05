@@ -10,147 +10,8 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=6">
-    <style>
-        .page-title {
-            color: var(--navy-blue);
-            font-weight: 800;
-            font-size: 2.2rem;
-            letter-spacing: -0.8px;
-            text-transform: none;
-        }
-
-        .custom-table-container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .custom-table {
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-            table-layout: auto;
-        }
-
-        .custom-table thead th {
-            background-color: var(--navy-blue) !important;
-            color: var(--white) !important;
-            padding: 0.5rem 0.75rem !important;
-            text-transform: uppercase;
-            font-weight: 700;
-            font-size: 0.7rem;
-            letter-spacing: 0.5px;
-            border-bottom: 3px solid var(--golden) !important;
-            vertical-align: middle;
-        }
-
-        .custom-table tbody tr {
-            background-color: #ffffff;
-            transition: background-color 0.15s ease;
-        }
-
-        .custom-table tbody tr:nth-child(even) {
-            background-color: #fcfdfe;
-        }
-
-        .custom-table tbody tr:hover {
-            background-color: var(--golden-light) !important;
-        }
-
-        .custom-table tbody td {
-            color: var(--navy-dark);
-            padding: 0.4rem 0.75rem !important;
-            border-bottom: 1px solid #edf2f7;
-            font-weight: 500;
-            font-size: 0.8rem;
-            vertical-align: middle;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .custom-table .fw-mono {
-            color: var(--navy-blue) !important;
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-
-        /* Compact Badge Overrides */
-        .custom-table .badge-soft {
-            padding: 0.2rem 0.5rem !important;
-            font-size: 0.7rem !important;
-            font-weight: 600;
-        }
-
-        .custom-table .pill-balance {
-            padding: 0.15rem 0.45rem !important;
-            font-size: 0.65rem !important;
-            font-weight: 700;
-        }
-
-        .custom-table .btn-link {
-            padding: 0 !important;
-            color: var(--navy-blue);
-            text-decoration: none;
-            transition: transform 0.1s ease;
-        }
-
-        .custom-table .btn-link:hover {
-            transform: scale(1.1);
-        }
-
-        /* Column Widths */
-        .col-code {
-            width: 100px;
-        }
-
-        .col-name {
-            width: auto;
-        }
-
-        .col-type {
-            width: 110px;
-        }
-
-        .col-balance {
-            width: 110px;
-        }
-
-        .col-actions {
-            width: 90px;
-        }
-
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 1.6rem;
-            }
-
-            .col-code {
-                width: 80px;
-            }
-
-            .col-type {
-                display: none;
-            }
-
-            .col-balance {
-                width: 100px;
-            }
-
-            .col-actions {
-                width: 80px;
-            }
-
-            .custom-table-container {
-                padding: 0;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 
 <body>
@@ -183,30 +44,100 @@
     </nav>
 
     <main class="container-fluid px-4 mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-3 pt-1">
-            <div>
-                <h1 class="page-title mb-0">Chart of Accounts</h1>
-            </div>
-            <div class="d-flex gap-2">
-                <button class="btn btn-navy btn-sm px-4" onclick="openAccountModal()">
-                    <i class="bi bi-plus-lg me-1"></i> New Account
-                </button>
+        <!-- Header Section with Stats -->
+        <div class="row mb-4 pt-1">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h1 class="section-header mb-1">Chart of Accounts</h1>
+                        <p class="text-muted mb-0">Manage your company's financial accounts structure</p>
+                    </div>
+                    <button class="btn btn-navy px-4" onclick="openAccountModal()">
+                        <i class="bi bi-plus-lg me-2"></i>New Account
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body py-2 px-3">
-                <div class="row g-2">
-                    <div class="col-md-4">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-white border-end-0"><i
-                                    class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="account-search" class="form-control border-start-0 ps-0"
-                                placeholder="Filter by name or code..." onkeyup="filterAccounts()">
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon bg-navy-light text-navy me-3">
+                                <i class="bi bi-card-list"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-0 x-small text-uppercase fw-bold">Total Accounts</p>
+                                <h3 class="mb-0 fw-bold" id="total-accounts">0</h3>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <select id="filter-type" class="form-select form-select-sm" onchange="filterAccounts()">
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon bg-success-light text-success me-3">
+                                <i class="bi bi-wallet2"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-0 x-small text-uppercase fw-bold">Assets</p>
+                                <h3 class="mb-0 fw-bold" id="asset-count">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon bg-danger-light text-danger me-3">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-0 x-small text-uppercase fw-bold">Liabilities</p>
+                                <h3 class="mb-0 fw-bold" id="liability-count">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon bg-navy-light text-navy me-3">
+                                <i class="bi bi-pie-chart"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-0 x-small text-uppercase fw-bold">Revenue</p>
+                                <h3 class="mb-0 fw-bold" id="revenue-count">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Filter Section -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="text" id="account-search" class="form-control border-start-0 ps-0"
+                                placeholder="Search by name or code..." onkeyup="filterAccounts()">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="filter-type" class="form-select" onchange="filterAccounts()">
                             <option value="">All Account Types</option>
                             <option value="Asset">Assets</option>
                             <option value="Liability">Liabilities</option>
@@ -215,14 +146,26 @@
                             <option value="Expense">Expenses</option>
                         </select>
                     </div>
+                    <div class="col-md-3 text-end">
+                        <button class="btn btn-outline-navy btn-sm" onclick="resetFilters()">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Reset Filters
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Showing <strong id="results-count">0</strong> account(s)
+                    </small>
                 </div>
             </div>
         </div>
 
-        <div class="custom-table-container">
+        <!-- Accounts Table -->
+        <div class="accounts-table-wrapper">
             <div class="card border-0 shadow-sm overflow-hidden">
                 <div class="table-responsive">
-                    <table id="accounts-table" class="custom-table align-middle mb-0">
+                    <table id="accounts-table" class="table accounts-table-fixed mb-0">
                         <thead>
                             <tr>
                                 <th class="col-code ps-4">Account Code</th>
@@ -244,27 +187,32 @@
     <!-- Account Modal (Add/Edit) -->
     <div class="modal fade" id="accountModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-navy text-white py-3">
-                    <h5 class="modal-title fw-bold" id="accountModalTitle">Add Account</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-light border-bottom py-3">
+                    <div>
+                        <h5 class="modal-title fw-bold text-navy mb-0" id="accountModalTitle">Add Account</h5>
+                        <small class="text-muted">Fill in the account details below</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form id="account-form">
                     <div class="modal-body p-4">
                         <input type="hidden" id="account-id" value="">
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label mb-1">Account Code</label>
+                                <label class="form-label">Account Code</label>
                                 <input type="text" id="account-code" class="form-control" placeholder="e.g. 1001"
                                     required maxlength="10">
+                                <small class="text-muted">Unique identifier</small>
                             </div>
                             <div class="col-md-8">
-                                <label class="form-label mb-1">Account Name</label>
+                                <label class="form-label">Account Name</label>
                                 <input type="text" id="account-name" class="form-control"
                                     placeholder="e.g. Cash in Bank" required>
+                                <small class="text-muted">Descriptive name</small>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label mb-1">Account Type</label>
+                                <label class="form-label">Account Type</label>
                                 <select id="account-type" class="form-select" required onchange="updateNormalBalance()">
                                     <option value="" disabled selected>Select type...</option>
                                     <option value="Asset">Asset</option>
@@ -275,7 +223,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label mb-1">Normal Balance</label>
+                                <label class="form-label">Normal Balance</label>
                                 <select id="account-normal-balance" class="form-select" required>
                                     <option value="" disabled selected>Select...</option>
                                     <option value="Debit">Debit</option>
@@ -283,16 +231,18 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label mb-1">Description</label>
+                                <label class="form-label">Description <span class="text-muted">(Optional)</span></label>
                                 <textarea id="account-description" class="form-control" rows="2"
                                     placeholder="Account purpose or details..."></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer border-top-0 p-4 pt-0">
+                    <div class="modal-footer border-top-0 bg-light p-3">
                         <button type="button" class="btn btn-outline-secondary px-4"
                             data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-navy px-4">Save Account</button>
+                        <button type="submit" class="btn btn-navy px-4">
+                            <i class="bi bi-check-lg me-1"></i>Save Account
+                        </button>
                     </div>
                 </form>
             </div>
@@ -323,7 +273,7 @@
         }
 
         function openAccountModal(account = null) {
-            document.getElementById('accountModalTitle').innerText = account ? 'Edit Account' : 'New Account';
+            document.getElementById('accountModalTitle').innerText = account ? 'Edit Account' : 'Add Account';
             document.getElementById('account-id').value = account ? account.id : '';
             document.getElementById('account-code').value = account ? account.code : '';
             document.getElementById('account-code').readOnly = !!account;
@@ -347,6 +297,19 @@
             }
         }
 
+        function resetFilters() {
+            document.getElementById('account-search').value = '';
+            document.getElementById('filter-type').value = '';
+            filterAccounts();
+        }
+
+        function updateStats(accounts) {
+            document.getElementById('total-accounts').textContent = accounts.length;
+            document.getElementById('asset-count').textContent = accounts.filter(a => a.type === 'Asset').length;
+            document.getElementById('liability-count').textContent = accounts.filter(a => a.type === 'Liability').length;
+            document.getElementById('revenue-count').textContent = accounts.filter(a => a.type === 'Revenue').length;
+        }
+
         function filterAccounts() {
             const searchTerm = document.getElementById('account-search').value.toLowerCase();
             const filterType = document.getElementById('filter-type').value;
@@ -358,12 +321,26 @@
             });
 
             renderAccounts(filtered);
+            document.getElementById('results-count').textContent = filtered.length;
         }
 
         function renderAccounts(accounts) {
             const tbody = document.querySelector('#accounts-table tbody');
             if (accounts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-5">No accounts found matching your criteria.</td></tr>';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="bi bi-inbox"></i>
+                                </div>
+                                <p class="mb-0">No accounts found matching your criteria.</p>
+                                <button class="btn btn-sm btn-outline-navy mt-3" onclick="resetFilters()">
+                                    <i class="bi bi-arrow-clockwise me-1"></i>Reset Filters
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
                 return;
             }
 
@@ -372,7 +349,7 @@
                     <td class="ps-4 fw-mono small">${a.code}</td>
                     <td>
                         <div class="fw-semibold text-navy">${a.name}</div>
-                        ${a.description ? `<div class="small text-muted text-truncate" style="max-width: 400px;">${a.description}</div>` : ''}
+                        ${a.description ? `<div class="small text-muted text-truncate" style="max-width: 450px;">${a.description}</div>` : ''}
                     </td>
                     <td class="text-center">
                         <span class="badge-soft badge-soft-${a.type.toLowerCase()}">${a.type}</span>
@@ -381,12 +358,12 @@
                         <span class="pill-balance pill-${a.normal_balance.toLowerCase()}">${a.normal_balance}</span>
                     </td>
                     <td class="text-end pe-4">
-                        <div class="d-flex gap-3 justify-content-end">
-                            <button class="btn btn-link text-navy p-0" title="Edit" onclick="editAccount(${a.id})">
-                                <i class="bi bi-pencil-square fs-6"></i>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button class="btn btn-sm btn-table-action" title="Edit" onclick="editAccount(${a.id})">
+                                <i class="bi bi-pencil-square"></i>
                             </button>
-                            <button class="btn btn-link text-danger p-0" title="Delete" onclick="deleteAccount(${a.id})">
-                                <i class="bi bi-trash3 fs-6"></i>
+                            <button class="btn btn-sm btn-table-action btn-table-action-delete" title="Delete" onclick="deleteAccount(${a.id})">
+                                <i class="bi bi-trash3"></i>
                             </button>
                         </div>
                     </td>
@@ -397,13 +374,26 @@
         async function loadAccounts() {
             try {
                 const tbody = document.querySelector('#accounts-table tbody');
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5"><div class="spinner-border spinner-border-sm text-navy" role="status"></div> Loading...</td></tr>';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="spinner-border spinner-border-sm text-navy" role="status"></div>
+                            <span class="ms-2">Loading accounts...</span>
+                        </td>
+                    </tr>`;
 
                 allAccounts = await api.get('/accounts');
-                filterAccounts(); // Initial render with filters
+                updateStats(allAccounts);
+                filterAccounts();
             } catch (err) {
                 api.showToast(err.message, 'error');
-                document.querySelector('#accounts-table tbody').innerHTML = '<tr><td colspan="5" class="text-center text-muted py-5">Failed to load accounts.</td></tr>';
+                document.querySelector('#accounts-table tbody').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-5">
+                            <i class="bi bi-exclamation-triangle fs-1 d-block mb-2"></i>
+                            Failed to load accounts.
+                        </td>
+                    </tr>`;
             }
         }
 
