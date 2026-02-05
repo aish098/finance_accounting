@@ -31,185 +31,107 @@
             border-spacing: 0;
             width: 100%;
             background-color: #ffffff;
-            border-radius: 12px;
-            /* Softened radius */
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            /* Softer, deeper shadow */
-            table-layout: fixed;
-            /* Essential for precise control */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            table-layout: auto;
         }
 
         .custom-table thead th {
             background-color: var(--navy-blue) !important;
             color: var(--white) !important;
-            padding: 0.85rem 0.4rem !important;
-            /* Reduced horizontal padding to 0.4rem */
+            padding: 0.5rem 0.75rem !important;
             text-transform: uppercase;
             font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.8px;
-            /* Improved readability */
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
             border-bottom: 3px solid var(--golden) !important;
             vertical-align: middle;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        /* Specific header overrides */
-        .custom-table thead th.text-end {
-            text-align: right !important;
-        }
-
-        .custom-table thead th.text-center {
-            text-align: center !important;
         }
 
         .custom-table tbody tr {
             background-color: #ffffff;
-            transition: all 0.2s ease;
+            transition: background-color 0.15s ease;
         }
 
         .custom-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-            /* Lighter alternate row */
+            background-color: #fcfdfe;
         }
 
         .custom-table tbody tr:hover {
-            background-color: #fff8e1 !important;
-            /* Very subtle golden lint */
-            transform: translateY(-1px);
-            /* Micro-interaction */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: 1;
+            background-color: var(--golden-light) !important;
         }
 
         .custom-table tbody td {
             color: var(--navy-dark);
-            padding: 0.8rem 0.4rem !important;
-            /* Matches header padding */
-            border-bottom: 1px solid #f0f0f0;
-            /* Softer border */
+            padding: 0.4rem 0.75rem !important;
+            border-bottom: 1px solid #edf2f7;
             font-weight: 500;
-            font-size: 0.95rem;
-            /* Slightly larger for readability */
+            font-size: 0.8rem;
             vertical-align: middle;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-align: left;
         }
 
         .custom-table .fw-mono {
             color: var(--navy-blue) !important;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            font-size: 0.9rem;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            font-size: 0.75rem;
         }
 
-        /* Badge adjustments */
+        /* Compact Badge Overrides */
         .custom-table .badge-soft {
-            padding: 0.35rem 0.5rem !important;
-            font-size: 0.8rem !important;
+            padding: 0.2rem 0.5rem !important;
+            font-size: 0.7rem !important;
             font-weight: 600;
-            border-radius: 6px;
         }
 
         .custom-table .pill-balance {
-            padding: 0.3rem 0.5rem !important;
-            font-size: 0.75rem !important;
+            padding: 0.15rem 0.45rem !important;
+            font-size: 0.65rem !important;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .custom-table .btn-link {
-            padding: 0.2rem !important;
-            color: var(--navy-light);
+            padding: 0 !important;
+            color: var(--navy-blue);
             text-decoration: none;
-            transition: all 0.2s ease;
-            opacity: 0.8;
+            transition: transform 0.1s ease;
         }
 
         .custom-table .btn-link:hover {
-            transform: scale(1.15);
-            color: var(--navy-blue);
-            opacity: 1;
+            transform: scale(1.1);
         }
 
-        .custom-table .btn-link.text-danger:hover {
-            color: #dc3545;
-        }
-
-        /* Column Widths - Fixed Pixels (Total 1100px) */
+        /* Column Widths */
         .col-code {
-            width: 130px;
-            text-align: left;
-            padding-left: 1rem !important;
+            width: 100px;
         }
 
         .col-name {
-            width: 550px;
-            text-align: left;
+            width: auto;
         }
 
         .col-type {
-            width: 150px;
-            text-align: left;
+            width: 110px;
         }
 
         .col-balance {
-            width: 150px;
-            text-align: left;
+            width: 110px;
         }
 
         .col-actions {
-            width: 120px;
-            text-align: right;
-            padding-right: 1rem !important;
-        }
-
-        /* Header specific padding overrides to match cells */
-        thead .col-code {
-            padding-left: 1rem !important;
-        }
-
-        thead .col-actions {
-            padding-right: 1rem !important;
-        }
-
-        @media (max-width: 992px) {
-
-            /* Maintain proportions on smaller screens (approximate) */
-            .col-code {
-                width: 12%;
-            }
-
-            .col-name {
-                width: 45%;
-            }
-
-            .col-type {
-                width: 15%;
-            }
-
-            .col-balance {
-                width: 15%;
-            }
-
-            .col-actions {
-                width: 13%;
-            }
+            width: 90px;
         }
 
         @media (max-width: 768px) {
-            .col-code {
-                width: 20%;
+            .page-title {
+                font-size: 1.6rem;
             }
 
-            .col-name {
-                width: auto;
+            .col-code {
+                width: 80px;
             }
 
             .col-type {
@@ -217,11 +139,11 @@
             }
 
             .col-balance {
-                width: 25%;
+                width: 100px;
             }
 
             .col-actions {
-                width: 15%;
+                width: 80px;
             }
 
             .custom-table-container {
