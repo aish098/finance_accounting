@@ -83,14 +83,14 @@
 
         <div class="card border-0 shadow-sm overflow-hidden">
             <div class="table-responsive">
-                <table id="accounts-table" class="table table-hover align-middle mb-0">
+                <table id="accounts-table" class="table table-hover align-middle mb-0" style="table-layout: fixed; min-width: 900px;">
                     <thead>
                         <tr>
-                            <th class="ps-4 py-3 text-uppercase fw-bold text-muted" style="width: 15%;">Account Code</th>
-                            <th class="py-3 text-uppercase fw-bold text-muted" style="width: 40%;">Account Name</th>
-                            <th class="py-3 text-uppercase fw-bold text-muted text-center" style="width: 15%;">Type</th>
-                            <th class="py-3 text-uppercase fw-bold text-muted text-center" style="width: 15%;">Normal Balance</th>
-                            <th class="pe-4 py-3 text-uppercase fw-bold text-muted text-end" style="width: 15%;">Actions</th>
+                            <th class="ps-4 py-3 text-uppercase fw-bold text-muted" style="width: 120px;">Code</th>
+                            <th class="py-3 text-uppercase fw-bold text-muted" style="width: auto;">Account Name</th>
+                            <th class="py-3 text-uppercase fw-bold text-muted text-center" style="width: 150px;">Type</th>
+                            <th class="py-3 text-uppercase fw-bold text-muted text-center" style="width: 150px;">Normal Balance</th>
+                            <th class="pe-4 py-3 text-uppercase fw-bold text-muted text-end" style="width: 120px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,18 +225,18 @@
 
             tbody.innerHTML = accounts.map(a => `
                 <tr>
-                    <td class="ps-4 fw-mono small text-muted">${a.code}</td>
-                    <td>
-                        <div class="fw-semibold text-navy">${a.name}</div>
-                        ${a.description ? `<div class="small text-muted text-truncate" style="max-width: 400px;">${a.description}</div>` : ''}
+                    <td class="ps-4 fw-mono small text-muted text-nowrap">${a.code}</td>
+                    <td class="text-truncate">
+                        <div class="fw-semibold text-navy text-truncate" title="${a.name}">${a.name}</div>
+                        ${a.description ? `<div class="small text-muted text-truncate" title="${a.description}">${a.description}</div>` : ''}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center text-nowrap">
                         <span class="badge-soft badge-soft-${a.type.toLowerCase()}">${a.type}</span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center text-nowrap">
                         <span class="pill-balance pill-${a.normal_balance.toLowerCase()} small">${a.normal_balance}</span>
                     </td>
-                    <td class="text-end pe-4">
+                    <td class="text-end pe-4 text-nowrap">
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-link text-navy p-1" title="Edit" onclick="editAccount(${a.id})">
                                 <i class="bi bi-pencil-square fs-5"></i>
