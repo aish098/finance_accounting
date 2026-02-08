@@ -736,6 +736,108 @@ body {
     vertical-align: middle;
 }
 
+/* Chart of Accounts */
+.coa-page {
+    background-color: var(--white);
+}
+
+.coa-shell {
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1rem;
+}
+
+.coa-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.coa-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--navy-dark);
+    margin: 0;
+}
+
+.coa-table-wrap {
+    background-color: var(--white);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.coa-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.coa-table th,
+.coa-table td {
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid #eef1f4;
+    vertical-align: middle;
+}
+
+.coa-table thead th {
+    background-color: var(--navy-blue);
+    color: var(--white);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-size: 0.8rem;
+    border-bottom: 2px solid var(--golden);
+}
+
+.coa-table tbody tr:nth-child(odd) {
+    background-color: var(--white);
+}
+
+.coa-table tbody tr:nth-child(even) {
+    background-color: #fafbfd;
+}
+
+.coa-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.coa-actions {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.coa-actions .btn-table-action {
+    padding: 0.25rem 0.5rem;
+}
+
+.coa-actions .bi {
+    font-size: 1rem;
+}
+
+.coa-code {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    color: var(--text-muted);
+}
+
+.coa-table .pill-balance {
+    border-radius: 999px;
+}
+
+@media (max-width: 991.98px) {
+    .coa-shell {
+        padding: 1rem;
+    }
+
+    .coa-title {
+        font-size: 1.6rem;
+    }
+}
+
 .table-hover tbody tr {
     transition: background-color 0.15s ease;
 }
