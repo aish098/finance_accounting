@@ -11,8 +11,74 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=3">
 </head>
+<style>
+         body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
 
+        .navbar {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .coa-shell {
+            background-color: #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.25rem 1.25rem 1rem;
+        }
+
+        .coa-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #333;
+            margin: 0;
+            margin-bottom: 1rem;
+        }
+
+        .coa-table-wrap {
+            background-color: #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table-custom {
+            color: #333;
+            background-color: #fff;
+            border-collapse: collapse;
+        }
+
+        .table-custom th,
+        .table-custom td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #f0f4f8;
+            background-image: linear-gradient(to right, var(--navy-light) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+
+        .table-custom tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table-custom tr:hover {
+            background-color: #f4f6f8;
+        }
+    </style>
 <body class="bg-light">
+    
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">
