@@ -8,9 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Favicon handler to prevent 404 errors
+// Favicon handler
 app.get('/favicon.ico', (req, res) => {
-    res.status(204).end(); // No content
+    res.status(204).end();
 });
 
 // Health check endpoint
@@ -21,7 +21,6 @@ app.get('/health', async (req, res) => {
         res.json({ status: 'OK', database: 'connected' });
     } catch (error) {
         // Return 200 even if DB is disconnected so Railway doesn't kill the instance
-        // while it's still retrying connection in the background.
         res.status(200).json({ 
             status: 'STARTING', 
             database: 'disconnected', 
@@ -31,7 +30,7 @@ app.get('/health', async (req, res) => {
     }
 });
 
-// Routes will be imported here
+// Routes
 const accountRoutes = require('./routes/accountRoutes');
 const journalRoutes = require('./routes/journalRoutes');
 const reportRoutes = require('./routes/reportRoutes');
@@ -43,7 +42,7 @@ app.use('/api/accounts', authMiddleware, accountRoutes);
 app.use('/api/journal', authMiddleware, journalRoutes);
 app.use('/api/reports', authMiddleware, reportRoutes);
 
-// Error handling middleware
+// Error handling
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send({
