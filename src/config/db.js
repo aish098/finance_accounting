@@ -2,23 +2,23 @@ require('dotenv').config();
 const mysql = require('mysql2/promise');
 
 console.log('🔍 Database Environment Check:');
-console.log(`   - Host: ${process.env.MYSQLHOST || 'not set'}`);
-console.log(`   - Port: ${process.env.MYSQLPORT || 'not set (default 3306)'}`);
-console.log(`   - User: ${process.env.MYSQLUSER || 'not set'}`);
-console.log(`   - DB: ${process.env.MYSQLDATABASE || 'not set'}`);
-console.log(`   - Connection String: ${process.env.MYSQL_URL || process.env.DATABASE_URL ? 'available' : 'not set'}`);
+console.log(`   - MYSQLHOST: ${process.env.MYSQLHOST || 'not set'}`);
+console.log(`   - MYSQLPORT: ${process.env.MYSQLPORT || 'not set'}`);
+console.log(`   - MYSQLUSER: ${process.env.MYSQLUSER || 'not set'}`);
+console.log(`   - MYSQLDATABASE: ${process.env.MYSQLDATABASE || 'not set'}`);
+console.log(`   - MYSQL_URL: ${process.env.MYSQL_URL ? 'available' : 'not set'}`);
 
 // Check if we are on Railway to enforce SSL
 const host = process.env.MYSQLHOST || '';
 const url = process.env.MYSQL_URL || process.env.DATABASE_URL || '';
-const isRailway = host.includes('railway') || url.includes('railway');
+const isRailway = host.includes('railway.proxy.rlwy.net') || url.includes('railway.proxy.rlwy.net') || process.env.RAILWAY_ENVIRONMENT;
 
 const connectionConfig = process.env.MYSQL_URL || process.env.DATABASE_URL || {
-    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || 'localhost',
-    user: process.env.MYSQLUSER || process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || '',
-    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
-    port: parseInt(process.env.MYSQLPORT || process.env.MYSQL_PORT || '3306', 10),
+    host: process.env.MYSQLHOST || 'localhost',
+    user: process.env.MYSQLUSER || 'root',
+    password: process.env.MYSQLPASSWORD || '',
+    database: process.env.MYSQLDATABASE || 'accounting_db',
+    port: parseInt(process.env.MYSQLPORT || '3306', 10),
     ssl: isRailway ? { rejectUnauthorized: false } : null,
     waitForConnections: true,
     connectionLimit: 10,
