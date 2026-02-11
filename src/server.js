@@ -9,29 +9,35 @@ if (port === '3306' || port === 3306) {
 }
 
 async function startServer() {
-    // 1. Database Connection Test
-    try {
-        const connection = await db.getConnection();
-        console.log('✅ MySQL connected successfully');
-        connection.release();
-        
-        // 2. Initialize and Seed (Only if connected)
-        await initDb();
-        console.log('✅ Database tables checked/created');
-        
-        await seed();
-        console.log('✅ Initial data seeded');
-        
-    } catch (err) {
-        console.error('❌ Database Startup Error:', err.message);
-    }
-
-    // 3. Start Express Server
-    app.listen(port, '0.0.0.0', () => {
+    // Start Express Server immediately
+    const server = app.listen(port, '0.0.0.0', () => {
         console.log(`🚀 Server is running on port ${port}`);
     });
+
+    // Try database connection in background (non-blocking)
+    setTimeout(async () => {
+        try {
+            console.log('🔄 Attempting database connection...');
+            const connection = await db.getConnection();
+            console.log('✅ MySQL connected successfully');
+            connection.release();
+
+            // Initialize and Seed (Only if connected)
+            await initDb();
+            console.log('✅ Database tables checked/created');
+
+            await seed();
+            console.log('✅ Initial data seeded');
+
+        } catch (err) {
+            console.error('❌ Database Startup Error:', err.message);
+            console.error('⚠️  Server is running but database is not connected');
+            console.error('Please check your DATABASE_URL or MYSQL environment variables');
+        }
+    }, 1000); // Wait 1 second before trying DB connection
 }
 
 startServer().catch(err => {
     console.error('CRITICAL: Server failed to start:', err);
+    process.exit(1);
 });

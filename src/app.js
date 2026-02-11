@@ -8,6 +8,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Favicon handler to prevent 404 errors
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end(); // No content
+});
+
 // Health check endpoint
 const db = require('./config/db');
 app.get('/health', async (req, res) => {
