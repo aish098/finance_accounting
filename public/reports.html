@@ -49,14 +49,11 @@
             <div class="row align-items-end g-3">
                 <div class="col-md-2">
                     <label class="form-label small fw-bold">Start Date</label>
-                    <input type="date" id="report-start-date" class="form-control form-control-sm">
+                    <input type="date" id="report-start-date" class="form-control form-control-sm" onchange="applyDateRange()">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label small fw-bold">End Date</label>
-                    <input type="date" id="report-end-date" class="form-control form-control-sm">
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-outline-navy btn-sm" onclick="applyDateRange()">Apply Filter</button>
+                    <input type="date" id="report-end-date" class="form-control form-control-sm" onchange="applyDateRange()">
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-navy btn-sm d-print-none" onclick="window.print()">
