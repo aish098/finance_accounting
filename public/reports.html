@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top mb-4">
+    <nav class="navbar navbar-expand-lg fixed-top mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">
                 <img src="img/logo2.png" alt="Logo" class="navbar-logo">
@@ -193,16 +193,20 @@
             <div id="pl-content">
                 <div class="mb-5">
                     <h5 class="fw-bold text-navy mb-3 border-bottom pb-2">OPERATING REVENUE</h5>
-                    <table id="pl-revenue-table" class="table table-sm table-borderless mb-0">
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="pl-revenue-table" class="table table-sm table-borderless mb-0">
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="mb-5">
                     <h5 class="fw-bold text-navy mb-3 border-bottom pb-2">OPERATING EXPENSES</h5>
-                    <table id="pl-expense-table" class="table table-sm table-borderless mb-0">
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="pl-expense-table" class="table table-sm table-borderless mb-0">
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="card total-section border-0 p-4 mt-4 shadow">
@@ -221,24 +225,28 @@
                 <p class="text-muted small">Financial position of the business at a specific point in time.</p>
             </div>
             <div id="bs-content" class="row">
-                <div class="col-lg-6 mb-4">
+                <div class="col-md-6 mb-4">
                     <div class="p-4 bg-light rounded-4 shadow-sm h-100 border-top border-4 border-navy">
                         <h5 class="fw-bold mb-4 text-navy text-uppercase letter-spacing-1">ASSETS</h5>
-                        <table id="bs-assets-table" class="table table-sm table-borderless mb-4">
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="bs-assets-table" class="table table-sm table-borderless mb-4">
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <div class="d-flex justify-content-between fw-bold pt-3 border-top border-navy">
                             <span class="text-navy">Total Assets</span>
                             <span id="bs-total-assets" class="text-navy"></span>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                <div class="col-md-6 mb-4">
                     <div class="p-4 bg-light rounded-4 shadow-sm mb-4 border-top border-4 border-danger">
                         <h5 class="fw-bold mb-4 text-danger text-uppercase letter-spacing-1">LIABILITIES</h5>
-                        <table id="bs-liabilities-table" class="table table-sm table-borderless mb-4">
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="bs-liabilities-table" class="table table-sm table-borderless mb-4">
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <div class="d-flex justify-content-between fw-bold pt-3 border-top border-danger">
                             <span class="text-danger">Total Liabilities</span>
                             <span id="bs-total-liabilities" class="text-danger"></span>
@@ -246,9 +254,11 @@
                     </div>
                     <div class="p-4 bg-light rounded-4 shadow-sm border-top border-4 border-primary">
                         <h5 class="fw-bold mb-4 text-primary text-uppercase letter-spacing-1">EQUITY</h5>
-                        <table id="bs-equity-table" class="table table-sm table-borderless mb-4">
-                            <tbody></tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="bs-equity-table" class="table table-sm table-borderless mb-4">
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <div class="d-flex justify-content-between fw-bold pt-3 border-top border-primary">
                             <span class="text-primary">Total Equity</span>
                             <span id="bs-total-equity" class="text-primary"></span>
@@ -315,6 +325,13 @@
 
         async function loadReport(type) {
             try {
+                // Show loading state in the active section
+                const activeSection = document.getElementById(type);
+                if (activeSection) {
+                    const tbody = activeSection.querySelector('tbody');
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="10" class="text-center py-5"><div class="spinner-border text-navy" role="status"></div><p class="mt-2 text-muted">Loading report data...</p></td></tr>';
+                }
+
                 const dateParams = getDateParams();
                 if (type === 'trial-balance') {
                     const data = await api.get('/reports/trial-balance' + dateParams + (dateParams ? '&' : '?') + 'entry_type=regular');
@@ -368,13 +385,18 @@
                     document.getElementById('atb-adjusted-debit').innerText = format(data.totals.adjusted_debit);
                     document.getElementById('atb-adjusted-credit').innerText = format(data.totals.adjusted_credit);
                 } else if (type === 'general-ledger') {
-                    const accounts = await api.get('/accounts');
                     const select = document.getElementById('ledger-account-select');
-                    const currentValue = select.value;
-                    select.innerHTML = '<option value="">-- Choose Account --</option>' +
-                        accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
-                    select.value = currentValue;
-                    if (currentValue) loadLedger();
+                    // Only fetch accounts if not already loaded
+                    if (select.options.length <= 1) {
+                        const accounts = await api.get('/accounts');
+                        select.innerHTML = '<option value="">-- Choose Account --</option>' +
+                            accounts.map(a => `<option value="${a.id}">${a.code} - ${a.name}</option>`).join('');
+                    }
+                    if (select.value) loadLedger();
+                    else {
+                        const tbody = document.querySelector('#ledger-table tbody');
+                        if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted small italic">Please select an account to view its ledger.</td></tr>';
+                    }
                 } else if (type === 'profit-loss') {
                     const data = await api.get('/reports/profit-loss' + dateParams);
                     const revBody = document.querySelector('#pl-revenue-table tbody');
@@ -429,9 +451,13 @@
         async function loadLedger() {
             const accountId = document.getElementById('ledger-account-select').value;
             if (!accountId) {
-                document.querySelector('#ledger-table tbody').innerHTML = '';
+                document.querySelector('#ledger-table tbody').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted small italic">Please select an account to view its ledger.</td></tr>';
                 return;
             }
+            
+            const tbody = document.querySelector('#ledger-table tbody');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5"><div class="spinner-border spinner-border-sm text-navy" role="status"></div> Loading transactions...</td></tr>';
+            
             const dateParams = getDateParams();
             try {
                 const entries = await api.get(`/reports/ledger?accountId=${accountId}${dateParams ? dateParams.replace('?', '&') : ''}`);

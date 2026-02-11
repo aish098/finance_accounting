@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS journal_entries (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entry_date DATE NOT NULL,
     reference VARCHAR(50),
+    entry_type ENUM('regular', 'adjusting') DEFAULT 'regular',
     description TEXT,
     created_by INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -48,11 +49,11 @@ CREATE TABLE IF NOT EXISTS journal_items (
 -- Seed basic Chart of Accounts
 INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 -- ASSETS (1000-1999)
-('1010', 'Cash', 'Asset', 'Debit'),
-('1110', 'Accounts Receivable', 'Asset', 'Debit'),
+('1000', 'Cash', 'Asset', 'Debit'),
+('1100', 'Accounts Receivable', 'Asset', 'Debit'),
 ('1120', 'Allowance for Doubtful Accounts', 'Asset', 'Credit'),
 ('1130', 'Interest Receivable', 'Asset', 'Debit'),
-('1210', 'Inventory', 'Asset', 'Debit'),
+('1200', 'Inventory', 'Asset', 'Debit'),
 ('1220', 'Supplies', 'Asset', 'Debit'),
 ('1310', 'Prepaid Insurance', 'Asset', 'Debit'),
 ('1320', 'Prepaid Rent', 'Asset', 'Debit'),
@@ -67,7 +68,7 @@ INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 
 -- LIABILITIES (2000-2999)
 ('2010', 'Notes Payable', 'Liability', 'Credit'),
-('2110', 'Accounts Payable', 'Liability', 'Credit'),
+('2000', 'Accounts Payable', 'Liability', 'Credit'),
 ('2210', 'Unearned Service Revenue', 'Liability', 'Credit'),
 ('2310', 'Salaries and Wages Payable', 'Liability', 'Credit'),
 ('2410', 'Unearned Rent Revenue', 'Liability', 'Credit'),
@@ -81,19 +82,20 @@ INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 
 -- OWNER’S AND STOCKHOLDERS’ EQUITY (3000-3999)
 ('3010', 'Owner’s Capital', 'Equity', 'Credit'),
+('3000', 'Owner Equity', 'Equity', 'Credit'),
 ('3020', 'Owner’s Drawings', 'Equity', 'Debit'),
 ('3110', 'Common Stock', 'Equity', 'Credit'),
 ('3120', 'Paid-in Capital in Excess of Par — Common Stock', 'Equity', 'Credit'),
 ('3210', 'Preferred Stock', 'Equity', 'Credit'),
 ('3220', 'Paid-in Capital in Excess of Par — Preferred Stock', 'Equity', 'Credit'),
 ('3310', 'Treasury Stock', 'Equity', 'Debit'),
-('3410', 'Retained Earnings', 'Equity', 'Credit'),
+('3100', 'Retained Earnings', 'Equity', 'Credit'),
 ('3510', 'Dividends', 'Equity', 'Debit'),
 ('3999', 'Income Summary', 'Equity', 'Credit'),
 
 -- REVENUES (4000-4999)
-('4010', 'Service Revenue', 'Revenue', 'Credit'),
-('4110', 'Sales Revenue', 'Revenue', 'Credit'),
+('4100', 'Service Revenue', 'Revenue', 'Credit'),
+('4000', 'Sales Revenue', 'Revenue', 'Credit'),
 ('4120', 'Sales Discounts', 'Revenue', 'Debit'),
 ('4130', 'Sales Returns and Allowances', 'Revenue', 'Debit'),
 ('4210', 'Interest Revenue', 'Revenue', 'Credit'),
@@ -103,7 +105,7 @@ INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 ('5010', 'Advertising Expense', 'Expense', 'Debit'),
 ('5020', 'Amortization Expense', 'Expense', 'Debit'),
 ('5030', 'Bad Debt Expense', 'Expense', 'Debit'),
-('5110', 'Cost of Goods Sold', 'Expense', 'Debit'),
+('5000', 'Cost of Goods Sold', 'Expense', 'Debit'),
 ('5210', 'Depreciation Expense', 'Expense', 'Debit'),
 ('5310', 'Freight-Out', 'Expense', 'Debit'),
 ('5410', 'Income Tax Expense', 'Expense', 'Debit'),
@@ -111,7 +113,9 @@ INSERT IGNORE INTO accounts (code, name, type, normal_balance) VALUES
 ('5610', 'Interest Expense', 'Expense', 'Debit'),
 ('5710', 'Loss on Disposal of Plant Assets', 'Expense', 'Debit'),
 ('5810', 'Maintenance and Repairs Expense', 'Expense', 'Debit'),
-('5910', 'Rent Expense', 'Expense', 'Debit'),
+('5100', 'Rent Expense', 'Expense', 'Debit'),
+('5200', 'Salary Expense', 'Expense', 'Debit'),
+('5300', 'Utility Expense', 'Expense', 'Debit'),
 ('6010', 'Salaries and Wages Expense', 'Expense', 'Debit'),
 ('6110', 'Supplies Expense', 'Expense', 'Debit'),
 ('6210', 'Utilities Expense', 'Expense', 'Debit');

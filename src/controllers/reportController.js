@@ -4,8 +4,8 @@ class ReportController {
     async getTrialBalance(req, res) {
         try {
             const userId = req.user.id;
-            const { startDate, endDate } = req.query;
-            const report = await reportService.generateTrialBalance(userId, startDate, endDate);
+            const { startDate, endDate, entry_type } = req.query;
+            const report = await reportService.generateTrialBalance(userId, startDate, endDate, entry_type);
             res.json(report);
         } catch (error) {
             res.status(500).json({ error: error.message });

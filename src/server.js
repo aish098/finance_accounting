@@ -11,7 +11,8 @@ if (port === '3306' || port === 3306) {
 async function startServer() {
     // Start Express Server immediately
     const server = app.listen(port, '0.0.0.0', () => {
-        console.log(`🚀 Server is running on port ${port}`);
+        console.log(`🚀 Server is running on http://127.0.0.1:${port}`);
+        console.log(`🚀 Access via localhost: http://localhost:${port}`);
     });
 
     // Try database connection in background (non-blocking)

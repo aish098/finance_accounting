@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top mb-4">
+    <nav class="navbar navbar-expand-lg fixed-top mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">
                 <img src="img/logo2.png" alt="Logo" class="navbar-logo">
@@ -85,7 +85,7 @@
                                 placeholder="Brief explanation of the entry..."></textarea>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                             <h4 class="mb-0 fw-bold">Line Items</h4>
                             <button type="button" class="btn btn-navy btn-sm" onclick="addRow()">+ Add
                                 Line</button>
@@ -96,10 +96,16 @@
                         </div>
 
                         <div class="total-section p-3 mb-4">
-                            <div class="row text-center fw-bold">
-                                <div class="col-6 text-start">TOTALS</div>
-                                <div class="col-3" id="total-debit">0.00</div>
-                                <div class="col-3" id="total-credit">0.00</div>
+                            <div class="row text-center fw-bold align-items-center">
+                                <div class="col-md-6 col-12 text-md-start mb-2 mb-md-0">TOTALS</div>
+                                <div class="col-md-3 col-6 text-end text-md-center">
+                                    <div class="x-small opacity-75 d-md-none">DEBIT</div>
+                                    <span id="total-debit">0.00</span>
+                                </div>
+                                <div class="col-md-3 col-6 text-end text-md-center">
+                                    <div class="x-small opacity-75 d-md-none">CREDIT</div>
+                                    <span id="total-credit">0.00</span>
+                                </div>
                             </div>
                             <div id="balance-warning" class="text-warning text-center small mt-2 fw-bold"
                                 style="display: none;">

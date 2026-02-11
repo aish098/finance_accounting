@@ -21,7 +21,20 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     margin: 0;
-    padding: 0;
+    padding-top: 135px;
+}
+
+/* Navbar responsive padding adjustments for fixed-top */
+@media (max-width: 991.98px) {
+    body {
+        padding-top: 120px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body {
+        padding-top: 110px;
+    }
 }
 
 /* Navbar Styling – compact on all screens */
@@ -505,6 +518,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    padding-top: 2rem !important;
 }
 
 .auth-card {
@@ -624,6 +638,16 @@ body {
         padding: 0.4rem 0.6rem !important;
         font-size: 0.7rem;
     }
+
+    .coa-table, .qb-table {
+        table-layout: auto !important;
+    }
+    
+    .coa-table th, .coa-table td,
+    .qb-table th, .qb-table td {
+        white-space: nowrap;
+        padding: 0.75rem 0.5rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -642,6 +666,21 @@ body {
     .stat-card {
         padding: 1.25rem !important;
     }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding: 20px 0 !important;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .btn-new-account {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 @media (max-width: 576px) {
@@ -659,6 +698,11 @@ body {
 
     .display-5 {
         font-size: 1.8rem;
+    }
+
+    .container, .page-container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
     }
 }
 

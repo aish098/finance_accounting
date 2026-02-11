@@ -6,17 +6,20 @@ console.log(`   - Host: ${process.env.MYSQLHOST || 'not set'}`);
 console.log(`   - Port: ${process.env.MYSQLPORT || 'not set (default 3306)'}`);
 console.log(`   - User: ${process.env.MYSQLUSER || 'not set'}`);
 console.log(`   - DB: ${process.env.MYSQLDATABASE || 'not set'}`);
-console.log(`   - Password: ${process.env.MYSQLPASSWORD ? '********' : 'not set'}`);
 console.log(`   - Connection String: ${process.env.MYSQL_URL || process.env.DATABASE_URL ? 'available' : 'not set'}`);
 
-// Use connection string if available, otherwise use individual components
+// Check if we are on Railway to enforce SSL
+const host = process.env.MYSQLHOST || '';
+const url = process.env.MYSQL_URL || process.env.DATABASE_URL || '';
+const isRailway = host.includes('railway') || url.includes('railway');
+
 const connectionConfig = process.env.MYSQL_URL || process.env.DATABASE_URL || {
     host: process.env.MYSQLHOST || process.env.MYSQL_HOST || 'localhost',
     user: process.env.MYSQLUSER || process.env.MYSQL_USER || 'root',
     password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || '',
     database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
     port: parseInt(process.env.MYSQLPORT || process.env.MYSQL_PORT || '3306', 10),
-    ssl: process.env.MYSQL_URL || process.env.DATABASE_URL ? { rejectUnauthorized: false } : null,
+    ssl: isRailway ? { rejectUnauthorized: false } : null,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -28,7 +31,7 @@ const connectionConfig = process.env.MYSQL_URL || process.env.DATABASE_URL || {
 let pool;
 let connectionPromise = null;
 
-async function createPoolWithRetry(retries = 10, delay = 5000) {
+async function createPoolWithRetry(retries = 15, delay = 5000) {
     if (pool) return pool;
     
     if (connectionPromise) {
