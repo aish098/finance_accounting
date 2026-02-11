@@ -1,66 +1,59 @@
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// Debugging: Log available environment variables (values masked for security)
 console.log('🔍 Database Environment Check:');
-console.log(`   - MYSQLHOST: ${process.env.MYSQLHOST || 'not set'}`);
-console.log(`   - MYSQLPORT: ${process.env.MYSQLPORT || 'not set'}`);
-console.log(`   - MYSQLUSER: ${process.env.MYSQLUSER || 'not set'}`);
-console.log(`   - MYSQLDATABASE: ${process.env.MYSQLDATABASE || 'not set'}`);
-console.log(`   - MYSQLPASSWORD: ${process.env.MYSQLPASSWORD ? '********' : 'not set'}`);
-console.log(`   - DATABASE_URL/MYSQL_URL/MYSQL_PRIVATE_URL: ${(process.env.DATABASE_URL || process.env.MYSQL_URL || process.env.MYSQL_PRIVATE_URL) ? 'set' : 'not set'}`);
+console.log(`   - Host: ${process.env.MYSQLHOST || 'not set'}`);
+console.log(`   - User: ${process.env.MYSQLUSER || 'not set'}`);
+console.log(`   - DB: ${process.env.MYSQLDATABASE || 'not set'}`);
+console.log(`   - Password: ${process.env.MYSQLPASSWORD ? '********' : 'not set'}`);
 
-// Parse Railway Connection String if provided (Most reliable method)
-let config;
-const connectionString = process.env.DATABASE_URL || process.env.MYSQL_URL || process.env.MYSQL_PRIVATE_URL;
+const config = {
+    host: process.env.MYSQLHOST || process.env.MYSQL_HOST || 'localhost',
+    user: process.env.MYSQLUSER || process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || '',
+    database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
+    port: parseInt(process.env.MYSQLPORT || process.env.MYSQL_PORT || '3306', 10),
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 30000, // 30 seconds
+    enableKeepAlive: true,
+    multipleStatements: true
+};
 
-if (connectionString) {
-    try {
-        const url = new URL(connectionString);
-        config = {
-            host: url.hostname,
-            user: url.username,
-            password: url.password,
-            database: url.pathname.slice(1),
-            port: parseInt(url.port || '3306', 10),
-            waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 0,
-            connectTimeout: 60000,
-            enableKeepAlive: true,
-            keepAliveInitialDelay: 0,
-            multipleStatements: true
-        };
-        console.log(`✅ Using connection string: ${url.hostname}:${url.port}/${url.pathname.slice(1)}`);
-    } catch (e) {
-        console.error('❌ Error parsing connection string:', e.message);
+let pool;
+
+async function createPoolWithRetry(retries = 5, delay = 5000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            console.log(`🔄 Connection attempt ${i + 1}/${retries}...`);
+            const p = mysql.createPool(config);
+            // Test the connection immediately
+            await p.query('SELECT 1');
+            console.log('✅ Database connected successfully!');
+            pool = p;
+            return p;
+        } catch (err) {
+            console.error(`❌ Attempt ${i + 1} failed: ${err.message}`);
+            if (i === retries - 1) throw err;
+            console.log(`Waiting ${delay / 1000}s before next try...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
     }
 }
 
-// Fallback to individual variables if no string or parsing failed
-if (!config) {
-    config = {
-        host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DB_HOST || 'localhost',
-        user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DB_USER || 'root',
-        password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DB_PASSWORD || '',
-        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DB_NAME || 'railway',
-        port: parseInt(process.env.MYSQLPORT || process.env.MYSQL_PORT || process.env.DB_PORT || '3306', 10),
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-        connectTimeout: 60000,
-        enableKeepAlive: true,
-        keepAliveInitialDelay: 0,
-        multipleStatements: true
-    };
-    console.log(`✅ Using individual config: ${config.host}:${config.port}/${config.database} as ${config.user}`);
-}
-
-const pool = mysql.createPool(config);
-
-// Test connection handle
-pool.on('error', (err) => {
-    console.error('❌ Database pool error:', err.message);
-});
-
-module.exports = pool;
+// Export a proxy or a promise-based getter
+module.exports = {
+    async query(sql, params) {
+        if (!pool) await createPoolWithRetry();
+        return pool.query(sql, params);
+    },
+    async getConnection() {
+        if (!pool) await createPoolWithRetry();
+        return pool.getConnection();
+    },
+    on(event, callback) {
+        // Simple event forwarder for pool events
+        if (pool) pool.on(event, callback);
+    }
+};
