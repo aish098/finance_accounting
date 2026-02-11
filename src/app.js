@@ -39,7 +39,12 @@ app.use('/api/reports', authMiddleware, reportRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send({ error: 'Something went wrong!' });
+    res.status(500).send({
+        success: false,
+        error: 'Something went wrong!',
+        message: err.message,
+        payload: {}
+    });
 });
 
 module.exports = app;

@@ -19,7 +19,8 @@ if (process.env.DATABASE_URL || process.env.MYSQL_URL) {
         queueLimit: 0,
         connectTimeout: 60000,
         enableKeepAlive: true,
-        keepAliveInitialDelay: 0
+        keepAliveInitialDelay: 0,
+        multipleStatements: true
     };
     console.log(`Using DATABASE_URL: ${url.hostname}:${url.port}/${url.pathname.slice(1)}`);
 } else {
@@ -35,7 +36,8 @@ if (process.env.DATABASE_URL || process.env.MYSQL_URL) {
         queueLimit: 0,
         connectTimeout: 60000,
         enableKeepAlive: true,
-        keepAliveInitialDelay: 0
+        keepAliveInitialDelay: 0,
+        multipleStatements: true
     };
     console.log(`Using MySQL config: ${config.host}:${config.port}/${config.database} as ${config.user}`);
 }
