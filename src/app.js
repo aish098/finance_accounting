@@ -20,7 +20,14 @@ app.get('/health', async (req, res) => {
         await db.query('SELECT 1');
         res.json({ status: 'OK', database: 'connected' });
     } catch (error) {
-        res.status(503).json({ status: 'Error', database: 'disconnected', error: error.message });
+        // Return 200 even if DB is disconnected so Railway doesn't kill the instance
+        // while it's still retrying connection in the background.
+        res.status(200).json({ 
+            status: 'STARTING', 
+            database: 'disconnected', 
+            message: 'Waiting for database connection...',
+            error: error.message 
+        });
     }
 });
 
