@@ -33,7 +33,7 @@ let connectionPromise = null;
 
 async function createPoolWithRetry(retries = 15, delay = 5000) {
     if (pool) return pool;
-    
+
     if (connectionPromise) {
         return connectionPromise;
     }
@@ -43,11 +43,11 @@ async function createPoolWithRetry(retries = 15, delay = 5000) {
             try {
                 console.log(`🔄 Connection attempt ${i + 1}/${retries}...`);
                 const p = mysql.createPool(connectionConfig);
-                
+
                 const connection = await p.getConnection();
                 console.log('✅ Database connected successfully!');
                 connection.release();
-                
+
                 pool = p;
                 return p;
             } catch (err) {
@@ -78,7 +78,7 @@ module.exports = {
         if (pool) {
             pool.on(event, callback);
         } else {
-            createPoolWithRetry().then(p => p.on(event, callback)).catch(() => {});
+            createPoolWithRetry().then(p => p.on(event, callback)).catch(() => { });
         }
     }
 };
